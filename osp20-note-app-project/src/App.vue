@@ -11,12 +11,19 @@
                         class="note"
                         :style="{ 'background-color': note.theme }">
                         <div>
+                            <span>
+                                <strong>{{ note.title }}</strong>
+                            </span>
+                            <span class="modify">
+                                <i class="fas fa-edit"></i >
+                            </span>
                             <span class="delete" @click.prevent="deleteNote(index)">
                                 <i class="fas fa-times"></i >
                             </span>
-                            <span>{{ note.title }}</span>
+
                             <p class="note-text">{{ note.text }}</p>
                         </div>
+
                     </div>
                     <v-btn
                         class="mx-2 add-button"
@@ -30,7 +37,7 @@
                     </v-btn>
 
                     <v-dialog v-model="dialog" max-width="800" color="white">
-                        <app-note-editor @noteAdded="newNote" @noteDeleted="deleteNote"></app-note-editor>
+                        <app-note-editor @noteAdded="newNote" @noteModified="ModifyNote"></app-note-editor>
                     </v-dialog>
                 </div>
             </div>
@@ -77,7 +84,8 @@
                 this
                     .notes
                     .splice(index, 1);
-            }
+            },
+
         },
         mounted() {
             if (localStorage.getItem("notes")) 
