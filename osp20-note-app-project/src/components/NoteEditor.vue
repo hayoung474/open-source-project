@@ -111,12 +111,20 @@
             },
             methods: {
                 createNew() {
-                    this.dialog = false;
-                    console.log(this.category);
-                    this.$emit('noteAdded', this.title, this.text, this.theme, this.dialog);
-                    this.title = '';
-                    this.text = '',
-                    this.theme = '';
+                    if(this.title==''){
+                        alert("제목을 입력해주세요!");
+                    }
+                    if(this.title!='' && this.text==''){
+                        alert("내용을 입력해주세요!");
+                    }
+                    if(this.title!='' && this.text!=''){
+                        this.dialog = false;
+                        console.log(this.category);
+                        this.$emit('noteAdded', this.title, this.text, this.theme, this.dialog);
+                        this.title = '';
+                        this.text = '',
+                        this.theme = '';
+                    }
                 },
                 deleteNote(index) {
                     this.$emit('noteDeleted', index);
