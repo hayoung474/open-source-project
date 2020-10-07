@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-header @openEditor="editorOpen = !editorOpen"></app-header>
+    <app-header></app-header>
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -21,7 +21,7 @@
           <p class="note-text">{{ note.text }}</p>
         </div>
       </div>
-      <v-btn class="mx-2 add-button" fab dark color="Indigo">
+      <v-btn class="mx-2 add-button" fab dark color="Indigo" @click="editorOpen = !editorOpen">
         <v-icon dark> mdi-plus </v-icon>
       </v-btn>
     </div>

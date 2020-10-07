@@ -9,9 +9,9 @@
 <script>
     export default {
        methods:{
-          openEditor: function(){
-            this.$emit('openEditor');
-          }
+          // openEditor: function(){
+          //   this.$emit('openEditor');
+          // }
         }
     }
 </script>
