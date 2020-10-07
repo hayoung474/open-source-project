@@ -3,34 +3,36 @@
         <v-app id="inspire">
             <app-header></app-header>
             <div class="noteContainer">
-                <div
-                    v-for="(note, index) in notes"
-                    :key="`note-${index}`"
-                    class="note"
-                    :style="{ 'background-color': note.theme }">
-                    <div>
-                        <span class="delete" @click.prevent="deleteNote(index)">
-                            <i class="fas fa-times"></i >
-                        </span>
-                        <span>{{ note.title }}</span>
-                        <p class="note-text">{{ note.text }}</p>
+                <div v-masonry="containerId" transition-duration="0.3s" item-selector=".item">
+                    <div
+                        v-masonry-tile="v-masonry-tile"
+                        v-for="(note, index) in notes"
+                        :key="`note-${index}`"
+                        class="note"
+                        :style="{ 'background-color': note.theme }">
+                        <div>
+                            <span class="delete" @click.prevent="deleteNote(index)">
+                                <i class="fas fa-times"></i >
+                            </span>
+                            <span>{{ note.title }}</span>
+                            <p class="note-text">{{ note.text }}</p>
+                        </div>
                     </div>
-                </div>
-                <v-btn
-                    class="mx-2 add-button"
-                    fab="fab"
-                    dark="dark"
-                    color="Indigo"
-                    @click="dialog = true">
-                    <v-icon dark="dark">
-                        mdi-plus
-                    </v-icon>
-                </v-btn>
-                
-                <v-dialog v-model="dialog" max-width="800" color="white">
-                    <app-note-editor @noteAdded="newNote" @noteDeleted="deleteNote"></app-note-editor>
-                </v-dialog>
+                    <v-btn
+                        class="mx-2 add-button"
+                        fab="fab"
+                        dark="dark"
+                        color="Indigo"
+                        @click="dialog = true">
+                        <v-icon dark="dark">
+                            mdi-plus
+                        </v-icon>
+                    </v-btn>
 
+                    <v-dialog v-model="dialog" max-width="800" color="white">
+                        <app-note-editor @noteAdded="newNote" @noteDeleted="deleteNote"></app-note-editor>
+                    </v-dialog>
+                </div>
             </div>
         </v-app>
     </div>
@@ -39,6 +41,9 @@
 <script>
     import NoteEditor from "./components/NoteEditor.vue";
     import Header from "./components/Header.vue";
+    import Vue from 'vue'
+    import {VueMasonryPlugin} from 'vue-masonry';
+    Vue.use(VueMasonryPlugin)
 
     export default {
         name: "App",

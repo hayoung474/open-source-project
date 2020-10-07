@@ -10,9 +10,6 @@
 import SearchBar from "./SearchBar.vue";
 export default {
   methods: {
-    openEditor: function () {
-      this.$emit("openEditor");
-    },
   },
   components: {
     SearchBar: SearchBar,
