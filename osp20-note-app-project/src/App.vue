@@ -81,18 +81,7 @@ export default {
     return {
       dialog: false,
       editorOpen: false,
-      notes: [
-        {
-          title: "Code",
-          text: "1131111222",
-          theme: "#FF8A80",
-        },
-        {
-          title: "event",
-          text: "event",
-          theme: "#DDA0DD",
-        },
-      ],
+      notes: [],
     };
   },
   computed: {},
