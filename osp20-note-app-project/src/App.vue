@@ -3,7 +3,7 @@
         <v-app id="inspire">
             <app-header></app-header>
             <div class="noteContainer">
-                <div v-masonry="containerId" transition-duration="0.3s" item-selector=".item">
+                <div v-masonry="containerId" item-selector=".item">
                     <div
                         v-masonry-tile="v-masonry-tile"
                         v-for="(note, index) in notes"
@@ -11,29 +11,37 @@
                         class="note"
                         :style="{ 'background-color': note.theme }">
                         <div>
+                            <span>
+                                <strong>{{ note.title }}</strong>
+                            </span>
+                            <span class="modify">
+                                <i class="fas fa-edit"></i >
+                            </span>
                             <span class="delete" @click.prevent="deleteNote(index)">
                                 <i class="fas fa-times"></i >
                             </span>
-                            <span>{{ note.title }}</span>
+
                             <p class="note-text">{{ note.text }}</p>
                         </div>
-                    </div>
-                    <v-btn
-                        class="mx-2 add-button"
-                        fab="fab"
-                        dark="dark"
-                        color="Indigo"
-                        @click="dialog = true">
-                        <v-icon dark="dark">
-                            mdi-plus
-                        </v-icon>
-                    </v-btn>
 
-                    <v-dialog v-model="dialog" max-width="800" color="white">
-                        <app-note-editor @noteAdded="newNote" @noteDeleted="deleteNote"></app-note-editor>
-                    </v-dialog>
+                    </div>
+
                 </div>
             </div>
+            <v-btn
+                class="mx-2 add-button"
+                fab="fab"
+                dark="dark"
+                color="Indigo"
+                @click="dialog = true">
+                <v-icon dark="dark">
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+
+            <v-dialog v-model="dialog" max-width="800" color="white">
+                <app-note-editor @noteAdded="newNote" @noteModified="ModifyNote"></app-note-editor>
+            </v-dialog>
         </v-app>
     </div>
 </template>

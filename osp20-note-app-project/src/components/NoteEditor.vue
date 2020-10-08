@@ -64,15 +64,17 @@
                             <v-divider></v-divider>
                             <v-row>
                                 <v-spacer></v-spacer>
-                                <v-col cols="2">
+                                <v-col cols="5">
                                     <div class="note-editor-bottom">
 
-                                        <v-btn
-                                            text="text"
-                                            color="black"
-                                            class="write-btn"
-                                            @click="createNew"
-                                            outlined="outlined">WRITE</v-btn>
+                                        <span>
+                                            <v-btn
+                                                text="text"
+                                                color="black"
+                                                class="write-btn"
+                                                @click="createNew"
+                                                outlined="outlined">WRITE</v-btn>
+                                        </span>
                                     </div>
                                 </v-col>
                             </v-row>
@@ -126,9 +128,7 @@
                         this.theme = '';
                     }
                 },
-                deleteNote(index) {
-                    this.$emit('noteDeleted', index);
-                }
+
             }
         }
     </script>
