@@ -15,7 +15,8 @@
     "uuid": "^8.0.0",
     "vue": "^2.6.11",
     "vue-masonry": "^0.11.8",
-    "vuetify": "^2.2.11"
+    "vuetify": "^2.2.11",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
