@@ -27,6 +27,20 @@ body {
     z-index: 999;
 }
 
+.account-button{
+    right: 20px;
+    bottom: 80px;
+    position: fixed;
+    z-index: 999;
+}
+
+.category-button{
+    right: 20px;
+    bottom: 140px;
+    position: fixed;
+    z-index: 999;
+}
+
 .header {
     justify-content: center;
     display: flex;
