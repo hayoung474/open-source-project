@@ -86,10 +86,10 @@ export default {
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, CloseEditor) {
+    newNote(note, CloseEditor) {
       this.dialog = CloseEditor;
-      console.log(CloseEditor);
-      this.notes.push({ title: title, text: text, theme: theme });
+      this.$store.commit("addNote",note);
+      this.notes = this.$store.state.notes;
     },
     deleteNote(index) {
       this.notes.splice(index, 1);
@@ -97,7 +97,8 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("notes"))
-      this.notes = JSON.parse(localStorage.getItem("notes"));
+      this.$store.state.notes= JSON.parse(localStorage.getItem("notes"));
+      this.notes = this.$store.state.notes;
   },
   watch: {
     notes: {
