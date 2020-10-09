@@ -11,9 +11,14 @@ export const store = new Vuex.Store({
       {title:"옷 정보"},
       
     ],
+    notes:[],
 
   },
   mutations: {
+    addNote(state,note){
+      state.notes.push(note);
+      localStorage.setItem("notes", JSON.stringify(state.notes));
+    },
     // 카테고리가 변할때 마다 localStorage 에 변경해줄것
     addCategory(state, categoryName) {
 
@@ -43,11 +48,6 @@ export const store = new Vuex.Store({
       state.notes.splice(index, 1);
       localStorage.setItem("category");
     }
-  },
-  getters: {
-    category(state) { // category getter
-      return state.category
-    },
   },
 })
 

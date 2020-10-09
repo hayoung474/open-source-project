@@ -84,9 +84,12 @@
             </v-container>
         </div>
 </template>
-    <script>
+<script>
 
         export default {
+            props:{
+                index:String,
+            },
             data() {
                 return {
                     title: '',
@@ -96,43 +99,49 @@
                     secret: false,
                     important: false,
                     category: [],
-                    select:0,
-                    selectCategoryName:"",
+                    select: 0,
+                    selectCategoryName: ""
                 }
             },
-            updated(){
+            created() {
+                this.category = this.$store.state.category;
+                localStorage.setItem("category", JSON.stringify(this.category));
+                this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+            },
+            updated() {
                 this.category = this.$store.state.category;
                 localStorage.setItem("category", JSON.stringify(this.category));
 
-                this.selectCategoryName=this.$store.state.category[this.select].title;
+                this.selectCategoryName = this.$store.state.category[this.select].title;
             },
             methods: {
                 createNew() {
-                    if(this.title==''){
+                    if (this.title == '') {
                         alert("제목을 입력해주세요!");
                     }
-                    if(this.title!='' && this.text==''){
+                    if (this.title != '' && this.text == '') {
                         alert("내용을 입력해주세요!");
                     }
-                    if(this.title!='' && this.text!=''){
+                    if (this.title != '' && this.text != '') {
                         this.dialog = false;
                         console.log(this.category);
-                        
+
                         var note = {
-                            title:this.title,
-                            text:this.text,
-                            theme:this.theme,
-                            date:new Date().toISOString().substr(0, 10),
-                            category :this.category[this.select]
+                            title: this.title,
+                            text: this.text,
+                            theme: this.theme,
+                            date: new Date()
+                                .toISOString()
+                                .substr(0, 10),
+                            category: this.category[this.select]
                         }
                         this.$emit('noteAdded', note);
                         this.title = '';
                         this.text = '',
                         this.theme = '';
-  
-                    }
-                },
 
+                    }
+                }
             }
         }
     </script>
