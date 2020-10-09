@@ -86,10 +86,10 @@ export default {
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, CloseEditor) {
+    newNote(note, CloseEditor) {
       this.dialog = CloseEditor;
-      console.log(CloseEditor);
-      this.notes.push({ title: title, text: text, theme: theme });
+      console.log(note);
+      this.notes.push(note);
     },
     deleteNote(index) {
       this.notes.splice(index, 1);

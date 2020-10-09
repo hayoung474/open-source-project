@@ -32,11 +32,11 @@
                                                 <v-btn text="text" color="black" v-bind="attrs" v-on="on" outlined="outlined">
                                                     Category
                                                 </v-btn>
-                                                <p>{{category}}</p>
+                                                <p>{{selectCategoryName}}</p>
                                             </template>
                                             <v-list>
-                                                <v-list-item-group v-model="category">
-                                                    <v-list-item v-for="(item, index) in items" :key="index" link="link">
+                                                <v-list-item-group v-model="select">
+                                                    <v-list-item v-for="(item, index) in category" :key="index" link="link">
                                                         <v-list-item-title >
                                                             {{ item.title }}</v-list-item-title>
                                                     </v-list-item>
@@ -81,7 +81,6 @@
                         </div>
                     </v-card>
                 </div>
-
             </v-container>
         </div>
 </template>
@@ -96,20 +95,16 @@
                     dialog: false,
                     secret: false,
                     important: false,
-                    category: '',
-
-                    items: [
-                        {
-                            title: 'aaa'
-                        }, {
-                            title: 'bbb'
-                        }, {
-                            title: 'ccc'
-                        }, {
-                            title: 'ddd'
-                        }
-                    ]
+                    category: [],
+                    select:0,
+                    selectCategoryName:"",
                 }
+            },
+            updated(){
+                this.category = this.$store.state.category;
+                localStorage.setItem("category", JSON.stringify(this.category));
+
+                this.selectCategoryName=this.$store.state.category[this.select].title;
             },
             methods: {
                 createNew() {
@@ -122,10 +117,19 @@
                     if(this.title!='' && this.text!=''){
                         this.dialog = false;
                         console.log(this.category);
-                        this.$emit('noteAdded', this.title, this.text, this.theme, this.dialog);
+                        
+                        var note = {
+                            title:this.title,
+                            text:this.text,
+                            theme:this.theme,
+                            date:new Date().toISOString().substr(0, 10),
+                            category :this.category[this.select]
+                        }
+                        this.$emit('noteAdded', note);
                         this.title = '';
                         this.text = '',
                         this.theme = '';
+  
                     }
                 },
 
