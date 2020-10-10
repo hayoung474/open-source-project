@@ -64,6 +64,7 @@ body {
     0 16px 16px rgba(0, 0, 0, 0.05);
 }
 
+
 .title-input {
     padding: 10px;
     border: none;
@@ -158,6 +159,16 @@ body {
     top: 25px;
 }
 
+.category-div{
+    margin: 0px 15px;
+}
+
+.category-content{
+    padding-top: 10px;
+    margin: 0px 30px;
+}
+
+
 .close {
     position: absolute;
     right: 25px;
@@ -167,7 +178,7 @@ body {
 .category-input {
     padding: 10px 10px 0px;
     border: none;
-    outline: none;
+    //outline: none;
 }
 
 .category-input::placeholder {

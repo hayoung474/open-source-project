@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card solo="solo">
-      <div class="ma-5">
+      <div class="category-div">
         <v-row>
           <v-col cols="12">
             <span><v-card-title>Category</v-card-title></span>
@@ -12,14 +12,14 @@
         </v-row>
         <v-divider></v-divider>
       </div>
-      <div class="ma-8">
+      <div class="category-content">
         <v-row>
           <v-col cols="12">
-            <span
+            <span 
               ><input
                 class="category-input"
                 type="text"
-                size="70%"
+                size="60%"
                 v-model="name"
                 placeholder="Name"
               />

@@ -64,7 +64,7 @@
         ></app-note-editor>
       </v-dialog>
 
-      <v-dialog v-model="category_dialog" max-width="800" color="white">
+      <v-dialog v-model="category_dialog" max-width="700" color="white">
         <notecategory 
         @dialogClosed="category_dialog=false"
        ></notecategory> 
