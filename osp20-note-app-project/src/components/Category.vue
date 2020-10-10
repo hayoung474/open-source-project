@@ -61,7 +61,7 @@ export default {
     return {
       name: "",
       category_dialog: true,
-      categorylist: [],
+      category: [],
     };
   },
   methods: {
@@ -70,9 +70,23 @@ export default {
       this.$emit("dialogClosed", this.category_dialog);
     },
 
-    createCategory() {},
+    createCategory() {
+      this.category = this.$store.state.category;
+      this.category.push({ title: this.name });
+      console.log(this.category);
+      localStorage.setItem("category", JSON.stringify(this.category));
+      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+      this.name = "";
+    },
 
     deleteCategory() {},
+  },
+
+  mounted() {
+    if (localStorage.getItem("category")) {
+      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+      this.category = this.$store.state.category;
+    }
   },
 };
 </script>
