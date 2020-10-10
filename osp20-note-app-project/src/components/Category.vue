@@ -14,36 +14,35 @@
           <v-divider></v-divider>
         </div>
         <div class="ma-8">
-        <v-row>
+          <v-row>
             <v-col cols="12" md="6">
-                <span><input
+              <span
+                ><input
                   class="category-input"
                   type="text"
                   size="70%"
                   v-model="name"
                   placeholder="Name"
                 />
-                </span>
-                <span class="category-add" @click="createCategory">
-                  <i class="fas fa-plus"></i>
-                </span>
+              </span>
+              <span class="category-add" @click="createCategory">
+                <i class="fas fa-plus"></i>
+              </span>
             </v-col>
           </v-row>
           <v-divider></v-divider>
           <v-row>
             <v-col cols="12">
-              <li class="category-list"> 카테고리1
-                <span class="category-delete" @click.prevent="deleteCategory(index)">
-                  <i class="fas fa-times"></i>
-                </span>
-              </li>
-              <li class="category-list"> 카테고리2
-                <span class="category-delete" @click.prevent="deleteCategory(index)">
-                  <i class="fas fa-times"></i>
-                </span>
-              </li>
-              <li class="category-list"> 카테고리3
-                <span class="category-delete" @click.prevent="deleteCategory(index)">
+              <li
+                class="category-list"
+                v-for="(category, index) in this.$store.state.category"
+                :key="index"
+              >
+                {{ category.title }}
+                <span
+                  class="category-delete"
+                  @click.prevent="deleteCategory(index)"
+                >
                   <i class="fas fa-times"></i>
                 </span>
               </li>
@@ -62,7 +61,7 @@ export default {
     return {
       name: "",
       category_dialog: true,
-      category: [],
+      categorylist: [],
     };
   },
   methods: {
@@ -71,13 +70,9 @@ export default {
       this.$emit("dialogClosed", this.category_dialog);
     },
 
-    createCategory(){
+    createCategory() {},
 
-    },
-
-    deleteCategory(){
-
-    },
+    deleteCategory() {},
   },
 };
 </script>
