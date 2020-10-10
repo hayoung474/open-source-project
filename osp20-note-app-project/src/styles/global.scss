@@ -168,7 +168,6 @@ body {
     padding: 10px 10px 0px;
     border: none;
     outline: none;
-    
 }
 
 .category-input::placeholder {
@@ -186,6 +185,12 @@ body {
     position: absolute;
     right: 50px;
     color: rgb(168, 168, 168);
+}
+
+.category-modify{
+    position: absolute;
+    right: 70px;
+    color: lightgray;
 }
 
 .category-delete{

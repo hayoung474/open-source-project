@@ -14,7 +14,7 @@
       </div>
       <div class="ma-8">
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12">
             <span
               ><input
                 class="category-input"
