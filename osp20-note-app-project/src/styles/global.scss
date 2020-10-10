@@ -158,6 +158,42 @@ body {
     top: 25px;
 }
 
+.close {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+}
+
+.category-input {
+    padding: 10px 10px 0px;
+    border: none;
+    outline: none;
+    
+}
+
+.category-input::placeholder {
+    font-size: 18px;
+}
+
+.category-list{
+    padding-left: 8px;
+    padding-bottom: 2px;
+    padding-top: 7px;
+}
+
+.category-add{
+    padding-top: 10px;
+    position: absolute;
+    right: 50px;
+    color: rgb(168, 168, 168);
+}
+
+.category-delete{
+    position: absolute;
+    right: 50px;
+    color: lightgray;
+}
+
 .search{
     justify-content: right;
 }
