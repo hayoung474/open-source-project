@@ -72,22 +72,29 @@ export default {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
         this.category = this.$store.state.category;
-        this.category.push({ title: this.name });
-        localStorage.setItem("category", JSON.stringify(this.category));
-        this.$store.state.category = JSON.parse(
-          localStorage.getItem("category")
-        );
-        console.log(this.category);
+        var newCategory = { title: this.name };
+        console.log(newCategory);
+        this.$store.commit('addCategory',newCategory)
+       
+        // this.category.push({ title: this.name });
+        // localStorage.setItem("category", JSON.stringify(this.category));
+        // this.$store.state.category = JSON.parse(
+        //   localStorage.getItem("category")
+        // );
+        
         this.name = "";
       }
     },
 
     deleteCategory(index) {
       this.category = this.$store.state.category;
-      this.category.splice(index, 1);
-      localStorage.setItem("category", JSON.stringify(this.category));
-      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-      console.log(this.category);
+      this.$store.commit('deleteCategory',index);
+      
+      // vuex 꺼 쓰기
+      // this.category.splice(index, 1);
+      // localStorage.setItem("category", JSON.stringify(this.category));
+      // this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+      // console.log(this.category);
     },
   },
 

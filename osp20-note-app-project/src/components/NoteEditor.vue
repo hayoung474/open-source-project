@@ -113,17 +113,15 @@ export default {
     };
   },
   created() {
-        this.category = this.$store.state.category;
-        localStorage.setItem("category", JSON.stringify(this.category));
+        
         this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+        this.category = this.$store.state.category;
 
   },
   updated() {
     this.category = this.$store.state.category;
     this.selectCategoryName = this.category[this.select].title;
-    console.log(this.category);
   },
-  
   
   methods: {
     createNew() {

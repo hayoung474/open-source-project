@@ -38,9 +38,14 @@
                 </v-icon>
             </v-btn>
 
-            <v-btn class="mx-2 account-button" fab="fab" dark="dark" color="black">
+            <v-btn class="mx-2 sort-lastest-button" fab="fab" dark="dark" color="black">
                 <v-icon dark="dark">
-                    mdi-account
+                    mdi-chevron-up
+                </v-icon>
+            </v-btn>
+            <v-btn class="mx-2 sort-oldest-button" fab="fab" dark="dark" color="black">
+                <v-icon dark="dark">
+                    mdi-chevron-down
                 </v-icon>
             </v-btn>
 
