@@ -33,7 +33,7 @@
         fab="fab"
         dark="dark"
         color="black"
-        @click="dialog = true"
+        @click="category_dialog = true"
       >
         <v-icon dark="dark"> mdi-format-list-bulleted </v-icon>
       </v-btn>
@@ -43,7 +43,6 @@
         fab="fab"
         dark="dark"
         color="black"
-        @click="dialog = true"
       >
         <v-icon dark="dark"> mdi-account </v-icon>
       </v-btn>
@@ -64,6 +63,15 @@
           @noteModified="ModifyNote"
         ></app-note-editor>
       </v-dialog>
+
+      <v-dialog v-model="category_dialog" max-width="700" color="white">
+        <notecategory 
+        @dialogClosed="category_dialog=false"
+       ></notecategory> 
+      </v-dialog>
+
+
+
     </v-app>
   </div>
 </template>
@@ -71,6 +79,7 @@
 <script>
 import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
+import Category from "./components/Category.vue";
 import Vue from "vue";
 import { VueMasonryPlugin } from "vue-masonry";
 Vue.use(VueMasonryPlugin);
@@ -80,6 +89,7 @@ export default {
   data: function () {
     return {
       dialog: false,
+      category_dialog: false,
       editorOpen: false,
       notes: [],
     };
@@ -112,6 +122,7 @@ export default {
   components: {
     appNoteEditor: NoteEditor,
     appHeader: Header,
+    notecategory: Category,
   },
 };
 </script>
