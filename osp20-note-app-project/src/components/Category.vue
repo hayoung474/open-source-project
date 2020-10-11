@@ -103,6 +103,7 @@ export default {
       handler() {
         var newCategory = this.category;
         localStorage.setItem("category", JSON.stringify(newCategory));
+        this.$store.state.category = newCategory ;
       },
       deep: true,
     },

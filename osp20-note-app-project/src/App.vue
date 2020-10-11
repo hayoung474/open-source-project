@@ -55,7 +55,7 @@
                 </v-icon>
             </v-btn>
 
-            <v-dialog v-model="dialog" max-width="800" color="white">
+            <v-dialog v-model="dialog" max-width="800" color="white" persistent>
                 <app-note-editor @noteAdded="newNote" @editorClose="dialog=false"></app-note-editor>
             </v-dialog>
 

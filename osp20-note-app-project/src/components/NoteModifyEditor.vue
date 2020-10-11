@@ -129,7 +129,7 @@
                 this.theme = this.$store.state.notes[this.index].theme;
                 this.secret = this.$store.state.notes[this.index].secret;
                 this.important = this.$store.state.notes[this.index].important;
-
+                this.selectCategoryName = this.$store.state.notes[this.index].category.title;
             },
             watch:{
                 modifyIndex:{
@@ -140,6 +140,8 @@
                         this.theme = this.$store.state.notes[this.modifyIndex].theme;
                         this.secret = this.$store.state.notes[this.modifyIndex].secret;
                         this.important = this.$store.state.notes[this.modifyIndex].important;
+                        this.selectCategoryName = this.$store.state.notes[this.modifyIndex].category.title;
+
                     }
                 }
             },
@@ -149,8 +151,6 @@
             updated() {
                 this.category = this.$store.state.category;
                 localStorage.setItem("category", JSON.stringify(this.category));
-
-                this.selectCategoryName = this.$store.state.category[this.select].title;
   
             },
             methods: {
