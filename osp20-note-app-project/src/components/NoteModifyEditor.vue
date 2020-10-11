@@ -25,14 +25,11 @@
                             <v-card-title>Options</v-card-title>
                             <v-divider></v-divider>
                             <v-row>
-                                <v-col cols="4">
+                                <v-col cols="3">
                                     <div class="text-center">
-                                        <v-menu offset-y="offset-y">
+                                        <v-menu offset-y="offset-y" width="100">
                                             <template v-slot:activator="{ on, attrs }">
-                                                <v-btn text="text" color="black" v-bind="attrs" v-on="on" outlined="outlined">
-                                                    Category
-                                                </v-btn>
-                                                <p>{{selectCategoryName}}</p>
+                                                <v-btn text="text" color="black" v-bind="attrs" v-on="on" outlined="outlined">Category</v-btn>
                                             </template>
                                             <v-list>
                                                 <v-list-item-group v-model="select">
@@ -45,21 +42,30 @@
                                         </v-menu>
                                     </div>
                                 </v-col>
-                                <v-col cols="4">
-                                    <v-checkbox
-                                        label="Secret Memo"
-                                        color="black"
-                                        v-model="secret"
-                                        hide-details="hide-details"></v-checkbox>
+                                <v-col cols="5">
+                                    <p> BEFORE CATEGORY [ {{beforeCategoryName}} ]</p>
+                                    <p> AFTER CATEGORY [ {{selectCategoryName}} ]</p>
                                 </v-col>
                                 <v-col cols="4">
-                                    <v-checkbox
-                                        label="Important Memo"
-                                        color="black"
-                                        v-model="important"
-                                        hide-details="hide-details"></v-checkbox>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-checkbox
+                                                label="Secret Memo"
+                                                color="black"
+                                                v-model="secret"
+                                                hide-details="hide-details">
+                                            </v-checkbox>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-checkbox
+                                                 label="Important Memo"
+                                                color="black"
+                                                v-model="important"
+                                                hide-details="hide-details">
+                                            </v-checkbox>
+                                        </v-col>
+                                    </v-row>
                                 </v-col>
-
                             </v-row>
                             <v-divider></v-divider>
                             <v-row>
@@ -110,18 +116,20 @@
                     category: [],
                     select: 0,
                     selectCategoryName: "",
+                    beforeCategoryName : "",
 
                     // 다이얼로그 제어
                     dialog: false,
 
+                    startModify:true,
                     index:null
                 }
             },
             created() {
-
                 this.category = this.$store.state.category;
-                localStorage.setItem("category", JSON.stringify(this.category));
                 this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+            },
+            mounted(){
 
                 this.index = this.modifyIndex;
                 this.title = this.$store.state.notes[this.index].title;
@@ -129,29 +137,32 @@
                 this.theme = this.$store.state.notes[this.index].theme;
                 this.secret = this.$store.state.notes[this.index].secret;
                 this.important = this.$store.state.notes[this.index].important;
-                this.selectCategoryName = this.$store.state.notes[this.index].category.title;
+                this.beforeCategoryName = this.$store.state.notes[this.index].category.title;
+                this.selectCategoryName = this.category[this.select].title;
             },
+            updated() {
+                 // 아직 카테고리 수정 내용이 바로 적용되지는 않음.
+                this.category = this.$store.state.category;
+                this.selectCategoryName = this.category[this.select].title;
+  
+            },
+            
             watch:{
                 modifyIndex:{
                     handler(){
                         this.index = this.modifyIndex;
-                        this.title = this.$store.state.notes[this.modifyIndex].title;
-                        this.text = this.$store.state.notes[this.modifyIndex].text;
-                        this.theme = this.$store.state.notes[this.modifyIndex].theme;
-                        this.secret = this.$store.state.notes[this.modifyIndex].secret;
-                        this.important = this.$store.state.notes[this.modifyIndex].important;
-                        this.selectCategoryName = this.$store.state.notes[this.modifyIndex].category.title;
+                        this.title = this.$store.state.notes[this.index].title;
+                        this.text = this.$store.state.notes[this.index].text;
+                        this.theme = this.$store.state.notes[this.index].theme;
+                        this.secret = this.$store.state.notes[this.index].secret;
+                        this.important = this.$store.state.notes[this.index].important;
+                        this.beforeCategoryName = this.$store.state.notes[this.index].category.title;
+                        this.selectCategoryName = this.category[this.select].title;
+
+                        this.startModify=true;
 
                     }
                 }
-            },
-            mounted(){
-                console.log(this.index);
-            },
-            updated() {
-                this.category = this.$store.state.category;
-                localStorage.setItem("category", JSON.stringify(this.category));
-  
             },
             methods: {
                 createNew() {
@@ -162,6 +173,8 @@
                         alert("내용을 입력해주세요!");
                     }
                     if (this.title != '' && this.text != '') {
+
+                        this.$emit("editorClose");
 
                         var note = {
                             title: this.title,
@@ -176,15 +189,16 @@
                         // 노트 추가
                         this.noteModified(note);
 
+                        this.select=0;
                     }
                 },
                 noteModified(note) {
-                    this.$emit("editorClose");
                     var modifyIndexData = this.index;
                     this.$store.commit("updateNote",{note,modifyIndexData});
                 },
                 cancel(){
                     this.$emit("editorClose");
+                    this.select=0;
                 }
             }
         }

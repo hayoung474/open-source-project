@@ -27,16 +27,23 @@ body {
     z-index: 999;
 }
 
-.account-button{
+.sort-lastest-button{
     right: 20px;
-    bottom: 80px;
+    bottom: 200px;
+    position: fixed;
+    z-index: 999;
+}
+
+.sort-oldest-button{
+    right: 20px;
+    bottom: 140px;
     position: fixed;
     z-index: 999;
 }
 
 .category-button{
     right: 20px;
-    bottom: 140px;
+    bottom: 80px;
     position: fixed;
     z-index: 999;
 }
