@@ -92,117 +92,112 @@
         </div>
 </template>
 <script>
-export default {
-  props: {
-    modifyIndex:String
-  },
-  data() {
-    return {
-      title: "",
-      theme: "",
-      text: "",
-      secret: false,
-      important: false,
 
-      category: [],
-      select: 0,
-      selectCategoryName: "",
+        export default {
+            props:{
+                modifyIndex:String
+            },
+            data() {
+                return {
 
-      dialog: false,
+                    // note 데이터 영역
+                    title: '',
+                    theme: '',
+                    text: '',
+                    secret: false,
+                    important: false,
 
-    };
-  },
-  created() {
-        this.category = this.$store.state.category;
-        localStorage.setItem("category", JSON.stringify(this.category));
-        this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+                    category: [],
+                    select: 0,
+                    selectCategoryName: "",
 
-  },
-  updated() {
-    this.category = this.$store.state.category;
-    this.selectCategoryName = this.category[this.select].title;
-    console.log(this.category);
-  },
+                    // 다이얼로그 제어
+                    dialog: false,
+
+                    index:null
+                }
+            },
+            created() {
+
+                this.category = this.$store.state.category;
+                localStorage.setItem("category", JSON.stringify(this.category));
+                this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+
+                this.index = this.modifyIndex;
+                this.title = this.$store.state.notes[this.index].title;
+                this.text = this.$store.state.notes[this.index].text;
+                this.theme = this.$store.state.notes[this.index].theme;
+                this.secret = this.$store.state.notes[this.index].secret;
+                this.important = this.$store.state.notes[this.index].important;
+
+            },
+            watch:{
+                modifyIndex:{
+                    handler(){
+                        this.index = this.modifyIndex;
+                        this.title = this.$store.state.notes[this.modifyIndex].title;
+                        this.text = this.$store.state.notes[this.modifyIndex].text;
+                        this.theme = this.$store.state.notes[this.modifyIndex].theme;
+                        this.secret = this.$store.state.notes[this.modifyIndex].secret;
+                        this.important = this.$store.state.notes[this.modifyIndex].important;
+                    }
+                }
+            },
+            mounted(){
+                console.log(this.index);
+            },
+            updated() {
+                this.category = this.$store.state.category;
+                localStorage.setItem("category", JSON.stringify(this.category));
+
+                this.selectCategoryName = this.$store.state.category[this.select].title;
   
-  
-  methods: {
-    createNew() {
-      if (this.title == "") {
-        alert("제목을 입력해주세요!");
-      }
-      if (this.title != "" && this.text == "") {
-        alert("내용을 입력해주세요!");
-      }
-      if (this.title != "" && this.text != "") {
-        this.dialog = false;
-        console.log(this.category);
+            },
+            methods: {
+                createNew() {
+                    if (this.title == '') {
+                        alert("제목을 입력해주세요!");
+                    }
+                    if (this.title != '' && this.text == '') {
+                        alert("내용을 입력해주세요!");
+                    }
+                    if (this.title != '' && this.text != '') {
 
-        var note = {
-            title: this.title,
-            text: this.text,
-            theme: this.theme,
-            date: new Date().toISOString().substr(0, 10),
-            category: this.category[this.select],
-            secret: this.secret,
-            important: this.important
-        };
-        // 노트 추가
-        this.noteAdd(note);
+                        var note = {
+                            title: this.title,
+                            text: this.text,
+                            theme: this.theme,
+                            date: new Date().toISOString().substr(0, 10),
+                            category: this.category[this.select],
+                            secret: this.secret,
+                            important: this.important
+                        }
 
-        this.title="";
-        this.text="";
-        this.theme="";
-        this.category=null;
-        this.secret=false;
-        this.important=false;
-      }
-    },
-    noteAdd(note) {
-        this.$emit("editorClose");
-        this.$store.commit("addNote",note);
-    },
-    cancel(){
-        this.$emit("editorClose");
-    }
-  },
+                        // 노트 추가
+                        this.noteModified(note);
 
-  mounted() {
-    if (localStorage.getItem("category")) {
-      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-      this.category = this.$store.state.category;
-    }
-  },
-
-  watch: {
-    category: {
-      handler() {
-        var newCategory = this.category;
-        localStorage.setItem("category", JSON.stringify(newCategory));
-      },
-      deep: true,
-    },
-    modifyIndex:{
-        handler(){
-            this.index = this.modifyIndex;
-            this.title = this.$store.state.notes[this.modifyIndex].title;
-            this.text = this.$store.state.notes[this.modifyIndex].text;
-            this.theme = this.$store.state.notes[this.modifyIndex].theme;
-            this.secret = this.$store.state.notes[this.modifyIndex].secret;
-            this.important = this.$store.state.notes[this.modifyIndex].important;
+                    }
+                },
+                noteModified(note) {
+                    this.$emit("editorClose");
+                    var modifyIndexData = this.index;
+                    this.$store.commit("updateNote",{note,modifyIndexData});
+                },
+                cancel(){
+                    this.$emit("editorClose");
+                }
+            }
         }
-    }
-  },
-};
-</script>
+    </script>
     <style>
-.write-btn {
-  margin: 10px;
-}
-.tag-input {
-  margin-left: 10px;
-}
-.v-input--selection-controls {
-  margin-top: 5px !important;
-  padding: 0 !important;
-}
-</style>
+        .write-btn {
+            margin: 10px;
+        }
+        .tag-input {
+            margin-left: 10px;
+        }
+        .v-input--selection-controls {
+            margin-top: 5px !important;
+            padding: 0 !important;
+        }
+    </style>
