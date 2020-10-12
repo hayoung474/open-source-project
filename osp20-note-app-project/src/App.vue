@@ -3,27 +3,37 @@
         <v-app id="inspire">
             <app-header></app-header>
             <div class="noteContainer">
-                <div v-masonry="containerId" item-selector=".item">
-                    <div
+                <div v-masonry="containerId" item-selector=".item" >
+                    <v-row
                         v-masonry-tile="v - masonry - tile"
                         v-for="(note, index) in notes"
                         :key="`note-${index}`"
                         class="note"
                         :style="{ 'background-color': note.theme }">
-                        <div>
-                            <span>
-                                <strong>{{ note.title }}</strong>
-                            </span>
-                            <span class="modify" @click.prevent="modifyNote(index)">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                            <span class="delete" @click.prevent="deleteNote(index)">
-                                <i class="fas fa-times"></i>
-                            </span>
-
-                            <p class="note-text">{{ note.text }}</p>
-                        </div>
-                    </div>
+                        <v-col>
+                            <v-row>
+                                <v-col cols="8">
+                                    <strong>{{ note.title }}</strong>
+                                </v-col>
+                                <v-col cols="2">
+                                     <span class="modify" @click.prevent="modifyNote(index)">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                </v-col>
+                                <v-col cols="2"> 
+                                        <span class="delete" @click.prevent="deleteNote(index)">
+                                        <i class="fas fa-times"></i>
+                                        </span>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="12">
+                                    <p class="note-text">{{ note.text }}</p>
+                            </v-col>
+                                
+                            </v-row>
+                        </v-col>
+                    </v-row>
                 </div>
             </div>
 
