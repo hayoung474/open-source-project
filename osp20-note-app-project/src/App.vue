@@ -2,6 +2,12 @@
     <div id="app">
         <v-app id="inspire">
             <app-header @search="search"></app-header>
+            <div class="text-center" style="margin:-10px;">
+                <span   
+                    v-for="(category,index) in this.$store.state.category" :key="index">
+                    <v-chip class="ma-2">{{category.title}}</v-chip>
+                </span>
+            </div>
             <div class="noteContainer" v-if="!searchMode">
                 <div v-masonry="containerId" item-selector=".item" >
                     <v-row
