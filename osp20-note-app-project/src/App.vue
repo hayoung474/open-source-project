@@ -86,43 +86,51 @@
                                 </v-col>  
                             </v-row>
 
-                        </v-col>
-                    </v-row>
-                </div>
-            </div>
+      <v-btn
+        class="mx-2 category-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="category_dialog = true"
+      >
+        <v-icon dark="dark"> mdi-format-list-bulleted </v-icon>
+      </v-btn>
 
-            <v-btn
-                class="mx-2 category-button"
-                fab="fab"
-                dark="dark"
-                color="black"
-                @click="category_dialog = true">
-                <v-icon dark="dark">
-                    mdi-format-list-bulleted
-                </v-icon>
-            </v-btn>
+      <v-btn
+        class="mx-2 sort-lastest-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="sortLastest"
+      >
+        <v-icon dark="dark"> mdi-chevron-up </v-icon>
+      </v-btn>
+      <v-btn
+        class="mx-2 sort-oldest-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="sortOldest"
+      >
+        <v-icon dark="dark"> mdi-chevron-down </v-icon>
+      </v-btn>
 
-            <v-btn class="mx-2 sort-lastest-button" fab="fab" dark="dark" color="black" @click="sortLastest">
-                <v-icon dark="dark">
-                    mdi-chevron-up
-                </v-icon>
-            </v-btn>
-            <v-btn class="mx-2 sort-oldest-button" fab="fab" dark="dark" color="black" @click="sortOldest">
-                <v-icon dark="dark">
-                    mdi-chevron-down
-                </v-icon>
-            </v-btn>
+      <v-btn
+        class="mx-2 add-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="dialog = true"
+      >
+        <v-icon dark="dark"> mdi-plus </v-icon>
+      </v-btn>
 
-            <v-btn
-                class="mx-2 add-button"
-                fab="fab"
-                dark="dark"
-                color="black"
-                @click="dialog=true">
-                <v-icon dark="dark">
-                    mdi-plus
-                </v-icon>
-            </v-btn>
+      <v-dialog v-model="dialog" max-width="800" color="white" persistent>
+        <app-note-editor
+          @noteAdded="newNote"
+          @editorClose="dialog = false"
+        ></app-note-editor>
+      </v-dialog>
 
             <v-btn
                 class="mx-2 refresh-button"
@@ -139,26 +147,24 @@
                 <app-note-editor @noteAdded="newNote" @editorClose="dialog=false"></app-note-editor>
             </v-dialog>
 
-            <v-dialog v-model="category_dialog" max-width="700" color="white" persistent>
-                <notecategory @dialogClosed="category_dialog=false"></notecategory>
-            </v-dialog>
-
-            <v-dialog v-model="dialog2" max-width="800" color="white" persistent>
-              <app-note-modify-editor :modifyIndex="modifyIndex" @editorClose="dialog2=false" ></app-note-modify-editor>
-            </v-dialog>
-
-        </v-app>
-    </div>
+      <v-dialog v-model="dialog2" max-width="800" color="white" persistent>
+        <app-note-modify-editor
+          :modifyIndex="modifyIndex"
+          @editorClose="dialog2 = false"
+        ></app-note-modify-editor>
+      </v-dialog>
+    </v-app>
+  </div>
 </template>
 
 <script>
-    import NoteEditor from "./components/NoteEditor.vue";
-    import NoteModifyEditor from "./components/NoteModifyEditor.vue";
-    import Category from "./components/Category.vue";
-    import Header from "./components/Header.vue";
-    import Vue from "vue";
-    import {VueMasonryPlugin} from "vue-masonry";
-    Vue.use(VueMasonryPlugin);
+import NoteEditor from "./components/NoteEditor.vue";
+import NoteModifyEditor from "./components/NoteModifyEditor.vue";
+import Category from "./components/Category.vue";
+import Header from "./components/Header.vue";
+import Vue from "vue";
+import { VueMasonryPlugin } from "vue-masonry";
+Vue.use(VueMasonryPlugin);
 
     export default {
         name: "App",
@@ -258,5 +264,5 @@
 </script>
 
 <style lang="scss">
-    @import "@/styles/global.scss";
+@import "@/styles/global.scss";
 </style>
