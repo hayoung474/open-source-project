@@ -38,12 +38,12 @@
                 </v-icon>
             </v-btn>
 
-            <v-btn class="mx-2 sort-lastest-button" fab="fab" dark="dark" color="black">
+            <v-btn class="mx-2 sort-lastest-button" fab="fab" dark="dark" color="black" @click="sortLastest">
                 <v-icon dark="dark">
                     mdi-chevron-up
                 </v-icon>
             </v-btn>
-            <v-btn class="mx-2 sort-oldest-button" fab="fab" dark="dark" color="black">
+            <v-btn class="mx-2 sort-oldest-button" fab="fab" dark="dark" color="black" @click="sortOldest">
                 <v-icon dark="dark">
                     mdi-chevron-down
                 </v-icon>
@@ -111,6 +111,16 @@
 
                 // 수정요청 후 modifyIndex 를 null 로 다시 되돌릴 것
             },
+            sortLastest(){
+                this.notes.sort(function(a, b) { // 최신순 정렬
+                    return a.sortDate > b.sortDate ? -1 : a.sortDate < b.sortDate ? 1 : 0;
+                });
+            },
+            sortOldest(){
+                this.notes.sort(function(a, b) { // 오래된순 정렬
+                    return a.sortDate < b.sortDate ? -1 : a.sortDate > b.sortDate ? 1 : 0;
+                });
+            }
         },
         mounted() {
             if (localStorage.getItem("notes")) 
