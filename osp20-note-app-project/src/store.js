@@ -25,11 +25,16 @@ export const store = new Vuex.Store({
 
     // 카테고리가 변할때 마다 localStorage 에 변경해줄것
     addCategory(state, category) {
-
+      
+        if(localStorage.getItem('category')==="null"){
+          state.category=[];
+        }
         console.log(category);
         // 맨 뒤에 해당 카테고리를 추가한다.
         state.category.push(category);
         console.log(state.category);
+
+
         // 로컬 스토리지에 변경사항을 저장한다.
         localStorage.setItem("category", JSON.stringify(state.category));
    
