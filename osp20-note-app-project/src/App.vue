@@ -1,8 +1,8 @@
 <template>
     <div id="app">
         <v-app id="inspire">
-            <app-header></app-header>
-            <div class="noteContainer">
+            <app-header @search="search"></app-header>
+            <div class="noteContainer" v-if="!searchMode">
                 <div v-masonry="containerId" item-selector=".item" >
                     <v-row
                         v-masonry-tile="v - masonry - tile"
@@ -23,6 +23,47 @@
                                 </v-col>
                                 <v-col cols="2"> 
                                         <span class="delete" @click.prevent="deleteNote(index)">
+                                        <i class="fas fa-times"></i>
+                                        </span>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="12">
+                                    <p class="note-text" style="white-space:pre-line;">{{ note.text }}</p>
+                                </v-col>  
+                            </v-row>
+                            <v-row >
+                                <v-spacer></v-spacer>
+                                <v-col cols="12" justify="end" >
+                                    <p class="text-right" style="margin-bottom:0px !important;font-size:13px;">{{ note.date }}</p>
+                                </v-col>  
+                            </v-row>
+
+                        </v-col>
+                    </v-row>
+                </div>
+            </div>
+            <div class="noteContainer" v-if="searchMode">
+                <div v-masonry="containerId" item-selector=".item" >
+                    <v-row
+                        v-masonry-tile="v - masonry - tile"
+                        v-for="(note, index) in searchNotes"
+                        :key="`note-${index}`"
+                        class="note px-3"
+                        :style="{ 'background-color': note.theme }"
+                        >
+                        <v-col>
+                            <v-row>
+                                <v-col cols="8">
+                                    <strong>{{ note.title }}</strong>
+                                </v-col>
+                                <v-col cols="2">
+                                     <span class="modify" @click.prevent="modifySearchNote(note)">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                </v-col>
+                                <v-col cols="2"> 
+                                        <span class="delete" @click.prevent="deleteSearchNote(note,index)">
                                         <i class="fas fa-times"></i>
                                         </span>
                                 </v-col>
@@ -77,6 +118,17 @@
                 </v-icon>
             </v-btn>
 
+            <v-btn
+                class="mx-2 refresh-button"
+                fab="fab"
+                dark="dark"
+                color="black"
+                @click="searchReset">
+                <v-icon dark="dark">
+                    mdi-refresh
+                </v-icon>
+            </v-btn>
+
             <v-dialog v-model="dialog" max-width="800" color="white" persistent>
                 <app-note-editor @noteAdded="newNote" @editorClose="dialog=false"></app-note-editor>
             </v-dialog>
@@ -109,9 +161,12 @@
                 dialog: false, 
                 dialog2:false, 
                 notes: [], 
+                searchNotes:[],
                 isModify: false,
                 modifyIndex: null,
                 category_dialog:false,
+                searchMode:false,
+
             };
         },
         computed: {},
@@ -121,6 +176,18 @@
                 if (confirm("정말로 삭제하시겠습니까?")) {
                     this.notes.splice(index, 1);
                 }
+            },
+            deleteSearchNote(note,searchIndex){
+                var index = this.notes.indexOf(note);
+                if (confirm("정말로 삭제하시겠습니까?")) {
+                    this.notes.splice(index, 1);
+                    this.searchNotes.splice(searchIndex,1);
+                }
+            },
+            modiftySearchNote(note){
+                var index = this.notes.indexOf(note);
+                this.modifyIndex = index;
+                this.dialog2=true;
             },
             modifyNote(index) {
                 this.modifyIndex = index;
@@ -137,6 +204,22 @@
                 this.notes.sort(function(a, b) { // 오래된순 정렬
                     return a.sortDate < b.sortDate ? -1 : a.sortDate > b.sortDate ? 1 : 0;
                 });
+            },
+            search(keyword){
+                this.searchMode= true;
+                console.log(keyword);
+                // 제목과 내용에 대해서 검색
+                let titleSearchResult = this.notes.filter(note => note.title.includes(keyword));
+                let textSearchResult = this.notes.filter(note => note.text.includes(keyword));
+                this.searchNotes = titleSearchResult.concat(textSearchResult);
+                // 중복 제거
+                this.searchNotes = this.searchNotes.filter( (item, idx, array) => {return array.indexOf( item ) === idx ;});
+                console.log(this.searchNotes);
+
+            },
+            searchReset(){
+                this.searchNotes=[];
+                this.searchMode=false;
             }
         },
         mounted() {
