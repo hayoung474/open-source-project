@@ -132,8 +132,6 @@ export default {
       }
       if (this.title != "" && this.text != "") {
         this.dialog = false;
-        console.log(this.category);
-
         var note = {
             title: this.title,
             text: this.text,

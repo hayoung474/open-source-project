@@ -47,6 +47,12 @@ body {
     position: fixed;
     z-index: 999;
 }
+.refresh-button{
+    right: 20px;
+    bottom: 260px;
+    position: fixed;
+    z-index: 999;
+}
 
 .header {
     justify-content: center;
@@ -125,6 +131,13 @@ body {
     column-gap: 1em;
     margin: 50px 25px;
 }
+.searchNoteContainer {
+    column-count: 4;
+    column-gap: 1em;
+    margin: 50px 25px;
+    background-color: rgb(179, 179, 179);
+}
+
 
 
 .note {
