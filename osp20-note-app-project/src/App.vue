@@ -29,7 +29,7 @@
                             </v-row>
                             <v-row>
                                 <v-col cols="12">
-                                    <p class="note-text">{{ note.text }}</p>
+                                    <p class="note-text" style="white-space:pre-line;">{{ note.text }}</p>
                                 </v-col>  
                             </v-row>
                             <v-row >
