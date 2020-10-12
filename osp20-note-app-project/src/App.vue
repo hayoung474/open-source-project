@@ -8,8 +8,9 @@
                         v-masonry-tile="v - masonry - tile"
                         v-for="(note, index) in notes"
                         :key="`note-${index}`"
-                        class="note"
-                        :style="{ 'background-color': note.theme }">
+                        class="note px-3"
+                        :style="{ 'background-color': note.theme }"
+                        >
                         <v-col>
                             <v-row>
                                 <v-col cols="8">
@@ -29,9 +30,15 @@
                             <v-row>
                                 <v-col cols="12">
                                     <p class="note-text">{{ note.text }}</p>
-                            </v-col>
-                                
+                                </v-col>  
                             </v-row>
+                            <v-row >
+                                <v-spacer></v-spacer>
+                                <v-col cols="12" justify="end" >
+                                    <p class="text-right" style="margin-bottom:0px !important;font-size:13px;">{{ note.date }}</p>
+                                </v-col>  
+                            </v-row>
+
                         </v-col>
                     </v-row>
                 </div>

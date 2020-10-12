@@ -139,7 +139,7 @@ export default {
             title: this.title,
             text: this.text,
             theme: this.theme,
-            date: new Date().toISOString().substr(0, 10),
+            date: new Date().toISOString().substr(0, 10) + " "+new Date().toTimeString().substr(0,8),
             sortDate : new Date(),
             category: this.category[this.select],
             secret: this.secret,
