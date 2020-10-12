@@ -4,14 +4,13 @@
             <div class="dialog-div">
                 <v-card solo="solo">
                     <div class="dialog-div2">
-                        <v-row >
+                        <v-row>
                             <v-col cols="12" md="6">
                                 <v-card-title>Input Note</v-card-title>
                                 <v-divider></v-divider>
                                 <div class="note-editor mt-5">
                                     <input class="title-input" type="text" v-model="title" placeholder="Title">
                                         <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
-
                                     </div>
                                 </v-col>
                                 <v-col cols="12" md="6">

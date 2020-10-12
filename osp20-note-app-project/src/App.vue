@@ -193,6 +193,10 @@
         <notecategory @dialogClosed="category_dialog = false"></notecategory>
       </v-dialog>
 
+            <v-dialog v-model="dialog" max-width="800" color="white" persistent>
+                <app-note-editor @noteAdded="newNote" @editorClose="dialog=false"></app-note-editor>
+            </v-dialog>
+
       <v-dialog v-model="dialog2" max-width="800" color="white" persistent>
         <app-note-modify-editor
           :modifyIndex="modifyIndex"
@@ -211,6 +215,19 @@ import Header from "./components/Header.vue";
 import Vue from "vue";
 import { VueMasonryPlugin } from "vue-masonry";
 Vue.use(VueMasonryPlugin);
+
+    export default {
+        name: "App",
+        data: function () {
+            return {
+                dialog: false, 
+                dialog2:false, 
+                notes: [], 
+                searchNotes:[],
+                isModify: false,
+                modifyIndex: null,
+                category_dialog:false,
+                searchMode:false,
 
 export default {
   name: "App",
