@@ -125,10 +125,10 @@
                     index:null
                 }
             },
-            created() {
-                this.category = this.$store.state.category;
-                this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-            },
+            // created() {
+            //     this.category = this.$store.state.category;
+            //     this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+            // },
             mounted(){
 
                 this.index = this.modifyIndex;

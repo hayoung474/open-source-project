@@ -66,6 +66,7 @@ export default {
     closeDialog() {
       this.category_dialog = false;
       this.$emit("dialogClosed", this.category_dialog);
+      window.location.reload();
     },
 
     createCategory() {

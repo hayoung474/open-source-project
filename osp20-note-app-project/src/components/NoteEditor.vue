@@ -112,12 +112,12 @@ export default {
 
     };
   },
-  created() {
+  // created() {
         
-        this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-        this.category = this.$store.state.category;
+  //       this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+  //       this.category = this.$store.state.category;
 
-  },
+  // },
   updated() {
     this.category = this.$store.state.category;
     this.selectCategoryName = this.category[this.select].title;
@@ -165,12 +165,12 @@ export default {
     }
   },
 
-  mounted() {
-    if (localStorage.getItem("category")) {
-      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-      this.category = this.$store.state.category;
-    }
-  },
+  // mounted() {
+  //   if (localStorage.getItem("category")) {
+  //     this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+  //     this.category = this.$store.state.category;
+  //   }
+  // },
 
   watch: {
     category: {

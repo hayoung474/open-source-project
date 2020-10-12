@@ -81,7 +81,7 @@
                 <app-note-editor @noteAdded="newNote" @editorClose="dialog=false"></app-note-editor>
             </v-dialog>
 
-            <v-dialog v-model="category_dialog" max-width="700" color="white">
+            <v-dialog v-model="category_dialog" max-width="700" color="white" persistent>
                 <notecategory @dialogClosed="category_dialog=false"></notecategory>
             </v-dialog>
 
@@ -142,6 +142,8 @@
         mounted() {
             if (localStorage.getItem("notes")) 
                 this.$store.state.notes = JSON.parse(localStorage.getItem("notes"));
+            if (localStorage.getItem("category")) 
+                this.$store.state.category = JSON.parse(localStorage.getItem("category"));
             this.notes = this.$store.state.notes;
         },
         // 값 변경시 적용
