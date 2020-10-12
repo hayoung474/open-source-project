@@ -1,9 +1,9 @@
 <template>
     <div>
         <v-container>
-            <div>
+            <div class="dialog-div">
                 <v-card solo="solo">
-                    <div class="ma-5">
+                    <div class="dialog-div2">
                         <v-row >
                             <v-col cols="12" md="6">
                                 <v-card-title>Input Note</v-card-title>
