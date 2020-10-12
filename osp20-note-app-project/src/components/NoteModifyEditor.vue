@@ -44,7 +44,7 @@
                                 </v-col>
                                 <v-col cols="5">
                                     <p> BEFORE CATEGORY [ {{beforeCategoryName}} ]</p>
-                                    <p> AFTER CATEGORY [ {{selectCategoryName}} ]</p>
+                                    <p> SELECT CATEGORY [ {{selectCategoryName}} ]</p>
                                 </v-col>
                                 <v-col cols="4">
                                     <v-row>
