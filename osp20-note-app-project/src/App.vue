@@ -97,6 +97,26 @@
                 <v-col cols="8">
                   <strong>{{ note.title }}</strong>
                 </v-col>
+                <v-col cols="2" v-if="note.important && !note.secret">
+                  <span class="importantonly">
+                    <i class="fas fa-star"></i>
+                  </span>
+                </v-col>
+                <v-col cols="2" v-if="note.secret && !note.important">
+                  <span class="secretonly">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </v-col>
+                <v-col cols="2" v-if="note.secret && note.important">
+                  <span class="importantsecret">
+                    <span style="color: yellow">
+                      <i class="fas fa-star"></i>
+                    </span>
+                    <span style="padding-left: 10px">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </span>
+                </v-col>
                 <v-col cols="2">
                   <span class="modify" @click.prevent="modifySearchNote(note)">
                     <i class="fas fa-edit"></i>
