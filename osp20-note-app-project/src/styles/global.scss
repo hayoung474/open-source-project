@@ -173,6 +173,13 @@ body {
     flex-wrap: wrap;
 }
 
+.password-input {
+    padding-top: 5px;
+    border-color:#999999; background-color:#FFFFFF; border-style:solid;
+        border-top-width:0px; border-right-width:0px; border-bottom-width:1px; border-left-width:0px;
+    outline:none;
+}
+
 .delete {
     position: absolute;
     right: 25px;
