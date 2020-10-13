@@ -1,20 +1,20 @@
 <template>
     <div>
         <v-row>
-            <v-col cols="8">
+            <v-col cols="10">
                 <strong>{{ note.title }}</strong>
             </v-col>
-            <v-col cols="2" v-if="note.important && !note.secret">
+            <v-col cols="1" v-if="note.important && !note.secret">
                 <span class="importantonly">
                     <v-icon>mdi-pin</v-icon>
                 </span>
             </v-col>
-            <v-col cols="2" v-if="note.secret && !note.important">
+            <v-col cols="1" v-if="note.secret && !note.important">
                 <span class="secretonly">
                     <i class="fas fa-lock"></i>
                 </span>
             </v-col>
-            <v-col cols="2" v-if="note.secret && note.important">
+            <v-col cols="1" v-if="note.secret && note.important">
                 <span class="importantsecret">
                     <span style="color: yellow">
                         <v-icon>mdi-pin</v-icon>
@@ -24,12 +24,12 @@
                     </span>
                 </span>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="1">
                 <span class="modify" @click.prevent="modifyNote(index)">
                     <i class="fas fa-edit"></i>
                 </span>
             </v-col>
-            <v-col cols="2">
+            <v-col cols="1">
                 <span class="delete" @click.prevent="deleteNote(index)">
                     <i class="fas fa-times"></i>
                 </span>
