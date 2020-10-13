@@ -36,8 +36,30 @@
             </div>
 
             <!-- 일반메모 -->
+            <div class="noteContainer" v-if="!searchMode">
+                <draggable
+                    v-model="notes"
+                    group="people"
+                    @start="drag=true"
+                    @end="drag=false">
+                    <div v-for="(note, index) in notes" :key="`note-${index}`">
+                      <v-row
+                        class="note px-3"
+                        :style="{ 'background-color': note.theme }">
+                        <v-col>
+                            <Note
+                                :note="note"
+                                :index="index"
+                                @modifyNote="modifyNote(index)"
+                                @deleteNote="deleteNote(index)"></Note>
+                        </v-col>
+                    </v-row>
+                    </div>
+                </draggable>
+            </div>
 
-            <div class="noteContainer importantNote" v-if="!searchMode">
+            <!-- 일반메모
+            <div class="noteContainer" v-if="!searchMode">
                 <div v-masonry="containerId" item-selector=".item">
                     <v-row
                         v-masonry-tile="v - masonry - tile"
@@ -54,7 +76,7 @@
                         </v-col>
                     </v-row>
                 </div>
-            </div>
+            </div> -->
 
             <div class="noteContainer" v-if="searchMode">
                 <div v-masonry="containerId" item-selector=".item">
@@ -210,6 +232,7 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
+    import draggable from 'vuedraggable'
 
     export default {
         name: "App",
@@ -225,7 +248,6 @@
                 searchMode: false
             };
         },
-        computed: {},
         methods: {
             deleteNote(index) {
                 if (confirm("정말로 삭제하시겠습니까?")) {
@@ -331,17 +353,20 @@
             notes: {
                 handler() {
                     var newNotes = this.notes;
+                    this.$store.state.notes= newNotes;
                     localStorage.setItem("notes", JSON.stringify(newNotes));
                 },
                 deep: true
             }
         },
+        
         components: {
             appNoteEditor: NoteEditor,
             appHeader: Header,
             notecategory: Category,
             appNoteModifyEditor: NoteModifyEditor,
-            Note
+            Note,
+            draggable,
         }
     };
 </script>
