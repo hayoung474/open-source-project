@@ -73,7 +73,7 @@ export default {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
         this.category = this.$store.state.category;
-        var newCategory = { title: this.name };
+        var newCategory = { title: this.name, color: "#" + Math.round(Math.random() * 0xffffff).toString(16)};
         console.log(newCategory);
         this.$store.commit('addCategory',newCategory)
        
