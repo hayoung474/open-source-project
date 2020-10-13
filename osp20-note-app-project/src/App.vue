@@ -7,7 +7,13 @@
           v-for="(category, index) in this.$store.state.category"
           :key="index"
         >
-          <v-chip class="ma-2">{{ category.title }}</v-chip>
+          <v-chip
+            class="ma-2"
+            :style="{ background: category.color }"
+            @click="showCategoryNote(category.title)"
+          >
+            {{ category.title }}
+          </v-chip>
         </span>
       </div>
       <div class="noteContainer" v-if="!searchMode">
@@ -128,23 +134,53 @@
         </div>
       </div>
 
-      <v-btn class="mx-2 category-button" fab="fab" dark="dark" color="black" @click="category_dialog = true">
+      <v-btn
+        class="mx-2 category-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="category_dialog = true"
+      >
         <v-icon dark="dark"> mdi-format-list-bulleted </v-icon>
       </v-btn>
 
-      <v-btn class="mx-2 sort-lastest-button" fab="fab" dark="dark" color="black" @click="sortLastest">
+      <v-btn
+        class="mx-2 sort-lastest-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="sortLastest"
+      >
         <v-icon dark="dark"> mdi-chevron-up </v-icon>
       </v-btn>
 
-      <v-btn class="mx-2 sort-oldest-button" fab="fab" dark="dark" color="black" @click="sortOldest">
+      <v-btn
+        class="mx-2 sort-oldest-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="sortOldest"
+      >
         <v-icon dark="dark"> mdi-chevron-down </v-icon>
       </v-btn>
 
-      <v-btn class="mx-2 add-button" fab="fab" dark="dark" color="black" @click="dialog = true">
+      <v-btn
+        class="mx-2 add-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="dialog = true"
+      >
         <v-icon dark="dark"> mdi-plus </v-icon>
       </v-btn>
 
-      <v-btn class="mx-2 refresh-button" fab="fab" dark="dark" color="black"  @click="searchReset" >
+      <v-btn
+        class="mx-2 refresh-button"
+        fab="fab"
+        dark="dark"
+        color="black"
+        @click="searchReset"
+      >
         <v-icon dark="dark"> mdi-refresh </v-icon>
       </v-btn>
 
@@ -164,7 +200,6 @@
         <notecategory @dialogClosed="category_dialog = false"></notecategory>
       </v-dialog>
 
-
       <v-dialog v-model="dialog2" max-width="800" color="white" persistent>
         <app-note-modify-editor
           :modifyIndex="modifyIndex"
@@ -183,7 +218,6 @@ import Header from "./components/Header.vue";
 import Vue from "vue";
 import { VueMasonryPlugin } from "vue-masonry";
 Vue.use(VueMasonryPlugin);
-
 
 export default {
   name: "App",

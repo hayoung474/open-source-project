@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     category: [
-      {title:"기본메모"}, 
+      {title:"기본메모", color:"blue"}, 
     ],
     notes:[],
 
