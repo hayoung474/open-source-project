@@ -5,6 +5,13 @@
 
             <!-- 카테고리 목록 출력 -->
             <div class="text-center" style="margin: -10px">
+                 <span><v-chip
+                        class="ma-2"
+                        style="background: gray"
+                        @click="showAll()">
+                        모든 메모
+                    </v-chip>
+                </span>
                 <span v-for="(category, index) in this.$store.state.category" :key="index">
                     <v-chip
                         class="ma-2"
@@ -35,7 +42,7 @@
                 </div>
             </div>
 
-            <!-- 일반메모 -->
+            <!-- 드래그 가능 일반메모 -->
             <div class="noteContainer" v-if="!searchMode">
                 <draggable
                     v-model="notes"
@@ -46,7 +53,7 @@
                       <v-row
                         class="note px-3"
                         :style="{ 'background-color': note.theme }">
-                        <v-col>
+                        <v-col v-if="(!searchMode && ((categoryTitle==='')||(note.category.title === categoryTitle)))">
                             <Note
                                 :note="note"
                                 :index="index"
@@ -245,7 +252,8 @@
                 isModify: false,
                 modifyIndex: null,
                 category_dialog: false,
-                searchMode: false
+                searchMode: false,
+                categoryTitle:""
             };
         },
         methods: {
@@ -330,12 +338,12 @@
                 this.searchMode = false;
             },
             showCategoryNote(title) {
+                // 카테고리 별 보기
+                this.categoryTitle=title;
 
-                let categoryResult = this
-                    .notes
-                    .filter((note) => note.category.title === title);
-                console.log(categoryResult);
-
+            },
+            showAll(){
+              this.categoryTitle=""
             }
         },
         mounted() {
