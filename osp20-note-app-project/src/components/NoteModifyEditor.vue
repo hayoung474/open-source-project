@@ -147,7 +147,7 @@ export default {
       text: "",
       secret: false,
       important: false,
-      passworld: "",
+      password: "",
 
       category: [],
       select: 0,
@@ -209,7 +209,12 @@ export default {
       if (this.title != "" && this.text == "") {
         alert("내용을 입력해주세요!");
       }
-      if (this.title != "" && this.text != "") {
+      if (this.secret && this.password == ""){
+        alert("비밀번호를 입력해주세요!");
+      }
+      if (this.title != "" && this.text != "" &&
+      ((this.secret && this.password !="") || (!this.secret && this.password ==""))) {
+
         this.$emit("editorClose");
 
         var note = {
