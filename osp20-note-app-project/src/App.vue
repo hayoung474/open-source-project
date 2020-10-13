@@ -16,7 +16,7 @@
           </v-chip>
         </span>
       </div>
-      <div class="noteContainer" v-if="!searchMode">
+       <div class="noteContainer importantNote" v-if="!searchMode">
         <div v-masonry="containerId" item-selector=".item">
           <v-row
             v-masonry-tile="v - masonry - tile"
@@ -24,15 +24,16 @@
             :key="`note-${index}`"
             class="note px-3"
             :style="{ 'background-color': note.theme }"
+            
           >
-            <v-col>
+            <v-col v-if="note.important == true">
               <v-row>
                 <v-col cols="8">
                   <strong>{{ note.title }}</strong>
                 </v-col>
                 <v-col cols="2" v-if="note.important && !note.secret">
                   <span class="importantonly">
-                    <i class="fas fa-star"></i>
+                    <v-icon>mdi-pin</v-icon>
                   </span>
                 </v-col>
                 <v-col cols="2" v-if="note.secret && !note.important">
@@ -43,7 +44,74 @@
                 <v-col cols="2" v-if="note.secret && note.important">
                   <span class="importantsecret">
                     <span style="color: yellow">
-                      <i class="fas fa-star"></i>
+                      <v-icon>mdi-pin</v-icon>
+                    </span>
+                    <span style="padding-left: 10px">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </span>
+                </v-col>
+                <v-col cols="2">
+                  <span class="modify" @click.prevent="modifyNote(index)">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                </v-col>
+                <v-col cols="2">
+                  <span class="delete" @click.prevent="deleteNote(index)">
+                    <i class="fas fa-times"></i>
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <p class="note-text" style="white-space: pre-line">
+                    {{ note.text }}
+                  </p>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-spacer></v-spacer>
+                <v-col cols="12" justify="end">
+                  <p
+                    class="text-right"
+                    style="margin-bottom: 0px !important; font-size: 13px"
+                  >
+                    {{ note.date }}
+                  </p>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </div>
+      </div>
+      <div class="noteContainer" v-if="!searchMode">
+        <div v-masonry="containerId" item-selector=".item">
+          <v-row
+            v-masonry-tile="v - masonry - tile"
+            v-for="(note, index) in notes"
+            :key="`note-${index}`"
+            class="note px-3"
+            :style="{ 'background-color': note.theme }"
+          >
+            <v-col v-if="note.important == false">
+              <v-row>
+                <v-col cols="8">
+                  <strong>{{ note.title }}</strong>
+                </v-col>
+                <v-col cols="2" v-if="note.important && !note.secret">
+                  <span class="importantonly">
+                    <v-icon>mdi-pin</v-icon>
+                  </span>
+                </v-col>
+                <v-col cols="2" v-if="note.secret && !note.important">
+                  <span class="secretonly">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </v-col>
+                <v-col cols="2" v-if="note.secret && note.important">
+                  <span class="importantsecret">
+                    <span style="color: yellow">
+                      <v-icon>mdi-pin</v-icon>
                     </span>
                     <span style="padding-left: 10px">
                       <i class="fas fa-lock"></i>
