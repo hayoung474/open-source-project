@@ -154,7 +154,6 @@ body {
       0 8px 8px rgba(0,90,250,0.05),
       0 16px 16px rgba(0,90,250,0.05);
     box-sizing: border-box;
-    position: relative;
     display: flex;
     flex-direction: column;
     display: inline-block;
@@ -241,6 +240,7 @@ body {
     padding: 10px 10px 0px;
     border: none;
     outline: none;
+    max-width: 85%;
 }
 
 .category-input::placeholder {

@@ -2,6 +2,8 @@
   <div id="app">
     <v-app id="inspire">
       <app-header @search="search"></app-header>
+
+      <!-- 카테고리 목록 출력  -->
       <div class="text-center" style="margin: -10px">
         <span
           v-for="(category, index) in this.$store.state.category"
@@ -16,6 +18,8 @@
           </v-chip>
         </span>
       </div>
+
+      <!-- 고정메모 -->
        <div class="noteContainer importantNote" v-if="!searchMode">
         <div v-masonry="containerId" item-selector=".item">
           <v-row
@@ -27,64 +31,15 @@
             
           >
             <v-col v-if="note.important == true">
-              <v-row>
-                <v-col cols="8">
-                  <strong>{{ note.title }}</strong>
-                </v-col>
-                <v-col cols="2" v-if="note.important && !note.secret">
-                  <span class="importantonly">
-                    <v-icon>mdi-pin</v-icon>
-                  </span>
-                </v-col>
-                <v-col cols="2" v-if="note.secret && !note.important">
-                  <span class="secretonly">
-                    <i class="fas fa-lock"></i>
-                  </span>
-                </v-col>
-                <v-col cols="2" v-if="note.secret && note.important">
-                  <span class="importantsecret">
-                    <span style="color: yellow">
-                      <v-icon>mdi-pin</v-icon>
-                    </span>
-                    <span style="padding-left: 10px">
-                      <i class="fas fa-lock"></i>
-                    </span>
-                  </span>
-                </v-col>
-                <v-col cols="2">
-                  <span class="modify" @click.prevent="modifyNote(index)">
-                    <i class="fas fa-edit"></i>
-                  </span>
-                </v-col>
-                <v-col cols="2">
-                  <span class="delete" @click.prevent="deleteNote(index)">
-                    <i class="fas fa-times"></i>
-                  </span>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12">
-                  <p class="note-text" style="white-space: pre-line">
-                    {{ note.text }}
-                  </p>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-spacer></v-spacer>
-                <v-col cols="12" justify="end">
-                  <p
-                    class="text-right"
-                    style="margin-bottom: 0px !important; font-size: 13px"
-                  >
-                    {{ note.date }}
-                  </p>
-                </v-col>
-              </v-row>
+              <Note :note="note" :index="index" @modifyNote="modifyNote(index)" @deleteNote="deleteNote(index)"></Note>
             </v-col>
           </v-row>
         </div>
       </div>
-      <div class="noteContainer" v-if="!searchMode">
+
+      <!-- 일반메모 -->
+      
+             <div class="noteContainer importantNote" v-if="!searchMode">
         <div v-masonry="containerId" item-selector=".item">
           <v-row
             v-masonry-tile="v - masonry - tile"
@@ -92,65 +47,16 @@
             :key="`note-${index}`"
             class="note px-3"
             :style="{ 'background-color': note.theme }"
+            
           >
             <v-col v-if="note.important == false">
-              <v-row>
-                <v-col cols="8">
-                  <strong>{{ note.title }}</strong>
-                </v-col>
-                <v-col cols="2" v-if="note.important && !note.secret">
-                  <span class="importantonly">
-                    <v-icon>mdi-pin</v-icon>
-                  </span>
-                </v-col>
-                <v-col cols="2" v-if="note.secret && !note.important">
-                  <span class="secretonly">
-                    <i class="fas fa-lock"></i>
-                  </span>
-                </v-col>
-                <v-col cols="2" v-if="note.secret && note.important">
-                  <span class="importantsecret">
-                    <span style="color: yellow">
-                      <v-icon>mdi-pin</v-icon>
-                    </span>
-                    <span style="padding-left: 10px">
-                      <i class="fas fa-lock"></i>
-                    </span>
-                  </span>
-                </v-col>
-                <v-col cols="2">
-                  <span class="modify" @click.prevent="modifyNote(index)">
-                    <i class="fas fa-edit"></i>
-                  </span>
-                </v-col>
-                <v-col cols="2">
-                  <span class="delete" @click.prevent="deleteNote(index)">
-                    <i class="fas fa-times"></i>
-                  </span>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12">
-                  <p class="note-text" style="white-space: pre-line">
-                    {{ note.text }}
-                  </p>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-spacer></v-spacer>
-                <v-col cols="12" justify="end">
-                  <p
-                    class="text-right"
-                    style="margin-bottom: 0px !important; font-size: 13px"
-                  >
-                    {{ note.date }}
-                  </p>
-                </v-col>
-              </v-row>
+              <Note :note="note" :index="index" @modifyNote="modifyNote(index)" @deleteNote="deleteNote(index)"></Note>
             </v-col>
           </v-row>
         </div>
       </div>
+
+
       <div class="noteContainer" v-if="searchMode">
         <div v-masonry="containerId" item-selector=".item">
           <v-row
@@ -303,9 +209,7 @@ import NoteEditor from "./components/NoteEditor.vue";
 import NoteModifyEditor from "./components/NoteModifyEditor.vue";
 import Category from "./components/Category.vue";
 import Header from "./components/Header.vue";
-import Vue from "vue";
-import { VueMasonryPlugin } from "vue-masonry";
-Vue.use(VueMasonryPlugin);
+import Note from "./components/Note.vue";
 
 export default {
   name: "App",
@@ -379,9 +283,15 @@ export default {
       this.searchNotes = [];
       this.searchMode = false;
     },
-    // categoryResult(index){
+    showCategoryNote(title){
 
-    // }
+
+      let categoryResult = this.notes.filter((note) =>
+        note.category.title === title
+      );
+      console.log(categoryResult);
+
+    } 
   },
   mounted() {
     if (localStorage.getItem("notes"))
@@ -408,6 +318,7 @@ export default {
     appHeader: Header,
     notecategory: Category,
     appNoteModifyEditor: NoteModifyEditor,
+    Note,
   },
 };
 </script>
