@@ -31,7 +31,7 @@
                         :key="`note-${index}`"
                         class="note px-3"
                         :style="{ 'background-color': note.theme }">
-                        <v-col v-if="note.important == true">
+                        <v-col v-if="note.important == true" @click="password_dialog = note.secret">
                             <Note
                                 :note="note"
                                 :index="index"
@@ -53,7 +53,8 @@
                       <v-row
                         class="note px-3"
                         :style="{ 'background-color': note.theme }">
-                        <v-col v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))">
+                        <v-col v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))"
+                        @click="password_dialog = note.secret">
                             <Note
                                 :note="note"
                                 :index="index"
@@ -229,6 +230,12 @@
                     :modifyIndex="modifyIndex"
                     @editorClose="dialog2 = false"></app-note-modify-editor>
             </v-dialog>
+
+            <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
+                <Password @dialogClosed="password_dialog = false"></Password>
+            </v-dialog>
+
+
         </v-app>
     </div>
 </template>
@@ -239,6 +246,7 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
+    import Password from "./components/Password.vue";
     import draggable from 'vuedraggable'
 
     export default {
@@ -252,6 +260,7 @@
                 isModify: false,
                 modifyIndex: null,
                 category_dialog: false,
+                password_dialog: false,
                 searchMode: false,
                 categoryTitle:""
             };
@@ -375,6 +384,7 @@
             appNoteModifyEditor: NoteModifyEditor,
             Note,
             draggable,
+            Password,
         }
     };
 </script>

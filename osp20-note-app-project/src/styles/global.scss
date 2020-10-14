@@ -172,8 +172,21 @@ body {
     flex-wrap: wrap;
 }
 
+.password-div{
+    margin: -12px 20px;
+    justify-content: center;
+    align-items: center;
+}
+
 .password-input {
     padding-top: 5px;
+    border-color:#999999; background-color:#FFFFFF; border-style:solid;
+        border-top-width:0px; border-right-width:0px; border-bottom-width:1px; border-left-width:0px;
+    outline:none;
+}
+
+.password-input2 {
+    padding-top: 30px;
     border-color:#999999; background-color:#FFFFFF; border-style:solid;
         border-top-width:0px; border-right-width:0px; border-bottom-width:1px; border-left-width:0px;
     outline:none;
