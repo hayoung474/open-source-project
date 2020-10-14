@@ -29,8 +29,7 @@
                         v-masonry-tile="v - masonry - tile"
                         v-for="(note, index) in notes"
                         :key="`note-${index}`"
-                        class="note px-3"
-                        :style="{ 'background-color': note.theme }">
+                        class="note">
                         <v-col v-if="note.important == true">
                             <Note
                                 :note="note"
@@ -43,28 +42,26 @@
             </div>
 
             <!-- 드래그 가능 일반메모 -->
-            <div class="noteContainer" v-if="!searchMode">
-                <draggable
+            <div class="noteContainer" v-if="!searchMode" >
+                <!-- <draggable
                     v-model="notes"
                     group="people"
                     @start="drag=true"
-                    @end="drag=false">
-                    <div v-for="(note, index) in notes" :key="`note-${index}`">
-                      <v-row
-                        class="note px-3"
-                        :style="{ 'background-color': note.theme }">
-                        <v-col v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))">
+                    @end="drag=false"> -->
+                    <draggable  v-masonry item-selector=".item" transition-duration="0.3s" v-model="notes"  group="people" @start="drag=true"  @end="drag=false">
+                        <div v-masonry-tile class="item note" v-for="(note, index) in notes" :key="`note-${index}`">
                             <Note
                                 :note="note"
                                 :index="index"
+                                v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))"
+                                
                                 @modifyNote="modifyNote(index)"
                                 @deleteNote="deleteNote(index)"></Note>
-                        </v-col>
-                    </v-row>
-                    </div>
-                </draggable>
+                        </div>
+                    </draggable>
+                <!-- </draggable> -->
             </div>
-
+            <draggable></draggable>
             <!-- 일반메모
             <div class="noteContainer" v-if="!searchMode">
                 <div v-masonry="containerId" item-selector=".item">
