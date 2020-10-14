@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-card class="note pa-5" elevation="3" :color="note.theme">
         <v-row>
             <v-col cols="10">
                 <strong>{{ note.title }}</strong>
@@ -50,7 +50,7 @@
                 </p>
             </v-col>
         </v-row>
-    </div>
+    </v-card>
 </template>
 
 <script>
