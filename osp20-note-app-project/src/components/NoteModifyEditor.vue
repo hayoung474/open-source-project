@@ -200,6 +200,14 @@ export default {
         this.startModify = true;
       },
     },
+
+    secret: {
+      handler() {
+        if (this.secret == false) {
+          this.password = "";
+        }
+      },
+    },
   },
   methods: {
     createNew() {
@@ -209,12 +217,15 @@ export default {
       if (this.title != "" && this.text == "") {
         alert("내용을 입력해주세요!");
       }
-      if (this.secret && this.password == ""){
+      if (this.secret && this.password == "") {
         alert("비밀번호를 입력해주세요!");
       }
-      if (this.title != "" && this.text != "" &&
-      ((this.secret && this.password !="") || (!this.secret && this.password ==""))) {
-
+      if (
+        this.title != "" &&
+        this.text != "" &&
+        ((this.secret && this.password != "") ||
+          (!this.secret && this.password == ""))
+      ) {
         this.$emit("editorClose");
 
         var note = {
