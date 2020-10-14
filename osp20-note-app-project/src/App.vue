@@ -53,7 +53,7 @@
                       <v-row
                         class="note px-3"
                         :style="{ 'background-color': note.theme }">
-                        <v-col v-if="(!searchMode && ((categoryTitle==='')||(note.category.title === categoryTitle)))">
+                        <v-col v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))">
                             <Note
                                 :note="note"
                                 :index="index"
