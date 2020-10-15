@@ -30,7 +30,7 @@
                         v-for="(note, index) in notes"
                         :key="`note-${index}`"
                         class="note">
-                        <v-col v-if="note.important == true">
+                        <v-col v-if="note.important == true" @click="password_dialog = note.secret">
                             <Note
                                 :note="note"
                                 :index="index"
@@ -48,20 +48,24 @@
                     group="people"
                     @start="drag=true"
                     @end="drag=false"> -->
-                    <draggable  v-masonry item-selector=".item" transition-duration="0.3s" v-model="notes"  group="people" @start="drag=true"  @end="drag=false">
-                        <div v-masonry-tile class="item note" v-for="(note, index) in notes" :key="`note-${index}`">
+                <draggable
+                    item-selector=".item"
+                    transition-duration="0.3s"
+                    v-model="notes"
+                    group="people"
+                    @start="drag=true"
+                    @end="drag=false">
+                    <div v-for="(note, index) in notes" :key="`note-${index}`">
                             <Note
                                 :note="note"
                                 :index="index"
                                 v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))"
-                                
+                                @click="password_dialog = note.secret"
                                 @modifyNote="modifyNote(index)"
                                 @deleteNote="deleteNote(index)"></Note>
-                        </div>
-                    </draggable>
-                <!-- </draggable> -->
+                    </div>
+                </draggable>
             </div>
-            <draggable></draggable>
             <!-- 일반메모
             <div class="noteContainer" v-if="!searchMode">
                 <div v-masonry="containerId" item-selector=".item">
@@ -226,6 +230,12 @@
                     :modifyIndex="modifyIndex"
                     @editorClose="dialog2 = false"></app-note-modify-editor>
             </v-dialog>
+
+            <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
+                <Password @dialogClosed="password_dialog = false"></Password>
+            </v-dialog>
+
+
         </v-app>
     </div>
 </template>
@@ -236,6 +246,7 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
+    import Password from "./components/Password.vue";
     import draggable from 'vuedraggable'
 
     export default {
@@ -249,6 +260,7 @@
                 isModify: false,
                 modifyIndex: null,
                 category_dialog: false,
+                password_dialog: false,
                 searchMode: false,
                 categoryTitle:""
             };
@@ -372,6 +384,7 @@
             appNoteModifyEditor: NoteModifyEditor,
             Note,
             draggable,
+            Password,
         }
     };
 </script>

@@ -166,11 +166,15 @@ export default {
       if (this.title != "" && this.text == "") {
         alert("내용을 입력해주세요!");
       }
-      if (this.secret && this.password == ""){
+      if (this.secret && this.password == "") {
         alert("비밀번호를 입력해주세요!");
       }
-      if (this.title != "" && this.text != "" &&
-      ((this.secret && this.password !="") || (!this.secret && this.password ==""))) {
+      if (
+        this.title != "" &&
+        this.text != "" &&
+        ((this.secret && this.password != "") ||
+          (!this.secret && this.password == ""))
+      ) {
         this.dialog = false;
         var note = {
           title: this.title,
@@ -230,6 +234,13 @@ export default {
         this.theme = this.$store.state.notes[this.modifyIndex].theme;
         this.secret = this.$store.state.notes[this.modifyIndex].secret;
         this.important = this.$store.state.notes[this.modifyIndex].important;
+      },
+    },
+    secret: {
+      handler() {
+        if (this.secret == false) {
+          this.password = "";
+        }
       },
     },
   },
