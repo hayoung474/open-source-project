@@ -41,9 +41,17 @@ export const store = new Vuex.Store({
         console.log(state.category);
     },
     deleteCategory(state, index) {
-      // 이곳에서는 해당 카테고리에 해당되는 메모를 기본메모 카테고리로 이동하기
+      // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
+
+      let deleteCategoryTitle = state.category[index];
+      let deleteCategory = [];
+      console.log(deleteCategoryTitle);
+
+      
+      console.log(deleteCategory);
       state.category.splice(index, 1);
 
+      
       if(state.category.length === 0){
         state.category = [{}];
         localStorage.setItem("category", JSON.stringify(state.category));

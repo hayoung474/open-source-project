@@ -89,8 +89,10 @@ export default {
 
     deleteCategory(index) {
       this.category = this.$store.state.category;
-      this.$store.commit('deleteCategory',index);
-      
+      if(confirm("카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?")){
+        this.$store.commit('deleteCategory',index);
+        alert("삭제되었습니다.");
+      }
       // vuex 꺼 쓰기
       // this.category.splice(index, 1);
       // localStorage.setItem("category", JSON.stringify(this.category));
