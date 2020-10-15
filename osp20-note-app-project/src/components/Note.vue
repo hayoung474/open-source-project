@@ -1,5 +1,5 @@
 <template>
-    <v-card class="note pa-5" elevation="3" :color="note.theme">
+    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;cursor: pointer;">
         <v-row>
             <v-col cols="10">
                 <strong>{{ note.title }}</strong>
@@ -25,12 +25,12 @@
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="modify" @click.prevent="modifyNote(index)">
+                <span class="modify" @click.prevent="modifyNote(note,index)">
                     <i class="fas fa-edit"></i>
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="delete" @click.prevent="deleteNote(index)">
+                <span class="delete" @click.prevent="deleteNote(note,index)">
                     <i class="fas fa-times"></i>
                 </span>
             </v-col>
@@ -61,12 +61,12 @@
         },
         data() {
             return {
-                modifyNote(index){
-                    this.$emit('modifyNote',index);
+                modifyNote(note,index){
+                    this.$emit('modifyNote',note,index);
                 },
-                deleteNote(index){
-                    this.$emit('deleteNote',index);
-                }
+                deleteNote(note,index){
+                    this.$emit('deleteNote',note,index);
+                },
             }
         }
     }

@@ -8,7 +8,7 @@
                  <span><v-chip
                         class="ma-2"
                         style="background: gray"
-                        @click="showAll()">
+                        @click="showCategoryNote('')">
                         모든 메모
                     </v-chip>
                 </span>
@@ -21,72 +21,89 @@
                     </v-chip>
                 </span>
             </div>
-
-            <!-- 고정메모 -->
-            <div class="noteContainer importantNote" v-if="!searchMode">
-                <div v-masonry="containerId" item-selector=".item">
-                    <v-row
-                        v-masonry-tile="v - masonry - tile"
-                        v-for="(note, index) in notes"
-                        :key="`note-${index}`"
-                        class="note">
-                        <v-col v-if="note.important == true" @click="password_dialog = note.secret">
-                            <Note
-                                :note="note"
-                                :index="index"
-                                @modifyNote="modifyNote(index)"
-                                @deleteNote="deleteNote(index)"></Note>
-                        </v-col>
-                    </v-row>
-                </div>
+            <v-container>
+            <!-- 고정메모는 그리드로 보여주기 -->
+            <div v-if="!searchMode">
+                <v-row>
+                    <v-col
+                    v-for="(note, index) in notes"
+                    :key="`note-${index}`"
+                    cols="12"
+                    md="3"
+                    lg="2">
+                    <Note
+                        :note="note"
+                        :index="index"
+                        v-if="(note.important==true && ((categoryTitle==='')||(note.category.title === categoryTitle)))"
+                        @click="password_dialog = note.secret"
+                        @modifyNote="modifyNote(index)"
+                        @deleteNote="deleteNote(index)"></Note>
+                    </v-col>
+                </v-row>
             </div>
-
-            <!-- 드래그 가능 일반메모 -->
-            <div class="noteContainer" v-if="!searchMode" >
-                <!-- <draggable
-                    v-model="notes"
-                    group="people"
-                    @start="drag=true"
-                    @end="drag=false"> -->
-                <draggable
-                    item-selector=".item"
-                    transition-duration="0.3s"
-                    v-model="notes"
-                    group="people"
-                    @start="drag=true"
-                    @end="drag=false">
-                    <div v-for="(note, index) in notes" :key="`note-${index}`">
-                            <Note
+            <!-- <v-container v-if="!searchMode">
+                    <v-row v-masonry> 
+                        <v-col v-masonry-tile v-for="(note, index) in notes" :key="`note-${index}`" cols="3">
+                     <Note 
                                 :note="note"
                                 :index="index"
-                                v-if="(note.important==false && ((categoryTitle==='')||(note.category.title === categoryTitle)))"
+                                v-if="note.important==true"
                                 @click="password_dialog = note.secret"
                                 @modifyNote="modifyNote(index)"
                                 @deleteNote="deleteNote(index)"></Note>
-                    </div>
-                </draggable>
-            </div>
-            <!-- 일반메모
-            <div class="noteContainer" v-if="!searchMode">
-                <div v-masonry="containerId" item-selector=".item">
-                    <v-row
-                        v-masonry-tile="v - masonry - tile"
-                        v-for="(note, index) in notes"
-                        :key="`note-${index}`"
-                        class="note px-3"
-                        :style="{ 'background-color': note.theme }">
-                        <v-col v-if="note.important == false">
-                            <Note
-                                :note="note"
-                                :index="index"
-                                @modifyNote="modifyNote(index)"
-                                @deleteNote="deleteNote(index)"></Note>
                         </v-col>
                     </v-row>
-                </div>
-            </div> -->
+            </v-container> -->
+            <!-- 일반 메모는 masonry로, 드래그 가능 -->
+            <div v-if="allMode">
+                <draggable v-masonry v-model="notes"
+                    group="people"
+                    @start="drag=true"
+                    @end="drag=false"> 
+                     <v-col v-masonry-tile v-for="(note, index) in notes" :key="`note-${index}`" cols="12" md="3" lg="2">
+                        <Note 
+                                :note="note"
+                                :index="index"
+                                v-if="note.important===false"
+                                @click="password_dialog = note.secret"
+                                @modifyNote="modifyNote(note,index)"
+                                @deleteNote="deleteNote(note,index)"></Note>
+                        </v-col>
+                </draggable>
+            </div>
 
-            <div class="noteContainer" v-if="searchMode">
+            <!-- 카테고리 모드는 드래그 불가능-->
+            <div v-if="categoryMode" >
+                <v-row v-masonry> 
+                     <v-col v-masonry-tile v-for="(note, index) in categoryNotes" :key="`note-${index}`" cols="12" md="3" lg="2">
+                        <Note 
+                                :note="note"
+                                :index="index"
+                                v-if="note.important===false"
+                                @click="password_dialog = note.secret"
+                                @modifyNote="modifyNote(note)"
+                                @deleteNote="deleteNote(note,index)"></Note>
+                        </v-col>
+                </v-row>
+            </div>
+
+            <div v-if="searchMode" >
+                <v-row v-masonry> 
+                     <v-col v-masonry-tile v-for="(note, index) in searchNotes" :key="`note-${index}`" cols="12" md="3" lg="2">
+                        <Note 
+                                :note="note"
+                                :index="index"
+                                v-if="note.important===false"
+                                @click="password_dialog = note.secret"
+                                @modifyNote="modifyNote(note)"
+                                @deleteNote="deleteNote(note,index)"></Note>
+                        </v-col>
+                </v-row>
+            </div>
+
+
+
+            <!-- <div class="noteContainer" v-if="searchMode">
                 <div v-masonry="containerId" item-selector=".item">
                     <v-row
                         v-masonry-tile="v - masonry - tile"
@@ -148,7 +165,7 @@
                         </v-col>
                     </v-row>
                 </div>
-            </div>
+            </div> -->
 
             <v-btn
                 class="mx-2 category-button"
@@ -235,7 +252,7 @@
                 <Password @dialogClosed="password_dialog = false"></Password>
             </v-dialog>
 
-
+            </v-container>
         </v-app>
     </div>
 </template>
@@ -257,74 +274,65 @@
                 dialog2: false,
                 notes: [],
                 searchNotes: [],
+                categoryNotes:[],
                 isModify: false,
                 modifyIndex: null,
                 category_dialog: false,
                 password_dialog: false,
                 searchMode: false,
+                categoryMode:false,
+                allMode:true,
                 categoryTitle:""
             };
         },
         methods: {
-            deleteNote(index) {
+            
+            deleteNote(note,index) {
                 if (confirm("정말로 삭제하시겠습니까?")) {
-                    this
-                        .notes
-                        .splice(index, 1);
+                    if(this.allMode){
+                        this.notes.splice(index, 1);
+                    }
+                    else if(this.categoryMode){
+                        var categoryIndex = this.notes.indexOf(note);
+                        this.notes.splice(categoryIndex, 1);
+                        this.categoryNotes.splice(index, 1);
+                
+                    }
+                    else if(this.searchMode){
+                        var searchIndex = this.notes.indexOf(note);
+                        this.notes.splice(searchIndex, 1);
+                        this.searchNotes.splice(index, 1);
+                    }
                 }
             },
-            deleteSearchNote(note, searchIndex) {
-                var index = this
-                    .notes
-                    .indexOf(note);
-                if (confirm("정말로 삭제하시겠습니까?")) {
-                    this
-                        .notes
-                        .splice(index, 1);
-                    this
-                        .searchNotes
-                        .splice(searchIndex, 1);
-                }
-            },
-            modiftySearchNote(note) {
-                var index = this
-                    .notes
-                    .indexOf(note);
-                this.modifyIndex = index;
-                this.dialog2 = true;
-            },
-            modifyNote(index) {
+            
+            modifyNote(note) {
+                var index = this.notes.indexOf(note);
+                console.log(index);
                 this.modifyIndex = index;
                 this.dialog2 = true;
 
                 // 수정요청 후 modifyIndex 를 null 로 다시 되돌릴 것
             },
             sortLastest() {
-                this
-                    .notes
-                    .sort(function (a, b) {
-                        // 최신순 정렬
-                        return a.sortDate > b.sortDate
-                            ? -1
-                            : a.sortDate < b.sortDate
-                                ? 1
-                                : 0;
-                    });
+                this.notes.sort(function (a, b) {
+                    // 최신순 정렬
+                    return a.sortDate > b.sortDate? -1: a.sortDate < b.sortDate? 1: 0;
+                });
             },
             sortOldest() {
-                this
-                    .notes
-                    .sort(function (a, b) {
-                        // 오래된순 정렬
-                        return a.sortDate < b.sortDate
-                            ? -1
-                            : a.sortDate > b.sortDate
-                                ? 1
-                                : 0;
+                this.notes.sort(function (a, b) {
+                    // 오래된순 정렬
+                    return a.sortDate < b.sortDate? -1: a.sortDate > b.sortDate? 1: 0;
                     });
             },
             search(keyword) {
                 this.searchMode = true;
+                this.allMode=false;
+                this.categoryMode=false;
+                this.categoryNotes=[];
+
+
                 console.log(keyword);
                 // 제목과 내용에 대해서 검색
                 let titleSearchResult = this
@@ -345,15 +353,26 @@
             searchReset() {
                 this.searchNotes = [];
                 this.searchMode = false;
+                this.categoryMode = false;
+                this.allMode=true;
             },
             showCategoryNote(title) {
+                if(title === ''){
+                    this.allMode=true;
+                    this.categoryMode=false;
+                    this.searchMode=false;
+                    this.categoryNotes = []; 
+                }
                 // 카테고리 별 보기
-                this.categoryTitle=title;
+                else{
+                    this.allMode=false;
+                    this.categoryMode=true;
+                    this.searchMode=false;
+                    this.categoryNotes = this.notes.filter((note) => note.category.title === title);
+                }
+                console.log(this.categoryNotes);
 
             },
-            showAll(){
-              this.categoryTitle=""
-            }
         },
         mounted() {
             if (localStorage.getItem("notes")) 
@@ -374,7 +393,7 @@
                     localStorage.setItem("notes", JSON.stringify(newNotes));
                 },
                 deep: true
-            }
+            },
         },
         
         components: {
