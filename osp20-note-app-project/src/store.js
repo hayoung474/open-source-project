@@ -46,10 +46,15 @@ export const store = new Vuex.Store({
 
       let deleteCategoryTitle = state.category[index];
       let deleteCategory = [];
-      console.log(deleteCategoryTitle);
 
-      
+      for(let i =0 ; i<state.notes;i++){
+        if(state.notes[i].category.title !== deleteCategoryTitle){
+          deleteCategory.push(state.notes[i]);
+        }
+      }
+      state.notes = deleteCategory;
       console.log(deleteCategory);
+      
       state.category.splice(index, 1);
 
       

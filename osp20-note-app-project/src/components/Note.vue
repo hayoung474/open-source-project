@@ -46,6 +46,9 @@
             <v-spacer></v-spacer>
             <v-col cols="12" justify="end">
                 <p class="text-right" style="margin-bottom: 0px !important; font-size: 13px">
+                    {{ note.category.title}}
+                </p>
+                <p class="text-right" style="margin-bottom: 0px !important; font-size: 13px">
                     {{ note.date }}
                 </p>
             </v-col>
