@@ -1,7 +1,7 @@
 <template>
     <div class="header">
-        <img src="../assets/note_logo.png"/>
-        <p>STICKY NOTE</p>
+          <img src="../assets/note_logo.png"/>
+          <p >STICKY NOTE</p>
         <div class="search-container">
             <input
                 type="text"
@@ -28,8 +28,12 @@ export default {
     search(){
       this.$emit('search',this.searchText);
       this.searchText="";
+    },
+    reset(){
+      this.$emit('reset');
     }
   }, 
+
   components: {
   // SearchBar: SearchBar,
   }

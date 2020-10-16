@@ -21,8 +21,6 @@ export const store = new Vuex.Store({
       localStorage.setItem("notes", JSON.stringify(state.notes));
     },
 
-
-
     // 카테고리가 변할때 마다 localStorage 에 변경해줄것
     addCategory(state, category) {
       

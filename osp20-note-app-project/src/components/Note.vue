@@ -57,7 +57,7 @@
     export default {
         props: {
             note: Object,
-            index: String
+            index: Number
         },
         data() {
             return {

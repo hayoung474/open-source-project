@@ -1,5 +1,4 @@
 <template>
-  <div>
     <v-container>
       <div class="dialog-div">
         <v-card solo="solo">
@@ -132,12 +131,11 @@
         </v-card>
       </div>
     </v-container>
-  </div>
 </template>
 <script>
 export default {
   props: {
-    modifyIndex: String,
+    modifyIndex: Number,
   },
   data() {
     return {
@@ -242,7 +240,7 @@ export default {
           important: this.important,
         };
 
-        // 노트 추가
+        // 노트 수정
         this.noteModified(note);
 
         this.select = 0;
@@ -251,6 +249,7 @@ export default {
     noteModified(note) {
       var modifyIndexData = this.index;
       this.$store.commit("updateNote", { note, modifyIndexData });
+      this.$emit("reset");
     },
     cancel() {
       this.$emit("editorClose");

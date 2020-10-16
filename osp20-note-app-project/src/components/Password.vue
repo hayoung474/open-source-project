@@ -1,5 +1,4 @@
 <template>
-  <div>
     <v-container>
       <div class="dialog-div">
         <v-card solo="solo">
@@ -44,7 +43,6 @@
         </v-card>
       </div>
     </v-container>
-  </div>
 </template>
 
 <script>
