@@ -38,7 +38,8 @@
                         :index="index"
                         @click="password_dialog = note.secret"
                         @modifyNote="modifyNote(note)"
-                        @deleteNote="deleteNote(note)"></Note>
+                        @deleteNote="deleteNote(note)"
+                       ></Note>
                     </v-col>
                 </v-row>
             </div>
@@ -139,7 +140,9 @@
                 persistent="persistent">
                 <app-note-modify-editor
                     :modifyIndex="modifyIndex"
-                    @editorClose="dialog2 = false;" @reset="reset"></app-note-modify-editor>
+                    @editorClose="dialog2 = false;"
+                    @redraw="redraw"
+                    ></app-note-modify-editor>
             </v-dialog>
 
             <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
@@ -183,6 +186,7 @@
                 if (confirm("정말로 삭제하시겠습니까?")) {
                     this.notes.splice(this.notes.indexOf(note), 1);
                 }
+                this.redraw();
             },
             
             modifyNote(note) {
@@ -191,18 +195,16 @@
 
             },
             sortLastest() {
-                this.notes.sort(function (a, b) {
+                this.noteViewList.sort(function (a, b) {
                     return a.sortDate > b.sortDate? -1: a.sortDate < b.sortDate? 1: 0;
                 });
             },
             sortOldest() {
-                this.notes.sort(function (a, b) {
+                this.noteViewList.sort(function (a, b) {
                     return a.sortDate < b.sortDate? -1: a.sortDate > b.sortDate? 1: 0;
                 });
             },
             search(keyword) {
-                
-                // this.searchKeyword=keyword;
                 this.noteViewList = this.notes.filter(note=>(note.text.includes(keyword)||note.title.includes(keyword)));
             },
             showCategoryNote(title) {
@@ -211,6 +213,15 @@
             },
             reset(){
                 this.noteViewList = this.notes;
+                this.categoryTitle="";
+            },
+            redraw(){
+                if(this.categoryTitle !== ""){
+                    this.noteViewList = this.notes.filter(note=>note.category.title === this.categoryTitle);
+                }
+                if(this.categoryTitle === ""){
+                    this.noteViewList = this.notes;
+                }
             }
         },
         

@@ -194,7 +194,7 @@ export default {
         this.title = "";
         this.text = "";
         this.theme = "";
-        this.category = null;
+        this.select = 0;
         this.secret = false;
         this.important = false;
         this.password = "";

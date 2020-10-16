@@ -249,7 +249,7 @@ export default {
     noteModified(note) {
       var modifyIndexData = this.index;
       this.$store.commit("updateNote", { note, modifyIndexData });
-      this.$emit("reset");
+      this.$emit("redraw");
     },
     cancel() {
       this.$emit("editorClose");
