@@ -44,14 +44,16 @@ export const store = new Vuex.Store({
     deleteCategory(state, index) {
       // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
 
-      let deleteCategoryTitle = state.category[index];
+      let deleteCategoryTitle = state.category[index].title;
       let deleteCategory = [];
 
-      for(let i =0 ; i<state.notes;i++){
+      for(let i =0 ; i<state.notes.length;i++){
+        console.log(state.notes[i].category.title,deleteCategoryTitle)
         if(state.notes[i].category.title !== deleteCategoryTitle){
           deleteCategory.push(state.notes[i]);
         }
       }
+
       state.notes = deleteCategory;
       console.log(deleteCategory);
       
