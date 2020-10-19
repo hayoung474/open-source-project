@@ -29,7 +29,8 @@
                     <v-col
                     v-for="(note, index) in notes"
                     :key="`note-${index}`"
-                    cols="12"
+                    cols="6"
+                    sm="4"
                     md="3"
                     v-show="(note.important===true)"
                     >
@@ -59,7 +60,7 @@
                     <Note
                         :note="note"
                         :index="index"
-                        @click="password_dialog = note.secret"
+                        @click.native="password_dialog = note.secret"
                         @modifyNote="modifyNote(note)"
                         @deleteNote="deleteNote(note)"></Note>
                     </v-col>
@@ -101,7 +102,7 @@
                 class="mx-2 add-button"
                 fab="fab"
                 color="black"
-                @click="dialog = true">
+                @click="dialog = true;this.redraw();">
                 <v-icon style="color:white;">
                     mdi-plus
                 </v-icon>
@@ -122,7 +123,7 @@
                 max-width="800"
                 color="white"
                 persistent="persistent">
-                <app-note-editor @editorClose="dialog = false"></app-note-editor>
+                <app-note-editor @editorClose="dialog = false" @redraw="redraw"></app-note-editor>
             </v-dialog>
 
             <v-dialog
@@ -212,8 +213,8 @@
                 this.noteViewList = this.notes.filter(note=>note.category.title === title);
             },
             reset(){
-                this.noteViewList = this.notes;
                 this.categoryTitle="";
+                this.noteViewList = this.notes;
             },
             redraw(){
                 if(this.categoryTitle !== ""){
@@ -235,10 +236,10 @@
             this.noteViewList = this.notes;
 
         },
-        // // 값 변경시 적용
-        // updated() {
-        //     this.notes = this.$store.state.notes;
-        // },
+        // 값 변경시 적용
+        updated() {
+            this.notes = this.$store.state.notes;
+        },
         watch: {
             notes: {
                 handler() {

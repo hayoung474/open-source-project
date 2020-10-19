@@ -1,8 +1,9 @@
 <template>
-    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;cursor: pointer;">
+    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;">
         <v-row>
             <v-col cols="10">
-                <strong>{{ note.title }}</strong>
+                <strong v-if="note.secret===false">{{ note.title }}</strong>
+                <strong v-if="note.secret===true">비밀메모입니다</strong>
             </v-col>
             <v-col cols="1" v-if="note.important && !note.secret">
                 <span class="importantonly">
@@ -37,8 +38,12 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p class="note-text" style="white-space: pre-line">
+                <p class="note-text" style="white-space: pre-line" v-if="note.secret===false">
                     {{ note.text }}
+                </p>
+                <p class="note-text" v-if="note.secret===true">
+                    메모를 클릭하여 비밀번호를 입력하고 
+                    <br>메모를 잠금해제하세요
                 </p>
             </v-col>
         </v-row>
@@ -52,6 +57,7 @@
                     {{ note.date }}
                 </p>
             </v-col>
+            
         </v-row>
     </v-card>
 </template>
