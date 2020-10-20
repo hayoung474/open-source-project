@@ -68,8 +68,7 @@
             </div> -->
             <draggable></draggable>
             <div >
-
-                <v-row>
+                <draggable class="row" v-model="noteViewList" :sort="true" @start="drag=true" @end="drag=false">
                     <v-col
                         v-for="(note, index) in noteViewList"
                         :key="`note-${index}`"
@@ -90,7 +89,7 @@
                             </v-expand-transition>
                         </v-hover>
                     </v-col>
-                </v-row>
+                 </draggable>
             </div>
 
             </div>

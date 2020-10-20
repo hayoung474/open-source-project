@@ -57,7 +57,6 @@
                     {{ note.date }}
                 </p>
             </v-col>
-            
         </v-row>
     </v-card>
 </template>
@@ -77,6 +76,8 @@
                     this.$emit('deleteNote',note,index);
                 },
             }
+        },
+        methods:{
         }
     }
 </script>
