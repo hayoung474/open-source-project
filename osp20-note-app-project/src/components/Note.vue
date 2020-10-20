@@ -1,4 +1,5 @@
 <template>
+   
     <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;">
         <v-row>
             <v-col cols="10">
@@ -38,12 +39,11 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p class="note-text" style="white-space: pre-line" v-if="note.secret===false">
+                <p class="note-text" style="white-space: pre-line;height:200px;overflow:auto;" v-if="note.secret===false">
                     {{ note.text }}
                 </p>
-                <p class="note-text" v-if="note.secret===true">
-                    메모를 클릭하여 비밀번호를 입력하고 
-                    <br>메모를 잠금해제하세요
+                <p class="note-text" style="white-space: pre-line;height:200px;overflow:auto;" v-if="note.secret===true">
+                    메모를 클릭하여 비밀번호를 입력하고 메모를 잠금해제하세요
                 </p>
             </v-col>
         </v-row>
@@ -81,4 +81,8 @@
     }
 </script>
 
-<style></style>
+<style>
+body{ -ms-overflow-style: none; } 
+::-webkit-scrollbar { display: none; }
+
+</style>
