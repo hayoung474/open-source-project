@@ -46,7 +46,7 @@
             </div>
            
             <!-- 일반 메모는 masonry로, 드래그 가능 하게 할 예정-->
-            <div>
+            <!-- <div>
                 <draggable v-masonry v-model="noteViewList" @start="drag=true" @end="drag=false">
                     <v-col
                     v-masonry-tile
@@ -65,7 +65,34 @@
                         @deleteNote="deleteNote(note)"></Note>
                     </v-col>
                 </draggable>
+            </div> -->
+            <draggable></draggable>
+            <div >
+
+                <v-row>
+                    <v-col
+                        v-for="(note, index) in noteViewList"
+                        :key="`note-${index}`"
+                        cols="6"
+                        sm="4"
+                        md="3"
+                        v-show="(note.important===false)">
+                        <v-hover v-slot="{ hover }">
+                            <v-expand-transition>
+                                <Note
+                                    v-if="true"
+                                    :note="note"
+                                    :index="index"
+                                    @click.native="password_dialog = note.secret"
+                                    @modifyNote="modifyNote(note)"
+                                    @deleteNote="deleteNote(note)"></Note>
+                                <div v-if="hover" class="d-flex transition-fast-in-fast-out"></div>
+                            </v-expand-transition>
+                        </v-hover>
+                    </v-col>
+                </v-row>
             </div>
+
             </div>
 
             <v-btn
