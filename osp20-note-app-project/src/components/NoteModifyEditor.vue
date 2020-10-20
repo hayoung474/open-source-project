@@ -226,12 +226,16 @@ export default {
       ) {
         this.$emit("editorClose");
 
+        var timezoneOffset = new Date().getTimezoneOffset() * 60000; 
+        var timezoneDate = new Date(Date.now() - timezoneOffset);
+
+
         var note = {
           title: this.title,
           text: this.text,
           theme: this.theme,
           date:
-            new Date().toISOString().substr(0, 10) +
+            timezoneDate.toISOString().substr(0, 10) +
             " " +
             new Date().toTimeString().substr(0, 8),
           sortDate: new Date(),

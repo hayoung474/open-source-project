@@ -94,6 +94,16 @@
             </div>
 
             </div>
+            
+            <v-btn
+                class="mx-2 calendar-button"
+                fab="fab"
+                color="black"
+                @click="calendar_dialog = true">
+                <v-icon style="color:white;">
+                    mdi-calendar
+                </v-icon>
+            </v-btn>
 
             <v-btn
                 class="mx-2 category-button"
@@ -170,11 +180,27 @@
                     :modifyIndex="modifyIndex"
                     @editorClose="dialog2 = false;"
                     @redraw="redraw"
-                    ></app-note-modify-editor>
+                ></app-note-modify-editor>
             </v-dialog>
 
             <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
                 <Password @dialogClosed="password_dialog = false"></Password>
+            </v-dialog>
+            <v-dialog
+                ref="dialog"
+                v-model="calendar_dialog"
+                :return-value.sync="date"
+                persistent="persistent"
+                width="290px">
+                <v-date-picker v-model="selectDate" color="green lighten-1">
+                    <v-spacer></v-spacer>
+                    <v-btn text="text" color="primary" @click="calendar_dialog = false">
+                        Cancel
+                    </v-btn>
+                    <v-btn text="text" color="primary" @click="$refs.dialog.save(selectDate);showDateNote();">
+                        OK
+                    </v-btn>
+                </v-date-picker>
             </v-dialog>
 
             </v-container>
@@ -203,9 +229,11 @@
                 modifyIndex: null,
                 category_dialog: false,
                 password_dialog: false,
+                calendar_dialog:false,
                 allMode:true,
                 categoryTitle:"",
                 searchKeyword:"",
+                selectDate:"",
             };
         },
         methods: {
@@ -250,6 +278,12 @@
                 if(this.categoryTitle === ""){
                     this.noteViewList = this.notes;
                 }
+            },
+            showDateNote(){
+                console.log(this.selectDate);
+                console.log(this.noteViewList);
+                this.noteViewList = this.notes.filter(note=>note.date.substr(0, 10) === this.selectDate);
+
             }
         },
         
