@@ -18,8 +18,8 @@ export const store = new Vuex.Store({
     },
     updateNote(state,data){
       state.notes[data.modifyIndexData]=data.note;
-      state.notes.push(state.notes[data.modifyIndexData]);
-      state.notes.splice(data.modifyIndexData,1);
+      // state.notes.push(state.notes[data.modifyIndexData]);
+      // state.notes.splice(data.modifyIndexData,1);
       
       localStorage.setItem("notes", JSON.stringify(state.notes));
     },
