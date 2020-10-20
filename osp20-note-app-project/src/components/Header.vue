@@ -1,7 +1,7 @@
 <template>
     <div class="header">
           <img src="../assets/note_logo.png"/>
-          <p >STICKY NOTE</p>
+          <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container">
             <input
                 type="text"
@@ -31,6 +31,9 @@ export default {
     },
     reset(){
       this.$emit('reset');
+    },
+    reload(){
+      window.location.reload();
     }
   }, 
 
@@ -39,3 +42,18 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .noteTitle :hover{
+    color:black;
+    font-weight: bold;
+    cursor:pointer;
+    text-shadow:3px 3px 10px white;
+  }
+  @font-face{
+    font-family:"SCDream3";
+    src:url("../assets/font/SCDream3.otf");
+}
+p{
+    font-family: "SCDream3";
+}
+</style>

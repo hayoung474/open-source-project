@@ -3,8 +3,8 @@
     <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;">
         <v-row>
             <v-col cols="10">
-                <strong v-if="note.secret===false">{{ note.title }}</strong>
-                <strong v-if="note.secret===true">비밀메모입니다</strong>
+                <strong class="title" v-if="note.secret===false">{{ note.title }}</strong>
+                <strong class="title" v-if="note.secret===true">비밀메모입니다</strong>
             </v-col>
             <v-col cols="1" v-if="note.important && !note.secret">
                 <span class="importantonly">
@@ -85,5 +85,16 @@
 <style>
 body{ -ms-overflow-style: none; } 
 ::-webkit-scrollbar { display: none; }
+
+@font-face{
+    font-family:"SCDream3";
+    src:url("../assets/font/SCDream3.otf");
+}
+.title{
+    text-decoration:underline;
+}
+p{
+    font-family: "SCDream3";
+}
 
 </style>

@@ -191,7 +191,7 @@
                 :return-value.sync="date"
                 persistent="persistent"
                 width="290px">
-                <v-date-picker v-model="selectDate" color="green lighten-1">
+                <v-date-picker v-model="selectDate" color="grey">
                     <v-spacer></v-spacer>
                     <v-btn text="text" color="primary" @click="calendar_dialog = false">
                         Cancel
