@@ -227,13 +227,15 @@
         },
         
         mounted() {
+            console.log(localStorage.getItem("category").length);
             if (localStorage.getItem("notes")) 
                 this.$store.state.notes = JSON.parse(localStorage.getItem("notes"));
             if (localStorage.getItem("category")) {
                 this.$store.state.category = JSON.parse(localStorage.getItem("category"));
             }
-            else{
+            if(!localStorage.getItem("category")){
                 localStorage.setItem("category", JSON.stringify(this.$store.state.category));
+                console.log(this.$store.state.category)
             }
             this.notes = this.$store.state.notes;
             this.noteViewList = this.notes;
