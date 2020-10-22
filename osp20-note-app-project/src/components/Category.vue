@@ -15,7 +15,7 @@
       <div class="category-content">
         <v-row>
           <v-col cols="12">
-            <span 
+            <span
               ><input
                 class="category-input"
                 type="text"
@@ -72,25 +72,41 @@ export default {
     createCategory() {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
-        this.category = this.$store.state.category;
-        var newCategory = { title: this.name, color: "#" + Math.round(Math.random() * 0xffffff).toString(16)};
-        console.log(newCategory);
-        this.$store.commit('addCategory',newCategory)
-       
-        // this.category.push({ title: this.name });
-        // localStorage.setItem("category", JSON.stringify(this.category));
-        // this.$store.state.category = JSON.parse(
-        //   localStorage.getItem("category")
-        // );
-        
-        this.name = "";
+        var i;
+        for (i = 0; i < this.$store.state.category.length; i++) {
+          if (this.name == this.$store.state.category[i].title){
+            alert("이미 존재하는 카테고리 이름입니다!");
+            break;
+          }
+        }
+        if (i == this.$store.state.category.length) {
+          this.category = this.$store.state.category;
+          var newCategory = {
+            title: this.name,
+            color: "#" + Math.round(Math.random() * 0xffffff).toString(16),
+          };
+          console.log(newCategory);
+          this.$store.commit("addCategory", newCategory);
+
+          // this.category.push({ title: this.name });
+          // localStorage.setItem("category", JSON.stringify(this.category));
+          // this.$store.state.category = JSON.parse(
+          //   localStorage.getItem("category")
+          // );
+
+          this.name = "";
+        }
       }
     },
 
     deleteCategory(index) {
       this.category = this.$store.state.category;
-      if(confirm("카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?")){
-        this.$store.commit('deleteCategory',index);
+      if (
+        confirm(
+          "카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?"
+        )
+      ) {
+        this.$store.commit("deleteCategory", index);
         alert("삭제되었습니다.");
       }
       // vuex 꺼 쓰기
@@ -113,7 +129,7 @@ export default {
       handler() {
         var newCategory = this.category;
         localStorage.setItem("category", JSON.stringify(newCategory));
-        this.$store.state.category = newCategory ;
+        this.$store.state.category = newCategory;
       },
       deep: true,
     },
