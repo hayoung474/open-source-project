@@ -41,6 +41,7 @@
               <span
                 class="category-delete"
                 @click.prevent="deleteCategory(index)"
+                
               >
                 <i class="fas fa-times"></i>
               </span>

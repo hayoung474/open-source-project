@@ -8,21 +8,21 @@ export const store = new Vuex.Store({
     category: [
       {title:"기본메모", color:"blue"}, 
     ],
-    notes:[],
+    // notes:[],
 
   },
   mutations: {
-    addNote(state,note){
-      state.notes.push(note);
-      localStorage.setItem("notes", JSON.stringify(state.notes));
-    },
-    updateNote(state,data){
-      state.notes[data.modifyIndexData]=data.note;
-      // state.notes.push(state.notes[data.modifyIndexData]);
-      // state.notes.splice(data.modifyIndexData,1);
+    // addNote(state,note){
+    //   state.notes.push(note);
+    //   localStorage.setItem("notes", JSON.stringify(state.notes));
+    // },
+    // updateNote(state,data){
+    //   state.notes[data.modifyIndexData]=data.note;
+    //   // state.notes.push(state.notes[data.modifyIndexData]);
+    //   // state.notes.splice(data.modifyIndexData,1);
       
-      localStorage.setItem("notes", JSON.stringify(state.notes));
-    },
+    //   localStorage.setItem("notes", JSON.stringify(state.notes));
+    // },
 
     // 카테고리가 변할때 마다 localStorage 에 변경해줄것
     addCategory(state, category) {

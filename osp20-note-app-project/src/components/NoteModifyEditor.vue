@@ -136,6 +136,7 @@
 export default {
   props: {
     modifyIndex: Number,
+    selectNote:Object
   },
   data() {
     return {
@@ -157,6 +158,7 @@ export default {
 
       startModify: true,
       index: null,
+      beforeNote:"",
     };
   },
   // created() {
@@ -164,16 +166,22 @@ export default {
   //     this.$store.state.category = JSON.parse(localStorage.getItem("category"));
   // },
   mounted() {
-    this.index = this.modifyIndex;
-    this.title = this.$store.state.notes[this.index].title;
-    this.text = this.$store.state.notes[this.index].text;
-    this.theme = this.$store.state.notes[this.index].theme;
-    this.secret = this.$store.state.notes[this.index].secret;
-    this.important = this.$store.state.notes[this.index].important;
-    this.beforeCategoryName = this.$store.state.notes[
-      this.index
-    ].category.title;
+
+    // this.index = this.modifyIndex;
+    // this.title = this.$store.state.notes[this.index].title;
+    // this.text = this.$store.state.notes[this.index].text;
+    // this.theme = this.$store.state.notes[this.index].theme;
+    // this.secret = this.$store.state.notes[this.index].secret;
+    // this.important = this.$store.state.notes[this.index].important;
+    // this.beforeCategoryName = this.$store.state.notes[this.index].category.title;
+    this.title = this.selectNote.title;
+    this.text = this.selectNote.text;
+    this.theme = this.selectNote.theme;
+    this.secret = this.selectNote.secret;
+    this.important = this.selectNote.important;
+    this.beforeCategoryName = this.selectNote.category.title;
     this.selectCategoryName = this.category[this.select].title;
+    
   },
   updated() {
     // 아직 카테고리 수정 내용이 바로 적용되지는 않음.
@@ -182,22 +190,36 @@ export default {
   },
 
   watch: {
-    modifyIndex: {
-      handler() {
-        this.index = this.modifyIndex;
-        this.title = this.$store.state.notes[this.index].title;
-        this.text = this.$store.state.notes[this.index].text;
-        this.theme = this.$store.state.notes[this.index].theme;
-        this.secret = this.$store.state.notes[this.index].secret;
-        this.important = this.$store.state.notes[this.index].important;
-        this.beforeCategoryName = this.$store.state.notes[
-          this.index
-        ].category.title;
+    selectNote:{
+      handler(){
+        console.log(this.selectNote);
+        this.title = this.selectNote.title;
+        this.text = this.selectNote.text;
+        this.theme = this.selectNote.theme;
+        this.secret = this.selectNote.secret;
+        this.important = this.selectNote.important;
+        this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
-
-        this.startModify = true;
-      },
+      }
     },
+    // modifyIndex: {
+    //   handler() {
+
+    //     console.log(this.modifyIndex)
+    //     this.index = this.modifyIndex;
+    //     this.title = this.$store.state.notes[this.index].title;
+    //     this.text = this.$store.state.notes[this.index].text;
+    //     this.theme = this.$store.state.notes[this.index].theme;
+    //     this.secret = this.$store.state.notes[this.index].secret;
+    //     this.important = this.$store.state.notes[this.index].important;
+    //     this.beforeCategoryName = this.$store.state.notes[
+    //       this.index
+    //     ].category.title;
+    //     this.selectCategoryName = this.category[this.select].title;
+
+    //     this.startModify = true;
+    //   },
+    // },
 
     secret: {
       handler() {
@@ -209,6 +231,7 @@ export default {
   },
   methods: {
     createNew() {
+      
       if (this.title == "") {
         alert("제목을 입력해주세요!");
       }
@@ -218,14 +241,20 @@ export default {
       if (this.secret && this.password == "") {
         alert("비밀번호를 입력해주세요!");
       }
-      if (
-        this.title != "" &&
-        this.text != "" &&
-        ((this.secret && this.password != "") ||
-          (!this.secret && this.password == ""))
-      ) {
-        this.$emit("editorClose");
+      if (this.title != "" && this.text != "" && ((this.secret && this.password != "") || (!this.secret && this.password == ""))) {
 
+        // this.dialog = false;
+
+
+
+        // 선택한 카테고리가 없을 경우 최상단 카테고리 자동 지정
+        if(this.isEmpty(this.select)){
+          this.select=0;
+        }
+        
+        console.log(this.select);
+        
+        // 날짜 지정 시간대 조정
         var timezoneOffset = new Date().getTimezoneOffset() * 60000; 
         var timezoneDate = new Date(Date.now() - timezoneOffset);
 
@@ -234,31 +263,52 @@ export default {
           title: this.title,
           text: this.text,
           theme: this.theme,
-          date:
-            timezoneDate.toISOString().substr(0, 10) +
-            " " +
-            new Date().toTimeString().substr(0, 8),
+          date:timezoneDate.toISOString().substr(0, 10) + " " + new Date().toTimeString().substr(0, 8),
           sortDate: new Date(),
           category: this.category[this.select],
           secret: this.secret,
           important: this.important,
+          password: this.password,
         };
 
-        // 노트 수정
-        this.noteModified(note);
 
+        // 노트 추가 
+        this.$emit('ModifyNote',this.selectNote,note);
+
+        this.title = "";
+        this.text = "";
+        this.theme = "";
         this.select = 0;
+        this.secret = false;
+        this.important = false;
+        this.password = "";
+
+        this.$emit("editorClose");
       }
     },
-    noteModified(note) {
-      var modifyIndexData = this.index;
-      this.$store.commit("updateNote", { note, modifyIndexData });
-      this.$emit("redraw");
-    },
+    // noteModified(note) {
+    //   var modifyIndexData = this.index;
+    //   this.$store.commit("updateNote", { note, modifyIndexData });
+    //   this.$emit("redraw");
+    // },
     cancel() {
-      this.$emit("editorClose");
+      this.title = "";
+      this.text = "";
+      this.theme = "";
       this.select = 0;
+      this.secret = false;
+      this.important = false;
+      this.password = "";
+
+      this.$emit("editorClose");
     },
+    isEmpty(str){
+         
+        if(typeof str == "undefined" || str == null || str == "")
+            return true;
+        else
+            return false ;
+    }
   },
 };
 </script>

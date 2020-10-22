@@ -139,10 +139,12 @@ export default {
       password: "",
 
       category: [],
-      select: 0,
+      select: null,
       selectCategoryName: "",
+      
+      
 
-      dialog: false,
+      // dialog: false,
     };
   },
   // created() {
@@ -158,6 +160,7 @@ export default {
 
   methods: {
     createNew() {
+      
       if (this.title == "") {
         alert("제목을 입력해주세요!");
       }
@@ -167,33 +170,36 @@ export default {
       if (this.secret && this.password == "") {
         alert("비밀번호를 입력해주세요!");
       }
-      if (
-        this.title != "" &&
-        this.text != "" &&
-        ((this.secret && this.password != "") ||
-          (!this.secret && this.password == ""))
-      ) {
-        this.dialog = false;
+      if (this.title != "" && this.text != "" && ((this.secret && this.password != "") || (!this.secret && this.password == ""))) {
 
+        // this.dialog = false;
+
+
+
+        // 선택한 카테고리가 없을 경우 최상단 카테고리 자동 지정
+        if(this.isEmpty(this.select)){
+          this.select=0;
+        }
+
+        // 날짜 지정 시간대 조정
         var timezoneOffset = new Date().getTimezoneOffset() * 60000; 
         var timezoneDate = new Date(Date.now() - timezoneOffset);
+
 
         var note = {
           title: this.title,
           text: this.text,
           theme: this.theme,
-          date:
-            timezoneDate.toISOString().substr(0, 10) +
-            " " +
-            new Date().toTimeString().substr(0, 8),
+          date:timezoneDate.toISOString().substr(0, 10) + " " + new Date().toTimeString().substr(0, 8),
           sortDate: new Date(),
           category: this.category[this.select],
           secret: this.secret,
           important: this.important,
           password: this.password,
         };
-        // 노트 추가
-        this.noteAdd(note);
+
+        // 노트 추가 
+        this.$emit('AddNote',note);
 
         this.title = "";
         this.text = "";
@@ -202,16 +208,33 @@ export default {
         this.secret = false;
         this.important = false;
         this.password = "";
+
+        this.$emit("editorClose");
       }
     },
-    noteAdd(note) {
-      console.log(new Date().toISOString());
-      this.$emit("editorClose");
-      this.$store.commit("addNote", note);
-    },
+    // noteAdd(note) {
+    //   console.log(new Date().toISOString());
+    //   this.$emit("editorClose");
+    //   this.$store.commit("addNote", note);
+    // },
     cancel() {
+      this.title = "";
+      this.text = "";
+      this.theme = "";
+      this.select = 0;
+      this.secret = false;
+      this.important = false;
+      this.password = "";
+
       this.$emit("editorClose");
     },
+    isEmpty(str){
+         
+        if(typeof str == "undefined" || str == null || str == "")
+            return true;
+        else
+            return false ;
+    }
   },
 
   // mounted() {

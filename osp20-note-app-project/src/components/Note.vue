@@ -38,13 +38,13 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12">
-                <p class="note-text" style="white-space: pre-line;height:200px;overflow:auto;" v-if="note.secret===false">
+            <v-col cols="12" v-if="note.secret===false">
+                <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;">
                     {{ note.text }}
                 </p>
-                <p class="note-text" style="white-space: pre-line;height:200px;overflow:auto;" v-if="note.secret===true">
-                    메모를 클릭하여 비밀번호를 입력하고 메모를 잠금해제하세요
-                </p>
+            </v-col>
+            <v-col v-if="note.secret===true">
+                <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;" >메모를 클릭하여 비밀번호를 입력하고 메모를 잠금해제하세요</p>
             </v-col>
         </v-row>
         <v-row>
@@ -69,11 +69,11 @@
         },
         data() {
             return {
-                modifyNote(note,index){
-                    this.$emit('modifyNote',note,index);
+                modifyNote(note){
+                    this.$emit('modifyNote',note);
                 },
-                deleteNote(note,index){
-                    this.$emit('deleteNote',note,index);
+                deleteNote(note){
+                    this.$emit('deleteNote',note);
                 },
             }
         },
@@ -81,6 +81,7 @@
         }
     }
 </script>
+
 
 <style>
 body{ -ms-overflow-style: none; } 

@@ -68,7 +68,7 @@
             </div> -->
             <draggable></draggable>
             <div >
-                <draggable class="row" v-model="noteViewList" :sort="true" @start="drag=true" @end="drag=false">
+                <draggable class="row" v-model="noteViewList" :sort="true" @start="drag=true" @end="drag=false" group="people">
                     <v-col
                         v-for="(note, index) in noteViewList"
                         :key="`note-${index}`"
@@ -159,7 +159,7 @@
                 max-width="800"
                 color="white"
                 persistent="persistent">
-                <app-note-editor @editorClose="dialog = false" @redraw="redraw"></app-note-editor>
+                <app-note-editor @editorClose="dialog = false" @redraw="redraw" @AddNote="AddNote"></app-note-editor>
             </v-dialog>
 
             <v-dialog
@@ -177,8 +177,10 @@
                 persistent="persistent">
                 <app-note-modify-editor
                     :modifyIndex="modifyIndex"
+                    :selectNote="selectNote"
                     @editorClose="dialog2 = false;"
                     @redraw="redraw"
+                    @ModifyNote="ModifyNote"
                 ></app-note-modify-editor>
             </v-dialog>
 
@@ -229,14 +231,26 @@
                 category_dialog: false,
                 password_dialog: false,
                 calendar_dialog:false,
-                allMode:true,
+                // allMode:true,
                 categoryTitle:"",
                 searchKeyword:"",
                 selectDate:"",
+
+                selectNote:"",
             };
         },
         methods: {
-            
+            AddNote(note){
+                this.notes.push(note);
+            },
+            ModifyNote(selectNote,note){
+                this.notes[this.notes.indexOf(selectNote)]=note;
+                localStorage.setItem("notes", JSON.stringify(this.notes));
+                if(this.categoryTitle!==""){
+                    this.noteViewList = this.notes.filter(note=>note.category.title === this.categoryTitle);
+                }
+
+            },
             deleteNote(note) {
                 if (confirm("정말로 삭제하시겠습니까?")) {
                     this.notes.splice(this.notes.indexOf(note), 1);
@@ -245,9 +259,11 @@
             },
             
             modifyNote(note) {
+                
+                this.selectNote = note;
                 this.modifyIndex = this.notes.indexOf(note);
+                this.note = note;
                 this.dialog2 = true;
-
             },
             sortLastest() {
                 this.noteViewList.sort(function (a, b) {
@@ -279,17 +295,28 @@
                 }
             },
             showDateNote(){
-                console.log(this.selectDate);
-                console.log(this.noteViewList);
                 this.noteViewList = this.notes.filter(note=>note.date.substr(0, 10) === this.selectDate);
 
             }
         },
-        
         mounted() {
-            console.log(localStorage.getItem("category").length);
-            if (localStorage.getItem("notes")) 
-                this.$store.state.notes = JSON.parse(localStorage.getItem("notes"));
+            // console.log(localStorage.getItem("category").length);
+
+            // this.notes = this.$store.state.notes;
+            // this.noteViewList = this.notes;
+
+            //     this.$store.state.notes = JSON.parse(localStorage.getItem("notes"));
+            if (localStorage.getItem("notes")) {
+
+                this.notes = JSON.parse(localStorage.getItem("notes"));
+
+                if (localStorage.getItem("noteViewList")) {
+                    this.noteViewList = JSON.parse(localStorage.getItem( "noteViewList"))
+                }
+                else if (!localStorage.getItem("noteViewList")) {
+                    this.noteViewList = this.notes;
+                }
+            }
             if (localStorage.getItem("category")) {
                 this.$store.state.category = JSON.parse(localStorage.getItem("category"));
             }
@@ -297,25 +324,34 @@
                 localStorage.setItem("category", JSON.stringify(this.$store.state.category));
                 console.log(this.$store.state.category)
             }
-            this.notes = this.$store.state.notes;
-            this.noteViewList = this.notes;
-
         },
         // 값 변경시 적용
-        updated() {
-            this.notes = this.$store.state.notes;
-        },
+        // updated() {
+        //     this.notes = this.$store.state.notes;
+        // },
         watch: {
             notes: {
                 handler() {
-                    this.$store.state.notes= this.notes;
-                    this.notes = this.$store.state.notes;
+                    console.log("바뀜!",this.notes);
+                    // console.log(this.notes);
+                    // this.$store.state.notes= this.notes;
+                    // this.notes = this.$store.state.notes;
+                    this.noteViewList=this.notes;
                     localStorage.setItem("notes", JSON.stringify(this.notes));
+
+                    // 카테고리가 선택이 되어 있는 경우에 재 배치
+                    if(this.categoryTitle!==""){
+                        this.noteViewList = this.notes.filter(note=>note.category.title === this.categoryTitle);
+                    }
                 },
                 deep: true
             },
+            noteViewList:{
+                handler(){
+                    localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+                }
+            }
         },
-        
         components: {
             appNoteEditor: NoteEditor,
             appHeader: Header,
