@@ -13,7 +13,7 @@
                         모든 메모
                     </v-chip>
                 </span>
-                <span v-for="(category, index) in this.$store.state.category" :key="index">
+                <span v-for="(category, index) in this.category" :key="index">
                     <v-chip
                         class="ma-2"
                         :style="{ background: category.color }"
@@ -168,7 +168,7 @@
                 max-width="700"
                 color="white"
                 persistent="persistent">
-                <notecategory @dialogClosed="category_dialog = false"></notecategory>
+                <notecategory @dialogClosed="category_dialog = false" @deleteCategoryNote="deleteCategoryNote"></notecategory>
             </v-dialog>
 
             <v-dialog
@@ -182,6 +182,7 @@
                     @editorClose="dialog2 = false;"
                     @redraw="redraw"
                     @ModifyNote="ModifyNote"
+                    :category="category"
                 ></app-note-modify-editor>
             </v-dialog>
 
@@ -227,6 +228,7 @@
                 dialog2: false,
                 notes: [],
                 noteViewList:[],
+                category:[],
                 isModify: false,
                 modifyIndex: null,
                 category_dialog: false,
@@ -298,15 +300,13 @@
             showDateNote(){
                 this.noteViewList = this.notes.filter(note=>note.date.substr(0, 10) === this.selectDate);
 
+            },
+            deleteCategoryNote(deleteCategory) {
+                // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
+                this.notes = this.notes.filter(note=>note.category.title !== deleteCategory.title);
             }
         },
         mounted() {
-            // console.log(localStorage.getItem("category").length);
-
-            // this.notes = this.$store.state.notes;
-            // this.noteViewList = this.notes;
-
-            //     this.$store.state.notes = JSON.parse(localStorage.getItem("notes"));
             if (localStorage.getItem("notes")) {
 
                 this.notes = JSON.parse(localStorage.getItem("notes"));
@@ -319,24 +319,15 @@
                 }
             }
             if (localStorage.getItem("category")) {
-                this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+                this.category = JSON.parse(localStorage.getItem("category"));
             }
             if(!localStorage.getItem("category")){
-                localStorage.setItem("category", JSON.stringify(this.$store.state.category));
-                console.log(this.$store.state.category)
+                localStorage.setItem("category", JSON.stringify([{title:"기본메모", color:"grey"}]));
             }
         },
-        // 값 변경시 적용
-        // updated() {
-        //     this.notes = this.$store.state.notes;
-        // },
         watch: {
             notes: {
                 handler() {
-                    console.log("바뀜!",this.notes);
-                    // console.log(this.notes);
-                    // this.$store.state.notes= this.notes;
-                    // this.notes = this.$store.state.notes;
                     this.noteViewList=this.notes;
                     localStorage.setItem("notes", JSON.stringify(this.notes));
 
@@ -350,6 +341,11 @@
             noteViewList:{
                 handler(){
                     localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+                }
+            },
+            category:{
+                handler(){
+                    localStorage.setItem("category", JSON.stringify(this.category));
                 }
             }
         },

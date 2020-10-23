@@ -42,7 +42,6 @@
                             <div style="text-align: -webkit-center">
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
-                            <div style="background-color:grey; height='100px'"><vue-markdown :source="text">{{text}}</vue-markdown></div>
                         </v-col>
                     </v-row>
                     <v-card-title>Options</v-card-title>
@@ -120,13 +119,9 @@
     </v-container>
 </template>
 <script>
-import VueMarkdown from 'vue-markdown'
     export default {
         props: {
             modifyIndex: Number
-        },
-        components: {
-            VueMarkdown
         },
         data() {
             return {
@@ -144,16 +139,16 @@ import VueMarkdown from 'vue-markdown'
                 // dialog: false,
             };
         },
+        mounted(){
+            this.category =  JSON.parse(localStorage.getItem("category"));
+        },
         // created() {       this.$store.state.category =
         // JSON.parse(localStorage.getItem("category"));       this.category =
         // this.$store.state.category; },
         updated() {
-            this.category = this.$store.state.category;
-            this.selectCategoryName = this
-                .category[this.select]
-                .title;
+            // this.category = this.$store.state.category;
+            this.selectCategoryName = this.category[this.select].title;
         },
-
         methods: {
             // test(){
             //     console.log(this.$refs.text);
@@ -188,11 +183,7 @@ import VueMarkdown from 'vue-markdown'
                         title: this.title,
                         text: this.text,
                         theme: this.theme,
-                        date: timezoneDate
-                            .toISOString()
-                            .substr(0, 10) + " " + new Date()
-                            .toTimeString()
-                            .substr(0, 8),
+                        date:timezoneDate .toISOString() .substr(0, 10) + " " + new Date() .toTimeString() .substr(0, 8),
                         sortDate: new Date(),
                         category: this.category[this.select],
                         secret: this.secret,
@@ -249,16 +240,16 @@ import VueMarkdown from 'vue-markdown'
                 },
                 deep: true
             },
-            modifyIndex: {
-                handler() {
-                  this.index = this.modifyIndex;
-                  this.title = this .$store .state .notes[this.modifyIndex] .title;
-                  this.text = this .$store .state .notes[this.modifyIndex] .text;
-                  this.theme = this .$store .state .notes[this.modifyIndex] .theme;
-                  this.secret = this .$store .state .notes[this.modifyIndex] .secret;
-                  this.important = this .$store .state .notes[this.modifyIndex] .important;
-                }
-            },
+            // modifyIndex: {
+            //     handler() {
+            //       this.index = this.modifyIndex;
+            //       this.title = this .$store .state .notes[this.modifyIndex] .title;
+            //       this.text = this .$store .state .notes[this.modifyIndex] .text;
+            //       this.theme = this .$store .state .notes[this.modifyIndex] .theme;
+            //       this.secret = this .$store .state .notes[this.modifyIndex] .secret;
+            //       this.important = this .$store .state .notes[this.modifyIndex] .important;
+            //     }
+            // },
             secret: {
                 handler() {
                     if (this.secret == false) {

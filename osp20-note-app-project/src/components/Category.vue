@@ -34,13 +34,13 @@
           <v-col cols="12">
             <li
               class="category-list"
-              v-for="(category, index) in this.$store.state.category"
+              v-for="(category, index) in category"
               :key="index"
             >
               {{ category.title }}
               <span
                 class="category-delete"
-                @click.prevent="deleteCategory(index)"
+                @click="deleteCategory(index)"
                 
               >
                 <i class="fas fa-times"></i>
@@ -73,11 +73,18 @@ export default {
     createCategory() {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
-        this.category = this.$store.state.category;
+        // this.category = this.$store.state.category;
         var newCategory = { title: this.name, color: "#" + Math.round(Math.random() * 0xffffff).toString(16)};
-        console.log(newCategory);
-        this.$store.commit('addCategory',newCategory)
-       
+
+        // console.log(newCategory);
+        // this.$store.commit('addCategory',newCategory)
+
+        this.category.push(newCategory);
+
+        // this.$emit("addCategory", newCategory);
+
+
+
         // this.category.push({ title: this.name });
         // localStorage.setItem("category", JSON.stringify(this.category));
         // this.$store.state.category = JSON.parse(
@@ -89,9 +96,14 @@ export default {
     },
 
     deleteCategory(index) {
-      this.category = this.$store.state.category;
+      // this.category = this.$store.state.category;
       if(confirm("카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?")){
-        this.$store.commit('deleteCategory',index);
+        
+        let deleteCategory = this.category[index];
+        this.$emit("deleteCategoryNote",deleteCategory);
+
+        this.category.splice(index, 1);
+        // this.$store.commit('deleteCategory',index);
         alert("삭제되었습니다.");
       }
       // vuex 꺼 쓰기
@@ -104,19 +116,18 @@ export default {
 
   mounted() {
     if (localStorage.getItem("category")) {
-      this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-      this.category = this.$store.state.category;
+      // this.$store.state.category = JSON.parse(localStorage.getItem("category"));
+      // this.category = this.$store.state.category;
+      this.category =  JSON.parse(localStorage.getItem("category"));
     }
   },
-
+  
   watch: {
     category: {
       handler() {
-        var newCategory = this.category;
-        localStorage.setItem("category", JSON.stringify(newCategory));
-        this.$store.state.category = newCategory ;
+        console.log(this.category)
+        localStorage.setItem("category", JSON.stringify(this.category));
       },
-      deep: true,
     },
   },
 };

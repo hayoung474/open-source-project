@@ -155,7 +155,8 @@
 export default {
   props: {
     modifyIndex: Number,
-    selectNote:Object
+    selectNote:Object,
+    category:Object,
   },
   data() {
     return {
@@ -167,7 +168,7 @@ export default {
       important: false,
       password: "",
 
-      category: [],
+      // category: [],
       select: 0,
       selectCategoryName: "",
       beforeCategoryName: "",
@@ -204,8 +205,9 @@ export default {
   },
   updated() {
     // 아직 카테고리 수정 내용이 바로 적용되지는 않음.
-    this.category = this.$store.state.category;
+    // this.category = this.$store.state.category;
     this.selectCategoryName = this.category[this.select].title;
+    // this.category =  JSON.parse(localStorage.getItem("category"));
   },
 
   watch: {
@@ -219,6 +221,7 @@ export default {
         this.important = this.selectNote.important;
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
+        // this.category =  JSON.parse(localStorage.getItem("category"));
       }
     },
     // modifyIndex: {
