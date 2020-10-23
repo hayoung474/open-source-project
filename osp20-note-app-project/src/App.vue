@@ -37,7 +37,7 @@
                     <Note
                         :note="note"
                         :index="index"
-                        @click="password_dialog = note.secret"
+                        @click="password_dialog = note.secret;"
                         @modifyNote="modifyNote(note)"
                         @deleteNote="deleteNote(note)"
                        ></Note>
@@ -75,14 +75,15 @@
                         cols="6"
                         sm="4"
                         md="3"
-                        v-show="(note.important===false)">
+                        v-show="(note.important===false)"
+                        >
                         <v-hover v-slot="{ hover }">
                             <v-expand-transition>
                                 <Note
                                     v-if="true"
                                     :note="note"
                                     :index="index"
-                                    @click.native="password_dialog = note.secret"
+                                    @click="console.log('dadsdsd');password_dialog = note.secret;"
                                     @modifyNote="modifyNote(note)"
                                     @deleteNote="deleteNote(note)"></Note>
                                 <div v-if="hover" class="d-flex transition-fast-in-fast-out"></div>

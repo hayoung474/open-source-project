@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify'
 import { store } from './store'
 import { VueMasonryPlugin } from "vue-masonry";
 
+
 Vue.config.productionTip = false
 Vue.use(VueMasonryPlugin);
 

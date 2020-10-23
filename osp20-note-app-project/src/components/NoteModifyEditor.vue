@@ -19,6 +19,19 @@
                     v-model="text"
                     placeholder="Take a note..."
                   ></textarea>
+                  <v-btn-toggle v-model="formatting">
+                      <v-btn>
+                          <v-icon>mdi-format-italic</v-icon>
+                      </v-btn>
+
+                      <v-btn>
+                          <v-icon>mdi-format-bold</v-icon>
+                      </v-btn>
+                      <v-btn>
+                          <v-icon>mdi-format-underline</v-icon>
+                      </v-btn>
+
+                  </v-btn-toggle>
                 </div>
               </v-col>
               <v-col cols="12" md="6">

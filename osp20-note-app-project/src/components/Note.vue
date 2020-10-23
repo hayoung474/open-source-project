@@ -39,9 +39,10 @@
         </v-row>
         <v-row>
             <v-col cols="12" v-if="note.secret===false">
-                <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;">
+                <!-- <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;">
                     {{ note.text }}
-                </p>
+                </p> -->
+                <vue-markdown :source="note.text"></vue-markdown>
             </v-col>
             <v-col v-if="note.secret===true">
                 <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;" >메모를 클릭하여 비밀번호를 입력하고 메모를 잠금해제하세요</p>
@@ -62,6 +63,8 @@
 </template>
 
 <script>
+    import VueMarkdown from 'vue-markdown'
+
     export default {
         props: {
             note: Object,
@@ -78,6 +81,9 @@
             }
         },
         methods:{
+        },
+        components: {
+            VueMarkdown
         }
     }
 </script>
