@@ -1,5 +1,4 @@
 <template>
-   
     <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;">
         <v-row>
             <v-col cols="10">
@@ -18,21 +17,19 @@
             </v-col>
             <v-col cols="1" v-if="note.secret && note.important">
                 <span class="importantsecret">
-                    <span style="color: yellow">
                         <v-icon>mdi-pin</v-icon>
-                    </span>
                     <span style="padding-left: 10px">
                         <i class="fas fa-lock"></i>
                     </span>
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="modify" @click.prevent="modifyNote(note,index)">
+                <span class="modify" v-if="note.secret===false" @click.prevent="modifyNote(note,index)">
                     <i class="fas fa-edit"></i>
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="delete" @click.prevent="deleteNote(note,index)">
+                <span class="delete" v-if="note.secret===false" @click.prevent="deleteNote(note,index)">
                     <i class="fas fa-times"></i>
                 </span>
             </v-col>
@@ -57,7 +54,6 @@
                     {{ note.date }}
                 </p>
             </v-col>
-            
         </v-row>
     </v-card>
 </template>
