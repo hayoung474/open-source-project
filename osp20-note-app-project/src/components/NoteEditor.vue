@@ -11,6 +11,7 @@
                                 <input class="title-input" type="text" v-model="title" placeholder="Title"/>
                                 <!-- <div class="editor-text" contenteditable="true" placeholder="Take a note..." ref="text"><strong>dasdasdasds</strong><mark>dasds</mark></div> -->
                                  <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
+                                 
                                 <v-btn-toggle v-model="formatting">
                                     <v-btn @click="text=text+' *Take a note...* '">
                                         <v-icon>mdi-format-italic</v-icon>
@@ -33,6 +34,7 @@
                                 <p style="font-size:15px;">해당 에디터는 MarkDown 문법을 제공합니다.</p>
                             </div>
                             
+                            
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-card-title>Color Pick</v-card-title>
@@ -40,6 +42,7 @@
                             <div style="text-align: -webkit-center">
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
+                            <div style="background-color:grey; height='100px'"><vue-markdown :source="text">{{text}}</vue-markdown></div>
                         </v-col>
                     </v-row>
                     <v-card-title>Options</v-card-title>
@@ -117,9 +120,13 @@
     </v-container>
 </template>
 <script>
+import VueMarkdown from 'vue-markdown'
     export default {
         props: {
             modifyIndex: Number
+        },
+        components: {
+            VueMarkdown
         },
         data() {
             return {

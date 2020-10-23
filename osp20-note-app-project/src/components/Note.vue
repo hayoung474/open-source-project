@@ -42,7 +42,7 @@
                 <!-- <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;">
                     {{ note.text }}
                 </p> -->
-                <vue-markdown :source="note.text"></vue-markdown>
+                <vue-markdown :source="note.text" style="white-space: pre-line;height:160px;overflow:auto;"></vue-markdown>
             </v-col>
             <v-col v-if="note.secret===true">
                 <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;" >메모를 클릭하여 비밀번호를 입력하고 메모를 잠금해제하세요</p>
