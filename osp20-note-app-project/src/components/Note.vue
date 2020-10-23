@@ -1,5 +1,6 @@
 <template>
-    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;">
+<div>
+    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;" @click="password_dialog = note.secret">
         <v-row>
             <v-col cols="10">
                 <strong v-if="note.secret===false">{{ note.title }}</strong>
@@ -56,13 +57,19 @@
             </v-col>
         </v-row>
     </v-card>
+
+    <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
+        <Password @password="checkPassword" @dialogClosed="password_dialog = false"></Password>
+    </v-dialog>
+    </div>
 </template>
 
 <script>
+    import Password from "./Password.vue";
     export default {
         props: {
             note: Object,
-            index: Number
+            index: Number,
         },
         data() {
             return {
@@ -72,7 +79,20 @@
                 deleteNote(note,index){
                     this.$emit('deleteNote',note,index);
                 },
+                password_dialog: false,
+                password : "",
+                currentnote : [],
             }
+        },
+        methods: {
+            checkPassword(password){
+                //alert(password); // 비번확인
+                this.password = password;
+            },
+
+        },      
+        components: {
+            Password,
         }
     }
 </script>

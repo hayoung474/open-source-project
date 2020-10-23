@@ -83,7 +83,6 @@
                                     v-if="true"
                                     :note="note"
                                     :index="index"
-                                    @click.native="password_dialog = note.secret"
                                     @modifyNote="modifyNote(note)"
                                     @deleteNote="deleteNote(note)"></Note>
                                 <div v-if="hover" class="d-flex transition-fast-in-fast-out"></div>
@@ -173,9 +172,9 @@
                     ></app-note-modify-editor>
             </v-dialog>
 
-            <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
+            <!-- <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
                 <Password @dialogClosed="password_dialog = false"></Password>
-            </v-dialog>
+            </v-dialog> -->
 
             </v-container>
         </v-app>
@@ -188,7 +187,7 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
-    import Password from "./components/Password.vue";
+    // import Password from "./components/Password.vue";
     import draggable from 'vuedraggable'
 
     export default {
@@ -290,7 +289,7 @@
             appNoteModifyEditor: NoteModifyEditor,
             Note,
             draggable,
-            Password,
+            // Password,
         }
     };
 </script>

@@ -30,7 +30,7 @@
                     text="text"
                     color="black"
                     class="write-btn"
-                    @click="confirmPassword"
+                    @click="clickOk"
                     outlined="outlined"
                     >OK</v-btn
                   >
@@ -57,9 +57,16 @@ export default {
     closeDialog() {
       this.password_dialog = false;
       this.$emit("dialogClosed", this.password_dialog);
+      this.password = "";
       //   window.location.reload();
     },
-    confirmPassword() {},
+    clickOk() {
+      console.log("passvue", this.password);
+      this.$emit("password", this.password);
+      this.password_dialog = false;
+      this.$emit("dialogClosed", this.password_dialog);
+      this.password = "";
+    },
   },
 };
 </script>
