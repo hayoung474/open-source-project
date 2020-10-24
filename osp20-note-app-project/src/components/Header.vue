@@ -2,7 +2,7 @@
     <div class="header">
           <img src="../assets/note_logo.png"/>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
-        <div class="search-container">
+        <div class="search-container" @keyup.enter="search">
             <input
                 type="text"
                 v-model="searchText"
