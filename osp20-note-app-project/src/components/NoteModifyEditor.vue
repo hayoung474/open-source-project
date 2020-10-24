@@ -263,14 +263,6 @@ export default {
       }
     },
     cancel() {
-      this.title = "";
-      this.text = "";
-      this.theme = "";
-      this.select = 0;
-      this.secret = false;
-      this.important = false;
-      this.password = "";
-
       this.$emit("editorClose");
     },
     isEmpty(str){

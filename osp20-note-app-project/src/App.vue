@@ -60,20 +60,20 @@
                 md="3"
                 v-show="note.important === false"
               >
-              <v-hover v-slot="{ hover }">
-              <v-expand-transition>
-                    <Note
-                      :note="note"
-                      :index="index"
-                      @modifyNote="modifyNote(note)"
-                      @deleteNote="deleteNote(note)"
-                    ></Note>
-                    <div
-                      v-if="hover"
-                      class="d-flex transition-fast-in-fast-out"
-                    ></div>
-              </v-expand-transition>
-              </v-hover>
+                <v-hover v-slot="{ hover }">
+                    <v-expand-transition name="note">
+                            <Note
+                            :note="note"
+                            :index="index"
+                            @modifyNote="modifyNote(note)"
+                            @deleteNote="deleteNote(note)"
+                            ></Note>
+                            <div
+                            v-if="hover"
+                            class="d-flex transition-fast-in-fast-out"
+                            ></div>
+                    </v-expand-transition>
+                </v-hover>
               </v-col>
             </draggable>
           </div>
@@ -236,6 +236,11 @@ export default {
   methods: {
     AddNote(note) {
       this.notes.push(note);
+      if (this.categoryTitle !== "") {
+        this.noteViewList = this.notes.filter(
+          (note) => note.category.title === this.categoryTitle
+        );
+      }
     },
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
@@ -308,11 +313,9 @@ export default {
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
 
-      if (localStorage.getItem("noteViewList")) {
+    }
+    if (localStorage.getItem("noteViewList")) {
         this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-      } else if (!localStorage.getItem("noteViewList")) {
-        this.noteViewList = this.notes;
-      }
     }
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
@@ -327,7 +330,6 @@ export default {
   watch: {
     notes: {
       handler() {
-        this.noteViewList = this.notes;
         localStorage.setItem("notes", JSON.stringify(this.notes));
 
         // 카테고리가 선택이 되어 있는 경우에 재 배치

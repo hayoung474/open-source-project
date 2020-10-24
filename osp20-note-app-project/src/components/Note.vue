@@ -3,20 +3,20 @@
     <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;" @click="password_dialog = note.secret">
         <v-row>
             <v-col cols="10">
-                <strong class="title" v-if="isSecret===false">{{ note.title }}</strong>
-                <strong class="title" v-if="isSecret===true">비밀메모입니다</strong>
+                <strong class="title" v-if="note.secret===false">{{ note.title }}</strong>
+                <strong class="title" v-if="note.secret===true">비밀메모입니다</strong>
             </v-col>
-            <v-col cols="1" v-if="note.important && !isSecret">
+            <v-col cols="1" v-if="note.important && !note.secret">
                 <span class="importantonly">
                     <v-icon>mdi-pin</v-icon>
                 </span>
             </v-col>
-            <v-col cols="1" v-if="isSecret && !note.important">
+            <v-col cols="1" v-if="note.secret && !note.important">
                 <span class="secretonly">
                     <i class="fas fa-lock"></i>
                 </span>
             </v-col>
-            <v-col cols="1" v-if="isSecret && note.important">
+            <v-col cols="1" v-if="note.secret && note.important">
                 <span class="importantsecret">
                         <v-icon>mdi-pin</v-icon>
                     <span style="padding-left: 10px">
@@ -25,18 +25,18 @@
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="modify" v-if="isSecret===false" @click.prevent="modifyNote(note,index)">
+                <span class="modify" v-if="note.secret===false" @click.prevent="modifyNote(note,index)">
                     <i class="fas fa-edit"></i>
                 </span>
             </v-col>
             <v-col cols="1">
-                <span class="delete" v-if="isSecret===false" @click.prevent="deleteNote(note,index)">
+                <span class="delete" v-if="note.secret===false" @click.prevent="deleteNote(note,index)">
                     <i class="fas fa-times"></i>
                 </span>
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12" v-if="isSecret===false">
+            <v-col cols="12" v-if="note.secret===false">
                 <vue-markdown :source="note.text" style="white-space: pre-line;height:160px;overflow:auto;"></vue-markdown>
             </v-col>
             <v-col v-if="isSecret===true">
@@ -80,19 +80,24 @@
                 },
                 password_dialog: false,
                 password : "",
-                currentnote : [],
                 isSecret:this.note.secret,
             }
+        },
+
+        mounted(){
+            this.isSecret = this.note.secret;
+            console.log(this.isSecret);
         },
         methods: {
             checkPassword(password){
                 this.password = password;
+                this.isSecret=this.note.secret;
+                console.log(this.isSecret);
                 if(this.password === this.note.password){
                     this.isSecret=false;
                 }
                 else{
-                    alert("비밀번호가 틀렸습니다!");
-                    this.isSecret=true;
+                    alert("비밀번호가 틀렸습니다!");   
                 }
             },
         },      
