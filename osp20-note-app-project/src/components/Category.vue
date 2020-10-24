@@ -115,7 +115,6 @@ export default {
   watch: {
     category: {
       handler() {
-        console.log(this.category)
         localStorage.setItem("category", JSON.stringify(this.category));
       },
     },

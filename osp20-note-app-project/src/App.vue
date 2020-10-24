@@ -61,12 +61,12 @@
                 v-show="note.important === false"
               >
                 <v-hover v-slot="{ hover }">
-                  <v-expand-transition>
+                  <v-expand-transition-group name="notes">
                     <Note
                       v-if="true"
                       :note="note"
                       :index="index"
-                      @click="password_dialog = note.secret"
+                      
                       @modifyNote="modifyNote(note)"
                       @deleteNote="deleteNote(note)"
                     ></Note>
@@ -74,7 +74,7 @@
                       v-if="hover"
                       class="d-flex transition-fast-in-fast-out"
                     ></div>
-                  </v-expand-transition>
+                  </v-expand-transition-group>
                 </v-hover>
               </v-col>
             </draggable>
