@@ -61,20 +61,18 @@
                 v-show="note.important === false"
               >
                 <v-hover v-slot="{ hover }">
-                  <v-expand-transition>
-                    <Note
-                      v-if="true"
-                      :note="note"
-                      :index="index"
-                      @click="password_dialog = note.secret"
-                      @modifyNote="modifyNote(note)"
-                      @deleteNote="deleteNote(note)"
-                    ></Note>
-                    <div
-                      v-if="hover"
-                      class="d-flex transition-fast-in-fast-out"
-                    ></div>
-                  </v-expand-transition>
+                    <v-expand-transition name="note">
+                            <Note
+                            :note="note"
+                            :index="index"
+                            @modifyNote="modifyNote(note)"
+                            @deleteNote="deleteNote(note)"
+                            ></Note>
+                            <div
+                            v-if="hover"
+                            class="d-flex transition-fast-in-fast-out"
+                            ></div>
+                    </v-expand-transition>
                 </v-hover>
               </v-col>
             </draggable>
@@ -122,9 +120,7 @@
           fab="fab"
           color="black"
           @click="
-            dialog = true;
-            this.redraw();
-          "
+            dialog = true;"
         >
           <v-icon style="color: white"> mdi-plus </v-icon>
         </v-btn>
@@ -207,7 +203,7 @@
     </v-app>
   </div>
 </template>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 <script>
 import NoteEditor from "./components/NoteEditor.vue";
 import NoteModifyEditor from "./components/NoteModifyEditor.vue";
@@ -240,6 +236,14 @@ export default {
   methods: {
     AddNote(note) {
       this.notes.push(note);
+      if (this.categoryTitle !== "") {
+        this.noteViewList = this.notes.filter(
+          (note) => note.category.title === this.categoryTitle
+        );
+      }
+      else{
+          this.noteViewList = this.notes;
+      }
     },
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
@@ -249,12 +253,22 @@ export default {
           (note) => note.category.title === this.categoryTitle
         );
       }
+      else{
+          this.noteViewList = this.notes;
+      }
     },
     deleteNote(note) {
       if (confirm("정말로 삭제하시겠습니까?")) {
         this.notes.splice(this.notes.indexOf(note), 1);
       }
-      this.redraw();
+      if (this.categoryTitle !== "") {
+        this.noteViewList = this.notes.filter(
+          (note) => note.category.title === this.categoryTitle
+        );
+      }
+      else{
+          this.noteViewList = this.notes;
+      }
     },
     modifyNote(note) {
       this.selectNote = note;
@@ -313,11 +327,9 @@ export default {
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
 
-      if (localStorage.getItem("noteViewList")) {
+    }
+    if (localStorage.getItem("noteViewList")) {
         this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-      } else if (!localStorage.getItem("noteViewList")) {
-        this.noteViewList = this.notes;
-      }
     }
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
@@ -332,7 +344,6 @@ export default {
   watch: {
     notes: {
       handler() {
-        this.noteViewList = this.notes;
         localStorage.setItem("notes", JSON.stringify(this.notes));
 
         // 카테고리가 선택이 되어 있는 경우에 재 배치
@@ -369,4 +380,6 @@ export default {
 
 <style lang="scss">
 @import "@/styles/global.scss";
+
+.fade-enter-active, .fade-leave-active { transition: opacity .5s } .fade-enter, .fade-leave-to { opacity: 0 }
 </style>

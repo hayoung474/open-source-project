@@ -83,9 +83,16 @@
                 
             }
         },
+
+        mounted(){
+            this.isSecret = this.note.secret;
+            console.log(this.isSecret);
+        },
         methods: {
             checkPassword(password){
                 this.password = password;
+                this.isSecret=this.note.secret;
+                console.log(this.isSecret);
                 if(this.password === this.note.password){
                     this.note.secret=false;
                 }

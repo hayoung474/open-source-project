@@ -12,7 +12,7 @@
                                 <!-- <div class="editor-text" contenteditable="true" placeholder="Take a note..." ref="text"><strong>dasdasdasds</strong><mark>dasds</mark></div> -->
                                  <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
                                  
-                                <v-btn-toggle v-model="formatting">
+                                <v-btn-toggle>
                                     <v-btn @click="text=text+' *Take a note...* '">
                                         <v-icon>mdi-format-italic</v-icon>
                                     </v-btn>
@@ -54,17 +54,17 @@
                                         <v-btn text="text" color="black" v-bind="attrs" v-on="on" outlined="outlined">
                                             Category
                                         </v-btn>
-                                        <p>{{ selectCategoryName }}</p>
                                     </template>
                                     <v-list>
-                                        <v-list-item-group v-model="select">
+                                        <v-list-item-group v-model="select" >
                                             <v-list-item v-for="(item, index) in category" :key="index" link="link">
-                                                <v-list-item-title>
+                                                <v-list-item-title >
                                                     {{ item.title }}</v-list-item-title >
                                             </v-list-item>
                                         </v-list-item-group>
                                     </v-list>
                                 </v-menu>
+                                <p>{{ category[select].title }}</p>
                             </div>
                         </v-col>
                         <v-col cols="4">
@@ -98,17 +98,18 @@
                                         text="text"
                                         color="black"
                                         class="write-btn"
-                                        @click="cancel"
-                                        outlined="outlined">CANCEL</v-btn >
+                                        @click="createNew"
+                                        outlined="outlined">WRITE</v-btn >
                                 </span>
                                 <span>
                                     <v-btn
                                         text="text"
                                         color="black"
                                         class="write-btn"
-                                        @click="createNew"
-                                        outlined="outlined">WRITE</v-btn >
+                                        @click="cancel"
+                                        outlined="outlined">CANCEL</v-btn >
                                 </span>
+
                             </div>
                         </v-col>
                     </v-row>
@@ -133,17 +134,13 @@
                 password: "",
 
                 category: [],
-                select: null,
-                selectCategoryName: "",
+                select: 0,
 
                 // dialog: false,
             };
         },
         mounted(){
             this.category =  JSON.parse(localStorage.getItem("category"));
-        },
-        updated() {
-            this.selectCategoryName = this.category[this.select].title;
         },
         methods: {
             createNew() {
@@ -190,6 +187,7 @@
                     this.password = "";
 
                     this.$emit("editorClose");
+                    this.$emit("redraw");
                 }
             },
             cancel() {

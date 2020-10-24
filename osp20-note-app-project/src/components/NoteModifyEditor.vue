@@ -19,7 +19,7 @@
                     v-model="text"
                     placeholder="Take a note..."
                   ></textarea>
-                  <v-btn-toggle v-model="formatting">
+                  <v-btn-toggle>
                       <v-btn @click="text=text+' *Take a note...* '">
                           <v-icon>mdi-format-italic</v-icon>
                       </v-btn>
@@ -86,7 +86,7 @@
               </v-col>
               <v-col cols="5">
                 <p>BEFORE CATEGORY [ {{ beforeCategoryName }} ]</p>
-                <p>SELECT CATEGORY [ {{ selectCategoryName }} ]</p>
+                <p>SELECT CATEGORY [ {{ category[select].title }} ]</p>
               </v-col>
               <v-col cols="4">
                 <v-row>
@@ -124,24 +124,22 @@
               <v-col cols="5">
                 <div class="note-editor-bottom">
                   <span>
-                    <v-btn
-                      text="text"
-                      color="black"
-                      class="write-btn"
-                      @click="cancel"
-                      outlined="outlined"
-                      >CANCEL</v-btn
-                    >
-                  </span>
-                  <span>
-                    <v-btn
-                      text="text"
-                      color="black"
-                      class="write-btn"
-                      @click="createNew"
-                      outlined="outlined"
-                      >WRITE</v-btn
-                    >
+                      <span>
+                          <v-btn
+                              text="text"
+                              color="black"
+                              class="write-btn"
+                              @click="cancel"
+                              outlined="outlined">CANCEL</v-btn >
+                      </span>
+                      <span>
+                          <v-btn
+                              text="text"
+                              color="black"
+                              class="write-btn"
+                              @click="createNew"
+                              outlined="outlined">WRITE</v-btn >
+                      </span>
                   </span>
                 </div>
               </v-col>
@@ -170,7 +168,6 @@ export default {
 
       // category: [],
       select: 0,
-      selectCategoryName: "",
       beforeCategoryName: "",
 
       // 다이얼로그 제어
@@ -193,10 +190,6 @@ export default {
     console.log(this.selectNote);
     
   },
-  updated() {
-    this.selectCategoryName = this.category[this.select].title;
-  },
-
   watch: {
     selectNote:{
       handler(){
@@ -269,14 +262,6 @@ export default {
       }
     },
     cancel() {
-      this.title = "";
-      this.text = "";
-      this.theme = "";
-      this.select = 0;
-      this.secret = false;
-      this.important = false;
-      this.password = "";
-
       this.$emit("editorClose");
     },
     isEmpty(str){
