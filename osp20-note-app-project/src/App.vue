@@ -44,29 +44,6 @@
                     </v-col>
                 </v-row>
             </div>
-           
-            <!-- 일반 메모는 masonry로, 드래그 가능 하게 할 예정-->
-            <!-- <div>
-                <draggable v-masonry v-model="noteViewList" @start="drag=true" @end="drag=false">
-                    <v-col
-                    v-masonry-tile
-                    v-for="(note, index) in noteViewList"
-                    :key="`note-${index}`"
-                    cols="6"
-                    sm="4"
-                    md="3"
-                    v-show="(note.important===false)"
-                    >
-                    <Note
-                        :note="note"
-                        :index="index"
-                        @click.native="password_dialog = note.secret"
-                        @modifyNote="modifyNote(note)"
-                        @deleteNote="deleteNote(note)"></Note>
-                    </v-col>
-                </draggable>
-            </div> -->
-            <draggable></draggable>
             <div >
                 <draggable class="row" v-model="noteViewList" :sort="true" @start="drag=true" @end="drag=false" group="people">
                     <v-col
@@ -185,11 +162,6 @@
                     :category="category"
                 ></app-note-modify-editor>
             </v-dialog>
-
-            <!-- <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
-                <Password @dialogClosed="password_dialog = false"></Password>
-            </v-dialog> -->
-
             </v-container>
         </v-app>
     </div>
@@ -201,7 +173,6 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
-    // import Password from "./components/Password.vue";
     import draggable from 'vuedraggable'
 
     export default {
@@ -222,7 +193,6 @@
                 categoryTitle:"",
                 searchKeyword:"",
                 selectDate:"",
-
                 selectNote:"",
             };
         },
@@ -236,7 +206,6 @@
                 if(this.categoryTitle!==""){
                     this.noteViewList = this.notes.filter(note=>note.category.title === this.categoryTitle);
                 }
-
             },
             deleteNote(note) {
                 if (confirm("정말로 삭제하시겠습니까?")) {
@@ -244,9 +213,7 @@
                 }
                 this.redraw();
             },
-            
             modifyNote(note) {
-                
                 this.selectNote = note;
                 this.modifyIndex = this.notes.indexOf(note);
                 this.note = note;

@@ -142,22 +142,10 @@
         mounted(){
             this.category =  JSON.parse(localStorage.getItem("category"));
         },
-        // created() {       this.$store.state.category =
-        // JSON.parse(localStorage.getItem("category"));       this.category =
-        // this.$store.state.category; },
         updated() {
-            // this.category = this.$store.state.category;
             this.selectCategoryName = this.category[this.select].title;
         },
         methods: {
-            // test(){
-            //     console.log(this.$refs.text);
-            //     var text = document.createTextNode("dasdsadas");
-            //     var del = document.createElement("del");
-            //     del.appendChild(text);
-            //     this.$refs.text.appendChild(del);
-                
-            // },
             createNew() {
                 if (this.title == "") {
                     alert("제목을 입력해주세요!");
@@ -170,7 +158,6 @@
                 }
                 if (this.title != "" && this.text != "" && ((this.secret && this.password != "") || (!this.secret && this.password == ""))) {
 
-                    // this.dialog = false; 선택한 카테고리가 없을 경우 최상단 카테고리 자동 지정
                     if (this.isEmpty(this.select)) {
                         this.select = 0;
                     }
@@ -205,8 +192,6 @@
                     this.$emit("editorClose");
                 }
             },
-            // noteAdd(note) {   console.log(new Date().toISOString());
-            // this.$emit("editorClose");   this.$store.commit("addNote", note); },
             cancel() {
                 this.title = "";
                 this.text = "";
@@ -228,9 +213,6 @@
                 }
             },
 
-        // mounted() {   if (localStorage.getItem("category")) {
-        // this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-        // this.category = this.$store.state.category;   } },
 
         watch: {
             category: {
@@ -240,16 +222,6 @@
                 },
                 deep: true
             },
-            // modifyIndex: {
-            //     handler() {
-            //       this.index = this.modifyIndex;
-            //       this.title = this .$store .state .notes[this.modifyIndex] .title;
-            //       this.text = this .$store .state .notes[this.modifyIndex] .text;
-            //       this.theme = this .$store .state .notes[this.modifyIndex] .theme;
-            //       this.secret = this .$store .state .notes[this.modifyIndex] .secret;
-            //       this.important = this .$store .state .notes[this.modifyIndex] .important;
-            //     }
-            // },
             secret: {
                 handler() {
                     if (this.secret == false) {

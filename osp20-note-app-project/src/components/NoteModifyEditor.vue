@@ -181,19 +181,8 @@ export default {
       beforeNote:"",
     };
   },
-  // created() {
-  //     this.category = this.$store.state.category;
-  //     this.$store.state.category = JSON.parse(localStorage.getItem("category"));
-  // },
   mounted() {
 
-    // this.index = this.modifyIndex;
-    // this.title = this.$store.state.notes[this.index].title;
-    // this.text = this.$store.state.notes[this.index].text;
-    // this.theme = this.$store.state.notes[this.index].theme;
-    // this.secret = this.$store.state.notes[this.index].secret;
-    // this.important = this.$store.state.notes[this.index].important;
-    // this.beforeCategoryName = this.$store.state.notes[this.index].category.title;
     this.title = this.selectNote.title;
     this.text = this.selectNote.text;
     this.theme = this.selectNote.theme;
@@ -201,13 +190,11 @@ export default {
     this.important = this.selectNote.important;
     this.beforeCategoryName = this.selectNote.category.title;
     this.selectCategoryName = this.category[this.select].title;
+    console.log(this.selectNote);
     
   },
   updated() {
-    // 아직 카테고리 수정 내용이 바로 적용되지는 않음.
-    // this.category = this.$store.state.category;
     this.selectCategoryName = this.category[this.select].title;
-    // this.category =  JSON.parse(localStorage.getItem("category"));
   },
 
   watch: {
@@ -221,27 +208,8 @@ export default {
         this.important = this.selectNote.important;
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
-        // this.category =  JSON.parse(localStorage.getItem("category"));
       }
     },
-    // modifyIndex: {
-    //   handler() {
-
-    //     console.log(this.modifyIndex)
-    //     this.index = this.modifyIndex;
-    //     this.title = this.$store.state.notes[this.index].title;
-    //     this.text = this.$store.state.notes[this.index].text;
-    //     this.theme = this.$store.state.notes[this.index].theme;
-    //     this.secret = this.$store.state.notes[this.index].secret;
-    //     this.important = this.$store.state.notes[this.index].important;
-    //     this.beforeCategoryName = this.$store.state.notes[
-    //       this.index
-    //     ].category.title;
-    //     this.selectCategoryName = this.category[this.select].title;
-
-    //     this.startModify = true;
-    //   },
-    // },
 
     secret: {
       handler() {
@@ -265,17 +233,10 @@ export default {
       }
       if (this.title != "" && this.text != "" && ((this.secret && this.password != "") || (!this.secret && this.password == ""))) {
 
-        // this.dialog = false;
-
-
-
         // 선택한 카테고리가 없을 경우 최상단 카테고리 자동 지정
         if(this.isEmpty(this.select)){
           this.select=0;
         }
-        
-        console.log(this.select);
-        
         // 날짜 지정 시간대 조정
         var timezoneOffset = new Date().getTimezoneOffset() * 60000; 
         var timezoneDate = new Date(Date.now() - timezoneOffset);
@@ -308,11 +269,6 @@ export default {
         this.$emit("editorClose");
       }
     },
-    // noteModified(note) {
-    //   var modifyIndexData = this.index;
-    //   this.$store.commit("updateNote", { note, modifyIndexData });
-    //   this.$emit("redraw");
-    // },
     cancel() {
       this.title = "";
       this.text = "";

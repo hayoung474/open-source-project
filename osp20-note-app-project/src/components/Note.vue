@@ -37,9 +37,6 @@
         </v-row>
         <v-row>
             <v-col cols="12" v-if="note.secret===false">
-                <!-- <p class="note-text" style="white-space: pre-line;height:160px;overflow:auto;">
-                    {{ note.text }}
-                </p> -->
                 <vue-markdown :source="note.text" style="white-space: pre-line;height:160px;overflow:auto;"></vue-markdown>
             </v-col>
             <v-col v-if="note.secret===true">
@@ -84,11 +81,12 @@
                 password_dialog: false,
                 password : "",
                 currentnote : [],
+                
             }
         },
         methods: {
             checkPassword(password){
-                //alert(password); // 비번확인
+                alert(password); // 비번확인
                 this.password = password;
             },
 
