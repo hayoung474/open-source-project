@@ -254,7 +254,6 @@ export default {
           password: this.password,
         };
 
-
         // 노트 추가 
         this.$emit('ModifyNote',this.selectNote,note);
 
