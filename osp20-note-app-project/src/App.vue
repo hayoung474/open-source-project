@@ -83,6 +83,7 @@
           class="mx-2 calendar-button"
           fab="fab"
           color="black"
+          title="날짜별 메모 조회"
           @click="calendar_dialog = true"
         >
           <v-icon style="color: white"> mdi-calendar </v-icon>
@@ -92,6 +93,7 @@
           class="mx-2 category-button"
           fab="fab"
           color="black"
+          title="카테고리 편집"
           @click="category_dialog = true"
         >
           <v-icon style="color: white"> mdi-format-list-bulleted </v-icon>
@@ -101,6 +103,7 @@
           class="mx-2 sort-lastest-button"
           fab="fab"
           color="black"
+          title="최신순 정렬"
           @click="sortLastest"
         >
           <v-icon style="color: white"> mdi-chevron-up </v-icon>
@@ -110,6 +113,7 @@
           class="mx-2 sort-oldest-button"
           fab="fab"
           color="black"
+          title="오래된 순 정렬"
           @click="sortOldest"
         >
           <v-icon style="color: white"> mdi-chevron-down </v-icon>
@@ -119,6 +123,7 @@
           class="mx-2 add-button"
           fab="fab"
           color="black"
+          title="메모 추가"
           @click="
             dialog = true;"
         >
@@ -129,6 +134,7 @@
           class="mx-2 refresh-button"
           fab="fab"
           color="black"
+          title="되돌리기"
           @click="reset"
         >
           <v-icon style="color: white"> mdi-refresh </v-icon>

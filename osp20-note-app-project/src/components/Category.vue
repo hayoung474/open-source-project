@@ -38,11 +38,7 @@
               :key="index"
             >
               {{ category.title }}
-              <span
-                class="category-delete"
-                @click="deleteCategory(index)"
-                
-              >
+              <span class="category-delete" @click="deleteCategory(index)">
                 <i class="fas fa-times"></i>
               </span>
             </li>
@@ -61,7 +57,7 @@ export default {
       name: "",
       category_dialog: true,
       category: [],
-      isSame:false,
+      isSame: false,
     };
   },
   methods: {
@@ -74,44 +70,52 @@ export default {
     createCategory() {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
-        var newCategory = { title: this.name, color: "#" + Math.round(Math.random() * 0xffffff).toString(16)};
+        var newCategory = {
+          title: this.name,
+          color: "#" + Math.round(Math.random() * 0xffffff).toString(16),
+        };
 
         for (var i = 0; i < this.category.length; i++) {
-          if(this.category[i].title === newCategory.title){
+          if (this.category[i].title === newCategory.title) {
             alert("동일한 카테고리 이름이 존재합니다!");
-            this.isSame=true;
+            this.isSame = true;
             break;
           }
         }
-        if(!this.isSame){
+        if (!this.isSame) {
           this.category.push(newCategory);
+        } else {
+          this.isSame = false;
         }
-        else{
-          this.isSame=false
-        }
-        this.name="";
-        
+        this.name = "";
       }
     },
 
     deleteCategory(index) {
-      if(confirm("카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?")){
-        
-        let deleteCategory = this.category[index];
-        this.$emit("deleteCategoryNote",deleteCategory);
+      if (this.category[index].title === "기본메모") {
+        alert("기본메모는 삭제가 불가능 합니다.");
+      } else {
+        if (
+          confirm(
+            "카테고리 삭제시 해당 카테고리 메모도 모두 삭제 됩니다. 삭제 하시겠습니까?"
+          )
+        ) {
+          let deleteCategory = this.category[index];
+          this.$emit("deleteCategoryNote", deleteCategory);
 
-        this.category.splice(index, 1);
-        alert("삭제되었습니다.");
+          this.category.splice(index, 1);
+          alert("삭제되었습니다.");
+        }
       }
     },
   },
 
   mounted() {
     if (localStorage.getItem("category")) {
-      this.category =  JSON.parse(localStorage.getItem("category"));
+      this.category = JSON.parse(localStorage.getItem("category"));
     }
   },
-  
+
   watch: {
     category: {
       handler() {
