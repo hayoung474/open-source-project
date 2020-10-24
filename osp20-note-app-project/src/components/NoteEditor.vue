@@ -13,20 +13,20 @@
                                  <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
                                  
                                 <v-btn-toggle>
-                                    <v-btn @click="text=text+' *Take a note...* '">
+                                    <v-btn @click="text=text+' *input* '">
                                         <v-icon>mdi-format-italic</v-icon>
                                     </v-btn>
 
-                                    <v-btn @click="text=text+' **Take a note...**'">
+                                    <v-btn @click="text=text+' **input**'">
                                         <v-icon>mdi-format-bold</v-icon>
                                     </v-btn>
-                                    <v-btn @click="text=text+' <u> Take a note... </u> '">
+                                    <v-btn @click="text=text+' <u> input </u> '">
                                         <v-icon>mdi-format-underline</v-icon>
                                     </v-btn>
-                                    <v-btn @click="text=text+' - Take a note...'">
+                                    <v-btn @click="text=text+' - input'">
                                         <v-icon>mdi-format-list-bulleted</v-icon>
                                     </v-btn>
-                                    <v-btn @click="text=text+' ~~ Take a note... ~~'">
+                                    <v-btn @click="text=text+' ~~input~~'">
                                         <v-icon>mdi-format-strikethrough</v-icon>
                                     </v-btn>
 
