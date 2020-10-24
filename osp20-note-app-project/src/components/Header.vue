@@ -44,10 +44,8 @@ export default {
 </script>
 <style scoped>
   .noteTitle :hover{
-    color:black;
-    font-weight: bold;
     cursor:pointer;
-    text-shadow:3px 3px 10px white;
+    font-weight:bold;
   }
   @font-face{
     font-family:"SCDream3";
