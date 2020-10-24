@@ -83,7 +83,7 @@
                                     v-if="true"
                                     :note="note"
                                     :index="index"
-                                    @click="console.log('dadsdsd');password_dialog = note.secret;"
+                                    @click="password_dialog = note.secret;"
                                     @modifyNote="modifyNote(note)"
                                     @deleteNote="deleteNote(note)"></Note>
                                 <div v-if="hover" class="d-flex transition-fast-in-fast-out"></div>
@@ -186,25 +186,9 @@
                 ></app-note-modify-editor>
             </v-dialog>
 
-            <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
+            <!-- <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
                 <Password @dialogClosed="password_dialog = false"></Password>
-            </v-dialog>
-            <v-dialog
-                ref="dialog"
-                v-model="calendar_dialog"
-                :return-value.sync="date"
-                persistent="persistent"
-                width="290px">
-                <v-date-picker v-model="selectDate" color="grey">
-                    <v-spacer></v-spacer>
-                    <v-btn text="text" color="primary" @click="calendar_dialog = false">
-                        Cancel
-                    </v-btn>
-                    <v-btn text="text" color="primary" @click="$refs.dialog.save(selectDate);showDateNote();">
-                        OK
-                    </v-btn>
-                </v-date-picker>
-            </v-dialog>
+            </v-dialog> -->
 
             </v-container>
         </v-app>
@@ -217,7 +201,7 @@
     import Category from "./components/Category.vue";
     import Header from "./components/Header.vue";
     import Note from "./components/Note.vue";
-    import Password from "./components/Password.vue";
+    // import Password from "./components/Password.vue";
     import draggable from 'vuedraggable'
 
     export default {
@@ -356,7 +340,7 @@
             appNoteModifyEditor: NoteModifyEditor,
             Note,
             draggable,
-            Password,
+            // Password,
         }
     };
 </script>
