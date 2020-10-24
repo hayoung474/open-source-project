@@ -54,7 +54,6 @@
                                         <v-btn text="text" color="black" v-bind="attrs" v-on="on" outlined="outlined">
                                             Category
                                         </v-btn>
-                                        <p>{{ category[select].title }}</p>
                                     </template>
                                     <v-list>
                                         <v-list-item-group v-model="select" >
@@ -65,6 +64,7 @@
                                         </v-list-item-group>
                                     </v-list>
                                 </v-menu>
+                                <p>{{ category[select].title }}</p>
                             </div>
                         </v-col>
                         <v-col cols="4">
@@ -134,7 +134,7 @@
                 password: "",
 
                 category: [],
-                select: null,
+                select: 0,
 
                 // dialog: false,
             };
@@ -187,6 +187,7 @@
                     this.password = "";
 
                     this.$emit("editorClose");
+                    this.$emit("redraw");
                 }
             },
             cancel() {

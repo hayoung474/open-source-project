@@ -60,13 +60,11 @@
                 md="3"
                 v-show="note.important === false"
               >
-                <v-hover v-slot="{ hover }">
-                  <v-expand-transition-group name="notes">
+              <v-hover v-slot="{ hover }">
+              <v-expand-transition>
                     <Note
-                      v-if="true"
                       :note="note"
                       :index="index"
-                      
                       @modifyNote="modifyNote(note)"
                       @deleteNote="deleteNote(note)"
                     ></Note>
@@ -74,8 +72,8 @@
                       v-if="hover"
                       class="d-flex transition-fast-in-fast-out"
                     ></div>
-                  </v-expand-transition-group>
-                </v-hover>
+              </v-expand-transition>
+              </v-hover>
               </v-col>
             </draggable>
           </div>
@@ -122,9 +120,7 @@
           fab="fab"
           color="black"
           @click="
-            dialog = true;
-            this.redraw();
-          "
+            dialog = true;"
         >
           <v-icon style="color: white"> mdi-plus </v-icon>
         </v-btn>
@@ -207,7 +203,7 @@
     </v-app>
   </div>
 </template>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 <script>
 import NoteEditor from "./components/NoteEditor.vue";
 import NoteModifyEditor from "./components/NoteModifyEditor.vue";
@@ -254,7 +250,6 @@ export default {
       if (confirm("정말로 삭제하시겠습니까?")) {
         this.notes.splice(this.notes.indexOf(note), 1);
       }
-      this.redraw();
     },
     modifyNote(note) {
       this.selectNote = note;
@@ -369,4 +364,6 @@ export default {
 
 <style lang="scss">
 @import "@/styles/global.scss";
+
+.fade-enter-active, .fade-leave-active { transition: opacity .5s } .fade-enter, .fade-leave-to { opacity: 0 }
 </style>

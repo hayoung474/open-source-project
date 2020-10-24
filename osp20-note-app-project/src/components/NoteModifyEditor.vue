@@ -86,7 +86,7 @@
               </v-col>
               <v-col cols="5">
                 <p>BEFORE CATEGORY [ {{ beforeCategoryName }} ]</p>
-                <p>SELECT CATEGORY [ {{ selectCategoryName }} ]</p>
+                <p>SELECT CATEGORY [ {{ category[select].title }} ]</p>
               </v-col>
               <v-col cols="4">
                 <v-row>
@@ -129,16 +129,16 @@
                               text="text"
                               color="black"
                               class="write-btn"
-                              @click="createNew"
-                              outlined="outlined">WRITE</v-btn >
+                              @click="cancel"
+                              outlined="outlined">CANCEL</v-btn >
                       </span>
                       <span>
                           <v-btn
                               text="text"
                               color="black"
                               class="write-btn"
-                              @click="cancel"
-                              outlined="outlined">CANCEL</v-btn >
+                              @click="createNew"
+                              outlined="outlined">WRITE</v-btn >
                       </span>
                   </span>
                 </div>
@@ -168,7 +168,6 @@ export default {
 
       // category: [],
       select: 0,
-      selectCategoryName: "",
       beforeCategoryName: "",
 
       // 다이얼로그 제어
@@ -191,10 +190,6 @@ export default {
     console.log(this.selectNote);
     
   },
-  updated() {
-    this.selectCategoryName = this.category[this.select].title;
-  },
-
   watch: {
     selectNote:{
       handler(){
