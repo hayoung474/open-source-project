@@ -7,7 +7,7 @@
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
           <span
-            ><v-chip class="ma-2" style="background: gray" @click="reset()">
+            ><v-chip class="ma-2" style="background: #CFD8DC" @click="reset()">
               모든 메모
             </v-chip>
           </span>
@@ -334,11 +334,9 @@ export default {
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
     }
-    if (!localStorage.getItem("category")) {
-      localStorage.setItem(
-        "category",
-        JSON.stringify([{ title: "기본메모", color: "grey" }])
-      );
+    if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("noteViewList")).length===0)) {
+      localStorage.setItem("category",
+        JSON.stringify([{ title: "기본메모", color: "#80DEEA" }]));
     }
   },
   watch: {
