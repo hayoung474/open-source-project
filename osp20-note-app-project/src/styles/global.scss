@@ -73,7 +73,11 @@ body {
     justify-content: center;
     display: flex;
     align-items: center;
-    background: rgb(112, 111, 111);
+    // background: rgb(112, 111, 111);
+    // background: rgb(131,112,177);
+    // background: linear-gradient(90deg, rgba(131,112,177,1) 0%, rgba(255,241,128,1) 79%);
+    background: rgb(25,30,105);
+background: linear-gradient(90deg, rgba(25,30,105,1) 0%, rgba(188,109,137,1) 100%);
     color: #fff;
     margin-bottom: 50px;
     & p {

@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-          <img src="../assets/note_logo.png"/>
+          <img src="../assets/moon_logo.png"/>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input

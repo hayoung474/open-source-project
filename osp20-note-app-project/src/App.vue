@@ -82,7 +82,7 @@
         <v-btn
           class="mx-2 calendar-button"
           fab="fab"
-          color="black"
+          color="#191e69"
           title="날짜별 메모 조회"
           @click="calendar_dialog = true"
         >
@@ -92,7 +92,7 @@
         <v-btn
           class="mx-2 category-button"
           fab="fab"
-          color="black"
+          color="#191e69"
           title="카테고리 편집"
           @click="category_dialog = true"
         >
@@ -102,7 +102,7 @@
         <v-btn
           class="mx-2 sort-lastest-button"
           fab="fab"
-          color="black"
+          color="#191e69"
           title="최신순 정렬"
           @click="sortLastest"
         >
@@ -112,7 +112,7 @@
         <v-btn
           class="mx-2 sort-oldest-button"
           fab="fab"
-          color="black"
+          color="#bc6d89"
           title="오래된 순 정렬"
           @click="sortOldest"
         >
@@ -122,7 +122,7 @@
         <v-btn
           class="mx-2 add-button"
           fab="fab"
-          color="black"
+          color="#bc6d89"
           title="메모 추가"
           @click="
             dialog = true;"
@@ -133,7 +133,7 @@
         <v-btn
           class="mx-2 refresh-button"
           fab="fab"
-          color="black"
+          color="#bc6d89"
           title="되돌리기"
           @click="reset"
         >
@@ -342,7 +342,7 @@ export default {
     }
     if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("noteViewList")).length===0)) {
       localStorage.setItem("category",
-        JSON.stringify([{ title: "기본메모", color: "#80DEEA" }]));
+        JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
   },
   watch: {
