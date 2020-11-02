@@ -332,7 +332,6 @@ export default {
   mounted() {
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
-
     }
     if (localStorage.getItem("noteViewList")) {
         this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
@@ -340,7 +339,7 @@ export default {
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
     }
-    if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("noteViewList")).length===0)) {
+    if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("category")).length===0)) {
       localStorage.setItem("category",
         JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
