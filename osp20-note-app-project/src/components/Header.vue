@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-          <img src="../assets/moon_logo.png"/>
+          <img :src="logoURL"/>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input
@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       searchText: "",
+      logoURL:"",
     };
   },
   methods: {
@@ -34,6 +35,18 @@ export default {
     },
     reload(){
       window.location.reload();
+    },
+    timeTheme(){
+      var time = new Date().getHours();
+      if(time>6 && time<18){
+        this.logoURL = require('../assets/sun-2-256.png');
+        console.log("낮");
+      }
+      else if(time>=18 || time<=6){
+        this.logoURL = require('../assets/moon-4-256.png');
+        console.log("밤");
+      }
+      console.log(time);
     }
   }, 
 
