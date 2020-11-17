@@ -23,7 +23,15 @@ export default {
     return {
       searchText: "",
       logoURL:"",
+      latitude:37.5665,
+      longitude:126.9780,
+      positions: [],
     };
+  },
+  mounted(){
+    this.timeTheme();
+    this.trackPosition()
+    this.getJSON();
   },
   methods: {
     search(){
@@ -47,7 +55,29 @@ export default {
         console.log("밤");
       }
       console.log(time);
-    }
+    },
+    trackPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(this.successPosition, this.failurePosition, {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
+        })
+      } else {
+        alert(`Browser doesn't support Geolocation`)
+      }
+    },
+    
+    successPosition: function(position) {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      console.log(this.latitude,this.longitude);
+    },
+    
+    failurePosition(err) {
+      alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+    },
+    
   }, 
 
   components: {
