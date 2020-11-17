@@ -1,6 +1,7 @@
 <template>
     <div class="header">
-          <img :src="logoURL"/>
+          <!-- <img :src="logoURL"/> -->
+          <v-icon x-large style="color:white">{{weatherIcon}}</v-icon>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input
@@ -18,6 +19,7 @@
 
 <script>
 // import SearchBar from "./SearchBar.vue";
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -26,12 +28,13 @@ export default {
       latitude:37.5665,
       longitude:126.9780,
       positions: [],
+      weatherIcon:"mdi-weather-sunny",
+      weatherInfo:"날씨 정보가 없습니다"
     };
   },
-  mounted(){
-    this.timeTheme();
-    this.trackPosition()
-    this.getJSON();
+  async mounted(){
+    
+    await this.trackPosition();
   },
   methods: {
     search(){
@@ -44,21 +47,18 @@ export default {
     reload(){
       window.location.reload();
     },
-    timeTheme(){
+    getTime(){
       var time = new Date().getHours();
       if(time>6 && time<18){
-        this.logoURL = require('../assets/sun-2-256.png');
-        console.log("낮");
+        return "day"
       }
       else if(time>=18 || time<=6){
-        this.logoURL = require('../assets/moon-4-256.png');
-        console.log("밤");
+        return "night"
       }
-      console.log(time);
     },
-    trackPosition() {
+    async trackPosition() {
       if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(this.successPosition, this.failurePosition, {
+        await navigator.geolocation.watchPosition(await this.successPosition, this.failurePosition, {
           enableHighAccuracy: true,
           timeout: 15000,
           maximumAge: 0,
@@ -67,11 +67,39 @@ export default {
         alert(`Browser doesn't support Geolocation`)
       }
     },
-    
-    successPosition: function(position) {
+    getWeather(){
+      var apiKey = "e23cd2868a5a387d7407f52b3e0536ea"
+      var url = "http://api.openweathermap.org/data/2.5/weather?lat="+this.latitude+"&lon="+this.longitude+"&appid="+apiKey;
+
+      axios
+        .get(url)
+        .then((res) => {
+          if(res.status ===200){
+            console.log(res);
+
+            // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
+            // console.log("날씨 : "+ res.data.weather[0].main );
+            // console.log("상세날씨설명 : "+ res.data.weather[0].description );
+            // console.log("도시이름  : "+ res.data.name );
+
+            if(this.getTime() == "night"){
+              if(res.data.weather[0].description==="clear sky"){
+                this.weatherIcon = "mdi-weather-night"
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    successPosition(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
       console.log(this.latitude,this.longitude);
+
+      this.getWeather();
+
     },
     
     failurePosition(err) {
