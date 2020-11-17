@@ -1,7 +1,7 @@
 <template>
     <div class="header">
           <!-- <img :src="logoURL"/> -->
-          <v-icon x-large style="color:white">{{weatherIcon}}</v-icon>
+          <v-icon :title="weatherInfo" x-large style="color:white">{{weatherIcon}}</v-icon>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input
@@ -28,7 +28,7 @@ export default {
       latitude:37.5665,
       longitude:126.9780,
       positions: [],
-      weatherIcon:"mdi-weather-sunny",
+      weatherIcon:"mdi-note-outline",
       weatherInfo:"날씨 정보가 없습니다"
     };
   },
@@ -75,17 +75,48 @@ export default {
         .get(url)
         .then((res) => {
           if(res.status ===200){
-            console.log(res);
+            console.log(res.data.weather[0].description);
 
+            // var weather = res.data.weather[0].description;
+            var weather="clear sky"
             // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
             // console.log("날씨 : "+ res.data.weather[0].main );
             // console.log("상세날씨설명 : "+ res.data.weather[0].description );
             // console.log("도시이름  : "+ res.data.name );
 
             if(this.getTime() == "night"){
-              if(res.data.weather[0].description==="clear sky"){
+              if(weather==="clear sky"){
                 this.weatherIcon = "mdi-weather-night"
               }
+              if(weather==="few clouds"){
+                this.weatherIcon="mdi-weather-night-partly-cloudy";
+              }
+              if(weather==="rain"){
+                this.weatherIcon="mdi-weather-rainy"
+              }
+            }
+            if(this.getTime()=="day"){
+              if(weather==="clear sky"){
+                this.weatherIcon = "mdi-weather-sunny"
+              }
+              if(weather==="few clouds"){
+                this.weatherIcon="mdi-weather-partly-cloudy";
+              }
+              if(weather==="rain"){
+                this.weatherIcon="mdi-weather-partly-rainy"
+              }
+            }
+            if(weather==="fog"){
+              this.weatherIcon = "mdi-weather-fog"
+            }
+            if(weather==="snow"){
+              this.weatherIcon= "mdi-weather-snowy"
+            }
+            if(weather==="scattered clouds"){
+              this.weatherIcon="mdi-weather-cloudy";
+            }
+            if(weather==="shower rain"){
+              this.weatherIcon="mdi-weather-pouring"
             }
           }
         })
@@ -96,7 +127,6 @@ export default {
     successPosition(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      console.log(this.latitude,this.longitude);
 
       this.getWeather();
 
