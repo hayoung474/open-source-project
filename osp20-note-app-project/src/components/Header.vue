@@ -1,6 +1,5 @@
 <template>
-    <div class="header" style="background: rgb(0,6,83);
-background: linear-gradient(90deg, rgba(0,6,83,1) 0%, rgba(5,23,36,1) 100%);">
+    <div class="header" v-bind:style="themeColor">
           <!-- <img :src="logoURL"/> -->
           <v-icon x-large style="color:white">{{weatherIcon}}</v-icon>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
@@ -31,6 +30,11 @@ export default {
       positions: [],
       weatherIcon:"mdi-note-outline",
       weatherInfo:"날씨 정보가 없습니다",
+      themeColor:{
+        background: 'linear-gradient(90deg, rgba(25,30,105,1) 0%, rgba(188,109,137,1) 100%)'
+      },
+      weather:"",
+      time:"",
     };
   },
   async mounted(){
@@ -76,53 +80,15 @@ export default {
         .get(url)
         .then((res) => {
           if(res.status ===200){
-            console.log(res.data.weather[0].description);
 
-            // this.temp = (res.data.main.temp- 273.15);
+            console.log(res);
+            this.weather = res.data.weather[0].description;
+            this.time="day";
 
-            // var weather = res.data.weather[0].description;
-            var weather = res.data.weather[0].description;
-            // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
-            // console.log("날씨 : "+ res.data.weather[0].main );
-            // console.log("상세날씨설명 : "+ res.data.weather[0].description );
-            // console.log("도시이름  : "+ res.data.name );
-            var time="night"
+            this.themeSet();
 
 
-            if(time == "night"){
-              if(weather==="clear sky"){
-                this.weatherIcon = "mdi-weather-night"
-              }
-              if(weather==="few clouds"){
-                this.weatherIcon="mdi-weather-night-partly-cloudy";
-              }
-              if(weather==="rain" || weather==="light rain"){
-               this.weatherIcon="mdi-weather-rainy"
-              }
-            }
-            if(time =="day"){
-              if(weather==="clear sky"){
-                this.weatherIcon = "mdi-weather-sunny"
-              }
-              if(weather==="few clouds"){
-                this.weatherIcon="mdi-weather-partly-cloudy";
-              }
-              if(weather==="rain" || weather==="light rain"){
-               this.weatherIcon="mdi-weather-rainy"
-              }
-            }
-            if(weather==="fog"){
-              this.weatherIcon = "mdi-weather-fog"
-            }
-            if(weather==="snow"){
-              this.weatherIcon= "mdi-weather-snowy"
-            }
-            if(weather==="scattered clouds"){
-              this.weatherIcon="mdi-weather-cloudy";
-            }
-            if(weather==="shower rain"){
-              this.weatherIcon="mdi-weather-pouring"
-            }
+
           }
         })
         .catch((err) => {
@@ -140,6 +106,52 @@ export default {
     failurePosition(err) {
       alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
     },
+    themeSet(){
+      if(this.time =="day"){
+        if(this.weather==="clear sky"){
+          this.weatherIcon = "mdi-weather-sunny"
+          this.themeColor.background = 'linear-gradient(90deg, rgba(250,217,119,1) 0%, rgba(129,210,241,1) 91%)';
+        }
+        if(this.weather==="few clouds"){
+          this.weatherIcon="mdi-weather-partly-cloudy";
+          this.themeColor.background = 'linear-gradient(90deg, rgba(237,237,237,1) 0%, rgba(149,161,166,1) 92%)';
+        }
+        if(this.weather==="rain" || this.weather==="light rain"){
+          this.weatherIcon="mdi-weather-rainy"
+          this.themeColor.background = 'linear-gradient(90deg, rgba(228,228,228,1) 0%, rgba(101,122,130,1) 92%)';
+        }
+      }
+      if(this.weather==="fog"){
+        this.weatherIcon = "mdi-weather-fog"
+        this.themeColor.background = 'linear-gradient(90deg, rgba(231,231,231,1) 31%, rgba(168,168,168,1) 100%)';
+
+      }
+      if(this.weather==="snow"){
+        this.weatherIcon="mdi-weather-snowy-heavy"
+        this.themeColor.background = 'linear-gradient(90deg, rgba(222,223,228,1) 0%, rgba(173,203,227,1) 100%)';
+      }
+      if(this.weather==="scattered clouds" || this.weather ==="broken clouds"){
+        this.weatherIcon="mdi-weather-cloudy";
+        this.themeColor.background = 'linear-gradient(90deg, rgba(237,237,237,1) 0%, rgba(149,161,166,1) 92%)';
+      }
+      if(this.weather==="shower rain"){
+        this.weatherIcon="mdi-weather-pouring"
+        this.themeColor.background = 'linear-gradient(90deg, rgba(228,228,228,1) 0%, rgba(101,122,130,1) 92%)';
+      }
+
+      if(this.time == "night"){
+        this.themeColor.background = 'linear-gradient(90deg, rgba(0,6,83,1) 0%, rgba(5,23,36,1) 100%)';
+        if(this.weather==="clear sky"){
+          this.weatherIcon = "mdi-weather-night"
+        }
+        if(this.weather==="few clouds"){
+          this.weatherIcon="mdi-weather-night-partly-cloudy";
+        }
+        if(this.weather==="rain" || this.weather==="light rain"){
+          this.weatherIcon="mdi-weather-rainy"
+        }
+      }
+    }
     
   }, 
 

@@ -82,7 +82,7 @@
         <v-btn
           class="mx-2 calendar-button"
           fab="fab"
-          color="#191e69"
+          :color="color2"
           title="날짜별 메모 조회"
           @click="calendar_dialog = true"
         >
@@ -92,7 +92,7 @@
         <v-btn
           class="mx-2 category-button"
           fab="fab"
-          color="#191e69"
+          :color="color2"
           title="카테고리 편집"
           @click="category_dialog = true"
         >
@@ -102,7 +102,7 @@
         <v-btn
           class="mx-2 sort-lastest-button"
           fab="fab"
-          color="#191e69"
+          :color="color2"
           title="최신순 정렬"
           @click="sortLastest"
         >
@@ -112,7 +112,7 @@
         <v-btn
           class="mx-2 sort-oldest-button"
           fab="fab"
-          color="#bc6d89"
+          :color="color1"
           title="오래된 순 정렬"
           @click="sortOldest"
         >
@@ -122,7 +122,7 @@
         <v-btn
           class="mx-2 add-button"
           fab="fab"
-          color="#bc6d89"
+          :color="color1"
           title="메모 추가"
           @click="
             dialog = true;"
@@ -133,7 +133,7 @@
         <v-btn
           class="mx-2 refresh-button"
           fab="fab"
-          color="#bc6d89"
+          :color="color1"
           title="되돌리기"
           @click="reset"
         >
@@ -236,10 +236,14 @@ export default {
 
       weatherInfo:"",
       timeInfo:"",
-
+      color1:"#bc6d89",
+      color2:"#191e69",
       
       latitude:37.5665,
       longitude:126.9780,
+
+      time:"",
+      weather:"",
 
     };
   },
@@ -360,18 +364,12 @@ export default {
         .get(url)
         .then((res) => {
           if(res.status ===200){
-            // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
-            // console.log("날씨 : "+ res.data.weather[0].main );
-            // console.log("상세날씨설명 : "+ res.data.weather[0].description );
-            // console.log("도시이름  : "+ res.data.name );
-
-            this.weatherInfo = res.data.weather[0].description;
-            return res.data.weather[0].description;
+            console.log(res);
+            this.weather = res.data.weather[0].description;
+            this.time="day";
+            this.themeSet();
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     successPosition(position) {
       this.latitude = position.coords.latitude;
@@ -384,6 +382,43 @@ export default {
     failurePosition(err) {
       alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
     },
+    themeSet(){
+      if(this.time =="day"){
+        if(this.weather==="clear sky"){
+          this.color1='rgb(250,217,119)';
+          this.color2='rgb(129,210,241)';
+        }
+        if(this.weather==="few clouds"){
+          this.color1='rgb(237,237,237)';
+          this.color2='rgb(149,161,166)';
+        }
+        if(this.weather==="rain" || this.weather==="light rain"){
+          this.color1='rgb(228,228,228)';
+          this.color2='rgb(101,122,130)';
+        }
+      }
+      if(this.weather==="fog"){
+        this.color1='rgb(231,231,231)';
+        this.color2='rgb(168,168,168)';
+      }
+      if(this.weather==="snow"){
+        this.color1='rgb(222,223,228)';
+        this.color2='rgb(173,203,227)';
+      }
+      if(this.weather==="scattered clouds" || this.weather ==="broken clouds"){
+        this.color1='rgb(237,237,237)';
+        this.color2='rgb(149,161,166)';
+      }
+      if(this.weather==="shower rain"){
+        this.color1='rgb(228,228,228)';
+        this.color2='rgb(101,122,130)';
+      }
+
+      if(this.time == "night"){
+        this.color1='rgb(0,6,83)';
+        this.color2='rgb(5,23,36)';
+      }
+    }
     
   },
   async mounted() {
