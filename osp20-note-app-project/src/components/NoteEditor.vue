@@ -7,10 +7,10 @@
                         <v-col cols="12" md="6">
                             <v-card-title>Input Note</v-card-title>
                             <v-divider></v-divider>
-                            <div class="note-editor mt-5">
-                                <input class="title-input" type="text" v-model="title" placeholder="Title"/>
+                            <div class="note-editor mt-5" :style="{background: theme}">
+                                <input :style="styleObject" class="title-input" type="text" v-model="title" placeholder="Title"/>
                                 <!-- <div class="editor-text" contenteditable="true" placeholder="Take a note..." ref="text"><strong>dasdasdasds</strong><mark>dasds</mark></div> -->
-                                 <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
+                                 <textarea :style="styleObject" rows="10" v-model="text" placeholder="Take a note..."></textarea>
                                  
                                 <v-btn-toggle>
                                     <v-btn @click="text=text+' *input* '">
@@ -31,7 +31,7 @@
                                     </v-btn>
 
                                 </v-btn-toggle>
-                                <p style="font-size:15px;">해당 에디터는 MarkDown 문법을 제공합니다.</p>
+                                <p style="font-size:15px;" :style="styleObject">해당 에디터는 MarkDown 문법을 제공합니다.</p>
                             </div>
                             
                             
@@ -114,7 +114,6 @@
                         </v-col>
                     </v-row>
                 </div>
-                
             </v-card>
         </div>
     </v-container>
@@ -136,13 +135,33 @@
                 category: [],
                 select: 0,
 
+                styleObject:{
+                    color:'black'
+                },
+                isDarkNote:false,
                 // dialog: false,
             };
         },
+
         mounted(){
             this.category =  JSON.parse(localStorage.getItem("category"));
         },
         methods: {
+            hexToRgb( hexType ){ 
+                var hex = hexType.replace( "#", "" ); 
+                var value = hex.match( /[a-f\d]/gi ); 
+
+                // 헥사값이 세자리일 경우, 여섯자리로. 
+                if ( value.length == 3 ) hex = value[0] + value[0] + value[1] + value[1] + value[2] + value[2]; 
+                value = hex.match( /[a-f\d]{2}/gi ); 
+
+                var r = parseInt( value[0], 16 ); 
+                var g = parseInt( value[1], 16 ); 
+                var b = parseInt( value[2], 16 ); 
+                var rgbType =  r + "," + g + "," + b; 
+
+                return rgbType; 
+            },
             createNew() {
                 if (this.title == "") {
                     alert("제목을 입력해주세요!");
@@ -224,6 +243,25 @@
                 handler() {
                     if (this.secret == false) {
                         this.password = "";
+                    }
+                }
+            },
+            theme:{
+                handler(){
+                    var rgbColor = this.hexToRgb(this.theme).split(',');
+                    for(var i=0;i<rgbColor.length;i++){
+                        if(rgbColor[i] < 100){
+                            this.isDarkNote=true;
+                        }
+                        else{
+                            this.isDarkNote=false;
+                        }
+                    }
+                    if(this.isDarkNote === true){
+                        this.styleObject.color='white'
+                    }
+                    else{
+                        this.styleObject.color='black'
                     }
                 }
             }
