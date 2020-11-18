@@ -63,7 +63,7 @@ export default {
     },
     async trackPosition() {
       if (navigator.geolocation) {
-        await navigator.geolocation.watchPosition(await this.successPosition, this.failurePosition, {
+        await navigator.geolocation.getCurrentPosition(await this.successPosition, this.failurePosition, {
           enableHighAccuracy: true,
           timeout: 15000,
           maximumAge: 0,
@@ -81,14 +81,9 @@ export default {
         .then((res) => {
           if(res.status ===200){
 
-            console.log(res);
             this.weather = res.data.weather[0].description;
-            this.time="day";
-
+            this.time=this.getTime();
             this.themeSet();
-
-
-
           }
         })
         .catch((err) => {
@@ -104,7 +99,9 @@ export default {
     },
     
     failurePosition(err) {
-      alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+      // alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+      console.log(err)
+      return;
     },
     themeSet(){
       if(this.time =="day"){
@@ -130,7 +127,7 @@ export default {
         this.weatherIcon="mdi-weather-snowy-heavy"
         this.themeColor.background = 'linear-gradient(90deg, rgba(222,223,228,1) 0%, rgba(173,203,227,1) 100%)';
       }
-      if(this.weather==="scattered clouds" || this.weather ==="broken clouds"){
+      if(this.weather==="scattered clouds" || this.weather ==="broken clouds" || this.weather==="overcast clouds"){
         this.weatherIcon="mdi-weather-cloudy";
         this.themeColor.background = 'linear-gradient(90deg, rgba(237,237,237,1) 0%, rgba(149,161,166,1) 92%)';
       }

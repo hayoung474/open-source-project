@@ -17,6 +17,7 @@
     "core-js": "^3.6.4",
     "uuid": "^8.0.0",
     "vue": "^2.6.11",
+    "vue-loading-overlay": "^3.4.2",
     "vue-markdown": "^2.2.4",
     "vue-masonry": "^0.11.8",
     "vuedraggable": "^2.24.1",

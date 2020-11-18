@@ -1,9 +1,20 @@
 <template>
+
   <div id="app">
+
+
     <v-app id="inspire">
       <app-header @search="search" @goHome="reset" :weatherInfo="weatherInfo" :timeInfo="timeInfo"></app-header>
 
       <v-container>
+
+          <v-overlay :value="overlay" style="z-index:999999">
+            <v-progress-circular
+              indeterminate
+              size="64"
+            ></v-progress-circular>
+          </v-overlay>
+
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
           <span
@@ -213,6 +224,8 @@ import Header from "./components/Header.vue";
 import Note from "./components/Note.vue";
 import draggable from "vuedraggable";
 import axios from 'axios';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: "App",
@@ -245,7 +258,12 @@ export default {
       time:"",
       weather:"",
 
+      overlay: false,
+
     };
+  },
+  components:{
+    Loading,
   },
   methods: {
     AddNote(note) {
@@ -347,7 +365,7 @@ export default {
     },
     async trackPosition() {
       if (navigator.geolocation) {
-        await navigator.geolocation.watchPosition(await this.successPosition, this.failurePosition, {
+        await navigator.geolocation.getCurrentPosition(await this.successPosition, this.failurePosition, {
           enableHighAccuracy: true,
           timeout: 15000,
           maximumAge: 0,
@@ -366,7 +384,8 @@ export default {
           if(res.status ===200){
             console.log(res);
             this.weather = res.data.weather[0].description;
-            this.time="day";
+            
+            this.time=this.getTime();
             this.themeSet();
           }
         })
@@ -380,7 +399,9 @@ export default {
     },
     
     failurePosition(err) {
-      alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+      console.log(err)
+      // alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+      return;
     },
     themeSet(){
       if(this.time =="day"){
@@ -405,7 +426,7 @@ export default {
         this.color1='rgb(222,223,228)';
         this.color2='rgb(173,203,227)';
       }
-      if(this.weather==="scattered clouds" || this.weather ==="broken clouds"){
+      if(this.weather==="scattered clouds" || this.weather ==="broken clouds" || this.weather==="overcast clouds"){
         this.color1='rgb(237,237,237)';
         this.color2='rgb(149,161,166)';
       }
@@ -422,6 +443,8 @@ export default {
     
   },
   async mounted() {
+
+    this.overlay=true;
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
     }
@@ -437,6 +460,7 @@ export default {
     }
 
     await this.trackPosition();
+    
   },
   watch: {
     notes: {
@@ -461,6 +485,11 @@ export default {
       handler() {
         localStorage.setItem("category", JSON.stringify(this.category));
       },
+    },
+    overlay (val) {
+        val && setTimeout(() => {
+          this.overlay = false
+        }, 1000)
     },
   },
   components: {
