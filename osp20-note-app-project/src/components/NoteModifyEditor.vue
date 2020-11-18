@@ -9,12 +9,14 @@
                 <v-divider></v-divider>
                 <div class="note-editor mt-5" :style="{background: theme}">
                   <input
+                    :style="styleObject" 
                     class="title-input"
                     type="text"
                     v-model="title"
                     placeholder="Title"
                   />
                   <textarea
+                    :style="styleObject" 
                     rows="10"
                     v-model="text"
                     placeholder="Take a note..."
@@ -169,6 +171,9 @@ export default {
       // category: [],
       select: 0,
       beforeCategoryName: "",
+      styleObject:{
+        color:'black'
+      },
 
       // 다이얼로그 제어
       dialog: false,
@@ -201,8 +206,27 @@ export default {
         this.important = this.selectNote.important;
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
-      }
+      },
     },
+    theme:{
+      handler(){
+        var rgbColor = this.hexToRgb(this.theme).split(',');
+        for(var i=0;i<rgbColor.length;i++){
+            if(rgbColor[i] < 100){
+                this.isDarkNote=true;
+            }
+            else{
+                this.isDarkNote=false;
+            }
+        }
+        if(this.isDarkNote === true){
+            this.styleObject.color='white'
+        }
+        else{
+            this.styleObject.color='black'
+        }
+      }
+  },
 
     secret: {
       handler() {
@@ -213,8 +237,24 @@ export default {
     },
   },
   methods: {
+    hexToRgb(hexType){ 
+
+      var hex = hexType.replace( "#", "" ); 
+      var value = hex.match( /[a-f\d]/gi ); 
+
+      // 헥사값이 세자리일 경우, 여섯자리로. 
+      if ( value.length == 3 ) hex = value[0] + value[0] + value[1] + value[1] + value[2] + value[2]; 
+      value = hex.match( /[a-f\d]{2}/gi ); 
+
+      var r = parseInt( value[0], 16 ); 
+      var g = parseInt( value[1], 16 ); 
+      var b = parseInt( value[2], 16 ); 
+
+      var rgbType =  r + "," + g + "," + b; 
+
+      return rgbType; 
+    },
     createNew() {
-      
       if (this.title == "") {
         alert("제목을 입력해주세요!");
       }
