@@ -127,7 +127,7 @@
         data() {
             return {
                 title: "",
-                theme: "",
+                theme: "#FFFFFF",
                 text: "",
                 secret: false,
                 important: false,
@@ -180,7 +180,7 @@
 
                     this.title = "";
                     this.text = "";
-                    this.theme = "";
+                    this.theme = "#FFFFFF";
                     this.select = 0;
                     this.secret = false;
                     this.important = false;
@@ -193,7 +193,7 @@
             cancel() {
                 this.title = "";
                 this.text = "";
-                this.theme = "";
+                this.theme = "#FFFFFF";
                 this.select = 0;
                 this.secret = false;
                 this.important = false;

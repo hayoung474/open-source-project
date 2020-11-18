@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;" @click="password_dialog = note.secret">
+    <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;" :style="styleObject" @click="password_dialog = note.secret">
         <v-row>
             <v-col cols="10">
                 <strong class="title" v-if="note.secret===false">{{ note.title }}</strong>
@@ -80,19 +80,38 @@
                 },
                 password_dialog: false,
                 password : "",
+                styleObject:{
+                    color:'black'
+                }
                 
             }
         },
 
         mounted(){
+
+            var isDarkNote=false;
             this.isSecret = this.note.secret;
-            console.log(this.isSecret);
+            var rgbColor = this.hexToRgb(this.note.theme).split(',');
+
+            for(var i=0;i<rgbColor.length;i++){
+                if(rgbColor[i] < 100){
+                    isDarkNote=true;
+                }
+                else{
+                    isDarkNote=false;
+                }
+            }
+            if(isDarkNote === true){
+                this.styleObject.color='white'
+            }
+            else{
+                this.styleObject.color='black'
+            }
         },
         methods: {
             checkPassword(password){
                 this.password = password;
                 this.isSecret=this.note.secret;
-                console.log(this.isSecret);
                 if(this.password === this.note.password){
                     this.note.secret=false;
                 }
@@ -101,6 +120,26 @@
                     this.note.secret=true;
                 }
             },
+            hexToRgb( hexType ){ 
+
+                var hex = hexType.replace( "#", "" ); 
+                var value = hex.match( /[a-f\d]/gi ); 
+
+
+                // 헥사값이 세자리일 경우, 여섯자리로. 
+                if ( value.length == 3 ) hex = value[0] + value[0] + value[1] + value[1] + value[2] + value[2]; 
+
+
+                value = hex.match( /[a-f\d]{2}/gi ); 
+
+                var r = parseInt( value[0], 16 ); 
+                var g = parseInt( value[1], 16 ); 
+                var b = parseInt( value[2], 16 ); 
+
+                var rgbType =  r + "," + g + "," + b; 
+
+                return rgbType; 
+            } 
         },      
         components: {
             Password,
