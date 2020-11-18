@@ -7,7 +7,7 @@
                         <v-col cols="12" md="6">
                             <v-card-title>Input Note</v-card-title>
                             <v-divider></v-divider>
-                            <div class="note-editor mt-5">
+                            <div class="note-editor mt-5" :style="{background: theme}">
                                 <input class="title-input" type="text" v-model="title" placeholder="Title"/>
                                 <!-- <div class="editor-text" contenteditable="true" placeholder="Take a note..." ref="text"><strong>dasdasdasds</strong><mark>dasds</mark></div> -->
                                  <textarea rows="10" v-model="text" placeholder="Take a note..."></textarea>
@@ -114,7 +114,6 @@
                         </v-col>
                     </v-row>
                 </div>
-                
             </v-card>
         </div>
     </v-container>
@@ -127,7 +126,7 @@
         data() {
             return {
                 title: "",
-                theme: "",
+                theme: "#FFFFFF",
                 text: "",
                 secret: false,
                 important: false,
@@ -139,6 +138,7 @@
                 // dialog: false,
             };
         },
+
         mounted(){
             this.category =  JSON.parse(localStorage.getItem("category"));
         },
@@ -180,7 +180,7 @@
 
                     this.title = "";
                     this.text = "";
-                    this.theme = "";
+                    this.theme = "#FFFFFF";
                     this.select = 0;
                     this.secret = false;
                     this.important = false;
@@ -193,7 +193,7 @@
             cancel() {
                 this.title = "";
                 this.text = "";
-                this.theme = "";
+                this.theme = "#FFFFFF";
                 this.select = 0;
                 this.secret = false;
                 this.important = false;

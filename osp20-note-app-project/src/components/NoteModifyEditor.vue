@@ -7,7 +7,7 @@
               <v-col cols="12" md="6">
                 <v-card-title>Input Note</v-card-title>
                 <v-divider></v-divider>
-                <div class="note-editor mt-5">
+                <div class="note-editor mt-5" :style="{background: theme}">
                   <input
                     class="title-input"
                     type="text"
@@ -252,7 +252,6 @@ export default {
 
         this.title = "";
         this.text = "";
-        this.theme = "";
         this.select = 0;
         this.secret = false;
         this.important = false;
