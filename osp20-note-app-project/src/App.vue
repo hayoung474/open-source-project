@@ -382,9 +382,7 @@ export default {
         .get(url)
         .then((res) => {
           if(res.status ===200){
-            console.log(res);
             this.weather = res.data.weather[0].description;
-            
             this.time=this.getTime();
             this.themeSet();
           }
