@@ -1,7 +1,8 @@
 <template>
-    <div class="header">
+    <div class="header" style="background: rgb(0,6,83);
+background: linear-gradient(90deg, rgba(0,6,83,1) 0%, rgba(5,23,36,1) 100%);">
           <!-- <img :src="logoURL"/> -->
-          <v-icon :title="weatherInfo" x-large style="color:white">{{weatherIcon}}</v-icon>
+          <v-icon x-large style="color:white">{{weatherIcon}}</v-icon>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input
@@ -29,7 +30,7 @@ export default {
       longitude:126.9780,
       positions: [],
       weatherIcon:"mdi-note-outline",
-      weatherInfo:"날씨 정보가 없습니다"
+      weatherInfo:"날씨 정보가 없습니다",
     };
   },
   async mounted(){
@@ -77,33 +78,37 @@ export default {
           if(res.status ===200){
             console.log(res.data.weather[0].description);
 
+            // this.temp = (res.data.main.temp- 273.15);
+
             // var weather = res.data.weather[0].description;
-            var weather="clear sky"
+            var weather = res.data.weather[0].description;
             // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
             // console.log("날씨 : "+ res.data.weather[0].main );
             // console.log("상세날씨설명 : "+ res.data.weather[0].description );
             // console.log("도시이름  : "+ res.data.name );
+            var time="night"
 
-            if(this.getTime() == "night"){
+
+            if(time == "night"){
               if(weather==="clear sky"){
                 this.weatherIcon = "mdi-weather-night"
               }
               if(weather==="few clouds"){
                 this.weatherIcon="mdi-weather-night-partly-cloudy";
               }
-              if(weather==="rain"){
-                this.weatherIcon="mdi-weather-rainy"
+              if(weather==="rain" || weather==="light rain"){
+               this.weatherIcon="mdi-weather-rainy"
               }
             }
-            if(this.getTime()=="day"){
+            if(time =="day"){
               if(weather==="clear sky"){
                 this.weatherIcon = "mdi-weather-sunny"
               }
               if(weather==="few clouds"){
                 this.weatherIcon="mdi-weather-partly-cloudy";
               }
-              if(weather==="rain"){
-                this.weatherIcon="mdi-weather-partly-rainy"
+              if(weather==="rain" || weather==="light rain"){
+               this.weatherIcon="mdi-weather-rainy"
               }
             }
             if(weather==="fog"){
