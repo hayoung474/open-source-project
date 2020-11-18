@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <app-header @search="search" @goHome="reset"></app-header>
+      <app-header @search="search" @goHome="reset" :weatherInfo="weatherInfo" :timeInfo="timeInfo"></app-header>
 
       <v-container>
         <!-- 카테고리 목록 출력 -->
@@ -196,12 +196,7 @@
             <v-btn
               text
               color="primary"
-              @click="
-                calendar_dialog = false;
-                showDateNote();
-              "
-            >
-              OK
+              @click="calendar_dialog = false;showDateNote();">OK
             </v-btn>
           </v-date-picker>
         </v-dialog>
@@ -217,6 +212,7 @@ import Category from "./components/Category.vue";
 import Header from "./components/Header.vue";
 import Note from "./components/Note.vue";
 import draggable from "vuedraggable";
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -237,6 +233,14 @@ export default {
       searchKeyword: "",
       selectDate: "",
       selectNote: "",
+
+      weatherInfo:"",
+      timeInfo:"",
+
+      
+      latitude:37.5665,
+      longitude:126.9780,
+
     };
   },
   methods: {
@@ -328,8 +332,61 @@ export default {
         (note) => note.category.title !== deleteCategory.title
       );
     },
+    getTime(){
+      var time = new Date().getHours();
+      if(time>6 && time<18){
+        return "day"
+      }
+      else if(time>=18 || time<=6){
+        return "night"
+      }
+    },
+    async trackPosition() {
+      if (navigator.geolocation) {
+        await navigator.geolocation.watchPosition(await this.successPosition, this.failurePosition, {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
+        })
+      } else {
+        alert(`Browser doesn't support Geolocation`)
+      }
+    },
+    getWeather(){
+      var apiKey = "e23cd2868a5a387d7407f52b3e0536ea"
+      var url = "http://api.openweathermap.org/data/2.5/weather?lat="+this.latitude+"&lon="+this.longitude+"&appid="+apiKey;
+
+      axios
+        .get(url)
+        .then((res) => {
+          if(res.status ===200){
+            // console.log("현재온도 : "+ (res.data.main.temp- 273.15) );
+            // console.log("날씨 : "+ res.data.weather[0].main );
+            // console.log("상세날씨설명 : "+ res.data.weather[0].description );
+            // console.log("도시이름  : "+ res.data.name );
+
+            this.weatherInfo = res.data.weather[0].description;
+            return res.data.weather[0].description;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    successPosition(position) {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+
+      this.getWeather();
+
+    },
+    
+    failurePosition(err) {
+      alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
+    },
+    
   },
-  mounted() {
+  async mounted() {
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
     }
@@ -343,6 +400,8 @@ export default {
       localStorage.setItem("category",
         JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
+
+    await this.trackPosition();
   },
   watch: {
     notes: {
