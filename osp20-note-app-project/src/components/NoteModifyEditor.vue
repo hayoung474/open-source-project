@@ -52,6 +52,10 @@
                     class="mt-5"
                   ></v-color-picker>
                 </div>
+                <div>
+                  <br/>
+                  <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"> </label></p>
+                </div>    
               </v-col>
             </v-row>
             <v-card-title>Options</v-card-title>
@@ -167,6 +171,7 @@ export default {
       secret: false,
       important: false,
       password: "",
+      imgsrc: "",      
 
       // category: [],
       select: 0,
@@ -184,7 +189,6 @@ export default {
     };
   },
   mounted() {
-
     this.title = this.selectNote.title;
     this.text = this.selectNote.text;
     this.theme = this.selectNote.theme;
@@ -192,6 +196,7 @@ export default {
     this.important = this.selectNote.important;
     this.beforeCategoryName = this.selectNote.category.title;
     this.selectCategoryName = this.category[this.select].title;
+    this.imgsrc = this.selectNote.imgsrc;
     console.log(this.selectNote);
     
   },
@@ -206,6 +211,7 @@ export default {
         this.important = this.selectNote.important;
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
+        this.imgsrc = this.selectNote.imgsrc;
       },
     },
     theme:{
@@ -254,6 +260,16 @@ export default {
 
       return rgbType; 
     },
+    upload (e){
+        let file = e.target.files;
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file[0]);
+        reader.onload = e => {
+            this.imgsrc = e.target.result;
+            console.log(this.imgsrc);
+        }
+    },      
     createNew() {
       if (this.title == "") {
         alert("제목을 입력해주세요!");
@@ -285,6 +301,7 @@ export default {
           secret: this.secret,
           important: this.important,
           password: this.password,
+          imgsrc: this.imgsrc,
         };
 
         // 노트 추가 
@@ -296,6 +313,7 @@ export default {
         this.secret = false;
         this.important = false;
         this.password = "";
+        this.imgsrc = "";
 
         this.$emit("editorClose");
       }

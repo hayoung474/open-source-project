@@ -53,9 +53,13 @@
                         <p class="text-right" style="margin-bottom: 0px !important; font-size: 13px">
                             {{ note.date }}
                         </p>
-                        <v-btn fab x-small @click="imageOpen()" ><v-icon large>{{openIcon}}</v-icon></v-btn>
+                        <v-btn v-if="note.imgsrc!=''" fab x-small @click="imageOpen()" ><v-icon large>{{openIcon}}</v-icon></v-btn>
                     </v-col>
                 </v-row>
+                <v-row v-if="isOpen && (note.imgsrc!='')" >
+                    <img style="width:100%" :src="note.imgsrc"/>
+                </v-row>
+                
         
     </v-card>
 
