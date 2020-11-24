@@ -131,7 +131,6 @@
                 secret: false,
                 important: false,
                 password: "",
-
                 category: [],
                 select: 0,
 
@@ -147,6 +146,7 @@
             this.category =  JSON.parse(localStorage.getItem("category"));
         },
         methods: {
+
             hexToRgb( hexType ){ 
                 var hex = hexType.replace( "#", "" ); 
                 var value = hex.match( /[a-f\d]/gi ); 
@@ -191,7 +191,8 @@
                         category: this.category[this.select],
                         secret: this.secret,
                         important: this.important,
-                        password: this.password
+                        password: this.password,
+                        imageURL:this.imageURL,
                     };
 
                     // 노트 추가
@@ -204,6 +205,7 @@
                     this.secret = false;
                     this.important = false;
                     this.password = "";
+                    this.imageURL = "";
 
                     this.$emit("editorClose");
                     this.$emit("redraw");
@@ -217,6 +219,7 @@
                 this.secret = false;
                 this.important = false;
                 this.password = "";
+                this.imageURL = "";
 
                 this.$emit("editorClose");
             },
@@ -227,10 +230,12 @@
                     return true;
                 else 
                     return false;
-                }
             },
 
 
+        },
+            
+        
         watch: {
             category: {
                 handler() {

@@ -1,8 +1,6 @@
 <template>
 
   <div id="app">
-
-
     <v-app id="inspire">
       <app-header @search="search" @goHome="reset" :weatherInfo="weatherInfo" :timeInfo="timeInfo"></app-header>
 
