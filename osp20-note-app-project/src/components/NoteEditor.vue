@@ -42,6 +42,10 @@
                             <div style="text-align: -webkit-center">
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
+                            <div>
+                                <br/>
+                                <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"> </label></p>
+                            </div>                            
                         </v-col>
                     </v-row>
                     <v-card-title>Options</v-card-title>
@@ -131,6 +135,8 @@
                 secret: false,
                 important: false,
                 password: "",
+                imgsrc: "",
+
                 category: [],
                 select: 0,
 
@@ -146,7 +152,6 @@
             this.category =  JSON.parse(localStorage.getItem("category"));
         },
         methods: {
-
             hexToRgb( hexType ){ 
                 var hex = hexType.replace( "#", "" ); 
                 var value = hex.match( /[a-f\d]/gi ); 
@@ -162,6 +167,16 @@
 
                 return rgbType; 
             },
+            upload (e){
+                let file = e.target.files;
+                let reader = new FileReader();
+
+                reader.readAsDataURL(file[0]);
+                reader.onload = e => {
+                    this.imgsrc = e.target.result;
+                    console.log(this.imgsrc);         
+                }
+            },            
             createNew() {
                 if (this.title == "") {
                     alert("제목을 입력해주세요!");
@@ -192,7 +207,7 @@
                         secret: this.secret,
                         important: this.important,
                         password: this.password,
-                        imageURL:this.imageURL,
+                        imgsrc: this.imgsrc,
                     };
 
                     // 노트 추가
@@ -205,10 +220,12 @@
                     this.secret = false;
                     this.important = false;
                     this.password = "";
-                    this.imageURL = "";
+                    this.imgsrc="";
 
                     this.$emit("editorClose");
                     this.$emit("redraw");
+
+                    document.getElementById("imgfile").value="";
                 }
             },
             cancel() {
@@ -219,9 +236,10 @@
                 this.secret = false;
                 this.important = false;
                 this.password = "";
-                this.imageURL = "";
+                this.imgsrc = "";
 
                 this.$emit("editorClose");
+                document.getElementById("imgfile").value="";
             },
 
             isEmpty(str) {
@@ -230,12 +248,9 @@
                     return true;
                 else 
                     return false;
+                }
             },
 
-
-        },
-            
-        
         watch: {
             category: {
                 handler() {
@@ -274,6 +289,11 @@
     };
 </script>
 <style>
+    .inputfile{
+        width: 80%;
+        margin-left: 35px;
+        outline: none;
+    }
     .write-btn {
         margin: 10px;
     }
