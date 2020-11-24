@@ -1,7 +1,7 @@
 <template>
     <div class="header" v-bind:style="themeColor">
           <!-- <img :src="logoURL"/> -->
-          <v-icon x-large style="color:white">{{weatherIcon}}</v-icon>
+          <v-icon :title="temp" x-large style="color:white">{{weatherIcon}}</v-icon>
           <span class="noteTitle" @click="reload()"><p>STICKY NOTE</p></span>
         <div class="search-container" @keyup.enter="search">
             <input
@@ -35,6 +35,7 @@ export default {
       },
       weather:"",
       time:"",
+      temp:"",
     };
   },
   async mounted(){
@@ -80,9 +81,10 @@ export default {
         .get(url)
         .then((res) => {
           if(res.status ===200){
-
+            console.log(res);
             this.weather = res.data.weather[0].description;
             this.time=this.getTime();
+            this.temp = (res.data.main.temp - 273.15).toFixed(1)+"°C";
             this.themeSet();
           }
         })

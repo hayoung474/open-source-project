@@ -86,29 +86,33 @@
                 
             }
         },
-
         mounted(){
-
-            var isDarkNote=false;
-            this.isSecret = this.note.secret;
-            var rgbColor = this.hexToRgb(this.note.theme).split(',');
-
-            for(var i=0;i<rgbColor.length;i++){
-                if(rgbColor[i] < 100){
-                    isDarkNote=true;
-                }
-                else{
-                    isDarkNote=false;
-                }
-            }
-            if(isDarkNote === true){
-                this.styleObject.color='white'
-            }
-            else{
-                this.styleObject.color='black'
-            }
+            this.changeFontTheme()
+        },
+        updated(){
+            this.changeFontTheme()
         },
         methods: {
+            changeFontTheme(){
+                var isDarkNote=false;
+                this.isSecret = this.note.secret;
+                var rgbColor = this.hexToRgb(this.note.theme).split(',');
+
+                for(var i=0;i<rgbColor.length;i++){
+                    if(rgbColor[i] < 100){
+                        isDarkNote=true;
+                    }
+                    else{
+                        isDarkNote=false;
+                    }
+                }
+                if(isDarkNote === true){
+                    this.styleObject.color='white'
+                }
+                else{
+                    this.styleObject.color='black'
+                }
+            },
             checkPassword(password){
                 this.password = password;
                 this.isSecret=this.note.secret;

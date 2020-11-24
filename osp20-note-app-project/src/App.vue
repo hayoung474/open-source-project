@@ -456,7 +456,7 @@ export default {
       localStorage.setItem("category",
         JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
-
+    
     await this.trackPosition();
     
   },
@@ -464,13 +464,19 @@ export default {
     notes: {
       handler() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
-
+        console.log(this.notes);
+        console.log(JSON.parse(localStorage.getItem("notes")))
+        
         // 카테고리가 선택이 되어 있는 경우에 재 배치
         if (this.categoryTitle !== "") {
           this.noteViewList = this.notes.filter(
             (note) => note.category.title === this.categoryTitle
           );
         }
+        else{
+          this.noteViewList = this.notes;
+        }
+        localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
       },
       deep: true,
     },
