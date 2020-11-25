@@ -98,7 +98,6 @@
         },
         mounted(){
             this.changeFontTheme()
-            console.log(this.note.imageURL);
         },
         updated(){
             this.changeFontTheme()

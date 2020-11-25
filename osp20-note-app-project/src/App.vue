@@ -456,6 +456,7 @@ export default {
     }
     
     await this.trackPosition();
+    model = await cocoSSD.load();
     
   },
   watch: {

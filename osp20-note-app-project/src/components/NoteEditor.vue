@@ -43,9 +43,13 @@
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
                             <div>
-                                <br/>
                                 <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"> </label></p>
-                            </div>                            
+                            </div>
+                            <div style="text-align: -webkit-center;">
+                                <img :src="imgsrc" id="image" style="width:70%"/>
+                                <p>{{predicted}}</p>
+                            </div>   
+                            
                         </v-col>
                     </v-row>
                     <v-card-title>Options</v-card-title>
@@ -123,10 +127,10 @@
     </v-container>
 </template>
 <script>
+import * as cocoSSD from '@tensorflow-models/coco-ssd'
+import * as tf from '@tensorflow/tfjs'
+let model;
     export default {
-        props: {
-            modifyIndex: Number
-        },
         data() {
             return {
                 title: "",
@@ -144,12 +148,15 @@
                     color:'black'
                 },
                 isDarkNote:false,
+
+                predicted:"",
                 // dialog: false,
             };
         },
 
-        mounted(){
+        async mounted(){
             this.category =  JSON.parse(localStorage.getItem("category"));
+            model = await cocoSSD.load();
         },
         methods: {
             hexToRgb( hexType ){ 
@@ -174,9 +181,16 @@
                 reader.readAsDataURL(file[0]);
                 reader.onload = e => {
                     this.imgsrc = e.target.result;
-                    console.log(this.imgsrc);         
+                    this.predict();
                 }
-            },            
+            },     
+            async predict(){
+                const img = document.getElementById("image");       
+                let tmp = await model.detect(img);   
+                this.predicted = tmp[0].class
+
+                
+            },     
             createNew() {
                 if (this.title == "") {
                     alert("제목을 입력해주세요!");
@@ -283,6 +297,11 @@
                     else{
                         this.styleObject.color='black'
                     }
+                }
+            },
+            imgsrc:{
+                handler(){
+                    this.predict();
                 }
             }
         }
