@@ -43,7 +43,7 @@
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
                             <div>
-                                <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"> </label></p>
+                                <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label></p>
                             </div>
                             <div style="text-align: -webkit-center;">
                                 <img :src="imgsrc" id="image" style="width:70%"/>
@@ -186,10 +186,8 @@ let model;
             },     
             async predict(){
                 const img = document.getElementById("image");       
-                let tmp = await model.detect(img);   
+                let tmp = await model.detect(img);  
                 this.predicted = tmp[0].class
-
-                
             },     
             createNew() {
                 if (this.title == "") {
@@ -299,11 +297,6 @@ let model;
                     }
                 }
             },
-            imgsrc:{
-                handler(){
-                    this.predict();
-                }
-            }
         }
     };
 </script>
