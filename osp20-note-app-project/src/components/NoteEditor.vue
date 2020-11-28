@@ -43,7 +43,9 @@
                                 <v-color-picker justify="center" v-model="theme" class="mt-5"></v-color-picker>
                             </div>
                             <div>
-                                <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label></p>
+                                <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label>
+                                <span @click.prevent="predict" style="cursor:pointer; margin-left:10px;"><v-icon color="#dfdfdf">fas fa-search</v-icon></span>
+                                </p>
                             </div>
                             <div style="text-align: -webkit-center;">
                                 <img :src="imgsrc" id="image" style="width:70%"/>
@@ -185,9 +187,14 @@ let model;
                 }
             },     
             async predict(){
-                const img = document.getElementById("image");       
-                let tmp = await model.detect(img);  
-                this.predicted = tmp[0].class
+                if (this.imgsrc != ''){
+                    const img = document.getElementById("image");       
+                    let tmp = await model.detect(img);  
+                    this.predicted = tmp[0].class
+                }
+                else{
+                    alert("이미지를 업로드해주세요!");
+                }
             },     
             createNew() {
                 if (this.title == "") {
@@ -233,6 +240,7 @@ let model;
                     this.important = false;
                     this.password = "";
                     this.imgsrc="";
+                    this.predicted = "";
 
                     this.$emit("editorClose");
                     this.$emit("redraw");
@@ -249,6 +257,7 @@ let model;
                 this.important = false;
                 this.password = "";
                 this.imgsrc = "";
+                this.predicted="";
 
                 this.$emit("editorClose");
                 document.getElementById("imgfile").value="";
@@ -302,7 +311,7 @@ let model;
 </script>
 <style>
     .inputfile{
-        width: 80%;
+        width: 70%;
         margin-left: 35px;
         outline: none;
     }
