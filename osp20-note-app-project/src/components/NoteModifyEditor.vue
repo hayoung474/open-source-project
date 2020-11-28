@@ -53,9 +53,14 @@
                   ></v-color-picker>
                 </div>
                 <div>
-                  <br/>
-                  <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"> </label></p>
-                </div>    
+                  <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label>
+                  <span @click.prevent="predict" style="cursor:pointer; margin-left:10px;"><v-icon color="#dfdfdf">fas fa-search</v-icon></span>
+                  </p>
+                </div>
+                <div style="text-align: -webkit-center;">
+                  <img :src="imgsrc" id="image" style="width:70%"/>
+                  <p>{{predicted}}</p>
+                </div>     
               </v-col>
             </v-row>
             <v-card-title>Options</v-card-title>
@@ -156,6 +161,9 @@
     </v-container>
 </template>
 <script>
+import * as cocoSSD from '@tensorflow-models/coco-ssd'
+import * as tf from '@tensorflow/tfjs'
+let model;
 export default {
   props: {
     modifyIndex: Number,
@@ -171,7 +179,8 @@ export default {
       secret: false,
       important: false,
       password: "",
-      imgsrc: "",      
+      imgsrc: "",
+      predicted:"",      
 
       // category: [],
       select: 0,
@@ -188,7 +197,7 @@ export default {
       beforeNote:"",
     };
   },
-  mounted() {
+  async mounted() {
     this.title = this.selectNote.title;
     this.text = this.selectNote.text;
     this.theme = this.selectNote.theme;
@@ -198,6 +207,7 @@ export default {
     this.selectCategoryName = this.category[this.select].title;
     this.imgsrc = this.selectNote.imgsrc;
     console.log(this.selectNote);
+    model = await cocoSSD.load();
     
   },
   watch: {
@@ -212,6 +222,7 @@ export default {
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
         this.imgsrc = this.selectNote.imgsrc;
+        this.predicted = this.selectNote.predicted;
       },
     },
     theme:{
@@ -267,9 +278,19 @@ export default {
         reader.readAsDataURL(file[0]);
         reader.onload = e => {
             this.imgsrc = e.target.result;
-            console.log(this.imgsrc);
+            this.predict();
         }
-    },      
+    },
+    async predict(){
+      if (this.imgsrc != ''){
+          const img = document.getElementById("image");       
+          let tmp = await model.detect(img);  
+          this.predicted = tmp[0].class
+      }
+      else{
+          alert("이미지를 업로드해주세요!");
+      }
+    },           
     createNew() {
       if (this.title == "") {
         alert("제목을 입력해주세요!");
@@ -319,6 +340,7 @@ export default {
       }
     },
     cancel() {
+      this.imgsrc = this.selectNote.imgsrc;
       this.$emit("editorClose");
     },
     isEmpty(str){
@@ -331,7 +353,13 @@ export default {
   },
 };
 </script>
-    <style>
+
+<style>
+.inputfile{
+    width: 70%;
+    margin-left: 35px;
+    outline: none;
+}
 .write-btn {
   margin: 10px;
 }
