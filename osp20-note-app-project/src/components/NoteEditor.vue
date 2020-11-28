@@ -227,6 +227,7 @@ let model;
                         important: this.important,
                         password: this.password,
                         imgsrc: this.imgsrc,
+                        predicted: this.predicted,
                     };
 
                     // 노트 추가

@@ -222,6 +222,7 @@ export default {
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
         this.imgsrc = this.selectNote.imgsrc;
+        this.predicted = this.selectNote.predicted;
       },
     },
     theme:{
