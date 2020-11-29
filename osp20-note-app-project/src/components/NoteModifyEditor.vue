@@ -168,7 +168,7 @@ export default {
   props: {
     modifyIndex: Number,
     selectNote:Object,
-    category:Object,
+    category:Array,
   },
   data() {
     return {
