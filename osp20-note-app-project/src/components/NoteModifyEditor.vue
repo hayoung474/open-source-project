@@ -206,6 +206,7 @@ export default {
     this.beforeCategoryName = this.selectNote.category.title;
     this.selectCategoryName = this.category[this.select].title;
     this.imgsrc = this.selectNote.imgsrc;
+    this.predicted = this.selectNote.predicted;
     console.log(this.selectNote);
     model = await cocoSSD.load();
     
@@ -323,6 +324,7 @@ export default {
           important: this.important,
           password: this.password,
           imgsrc: this.imgsrc,
+          predicted:this.predicted,
         };
 
         // 노트 추가 
@@ -335,6 +337,7 @@ export default {
         this.important = false;
         this.password = "";
         this.imgsrc = "";
+        this.predicted="";
 
         this.$emit("editorClose");
       }

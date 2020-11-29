@@ -318,7 +318,7 @@ export default {
     },
     search(keyword) {
       this.noteViewList = this.notes.filter(
-        (note) => note.text.includes(keyword) || note.title.includes(keyword)
+        (note) => note.text.includes(keyword) || note.title.includes(keyword) || note.predicted.includes(keyword)
       );
     },
     showCategoryNote(title) {
