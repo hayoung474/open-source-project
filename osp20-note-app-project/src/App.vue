@@ -45,7 +45,6 @@
                 <Note
                   :note="note"
                   :index="index"
-                  @click="password_dialog = note.secret"
                   @modifyNote="modifyNote(note)"
                   @deleteNote="deleteNote(note)"
                 ></Note>
@@ -86,6 +85,25 @@
               </v-col>
             </draggable>
           </div>
+          <div>
+            <v-row>
+              <v-col
+                v-for="(note, index) in notes"
+                :key="`note-${index}`"
+                cols="6"
+                sm="4"
+                md="3"
+              >
+                 <ImageNote 
+                  :note="note"
+                  :index="index"
+                  @modifyNote="modifyNote(note)"
+                  @deleteNote="deleteNote(note)"
+                 ></ImageNote>
+              </v-col>
+            </v-row>
+          </div>
+         
         </div>
 
         <v-btn
@@ -220,6 +238,7 @@ import NoteModifyEditor from "./components/NoteModifyEditor.vue";
 import Category from "./components/Category.vue";
 import Header from "./components/Header.vue";
 import Note from "./components/Note.vue";
+import ImageNote from "./components/ImageNote.vue";
 import draggable from "vuedraggable";
 import axios from 'axios';
 import Loading from 'vue-loading-overlay';
@@ -255,7 +274,7 @@ export default {
 
       time:"",
       weather:"",
-
+      
       overlay: false,
 
     };
@@ -502,6 +521,7 @@ export default {
     appNoteModifyEditor: NoteModifyEditor,
     Note,
     draggable,
+    ImageNote,
     // Password,
   },
 };
