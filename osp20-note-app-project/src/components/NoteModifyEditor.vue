@@ -245,11 +245,17 @@ export default {
         }
       }
   },
-
     secret: {
       handler() {
         if (this.secret == false) {
           this.password = "";
+        }
+      },
+    },
+    imgsrc: {
+      handler() {
+        if (this.imgsrc == '') {
+          this.predicted = "";
         }
       },
     },

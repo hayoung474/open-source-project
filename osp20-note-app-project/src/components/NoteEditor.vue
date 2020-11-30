@@ -50,6 +50,9 @@
                             <div style="text-align: -webkit-center;">
                                 <img :src="imgsrc" id="image" style="width:70%"/>
                                 <p>{{predicted}}</p>
+                                <span v-if="(imgsrc!='')" @click="imgsrc='';">
+                                    <v-icon style="cursor:pointer;">mdi-close</v-icon>
+                                </span>
                             </div>   
                             
                         </v-col>
@@ -306,6 +309,13 @@ let model;
                         this.styleObject.color='black'
                     }
                 }
+            },
+            imgsrc: {
+                handler() {
+                    if (this.imgsrc == '') {
+                    this.predicted = "";
+                    }
+                },
             },
         }
     };
