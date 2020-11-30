@@ -41,6 +41,7 @@ export default {
   async mounted(){
     
     await this.trackPosition();
+    // await this.getWeather();
   },
   methods: {
     search(){

@@ -12,7 +12,7 @@
               size="64"
             ></v-progress-circular>
           </v-overlay>
-
+        <v-btn @click="test()">전환</v-btn>
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
           <span
@@ -51,7 +51,7 @@
               </v-col>
             </v-row>
           </div>
-          <div>
+          <div v-if="!isImageView">
             <draggable
               class="row"
               v-model="noteViewList"
@@ -85,10 +85,11 @@
               </v-col>
             </draggable>
           </div>
-          <div>
+          <!-- 이미지뷰 -->
+          <div v-if="isImageView">
             <v-row>
               <v-col
-                v-for="(note, index) in notes"
+                v-for="(note, index) in imageViewList"
                 :key="`note-${index}`"
                 cols="6"
                 sm="4"
@@ -253,6 +254,7 @@ export default {
       notes: [],
       noteViewList: [],
       category: [],
+      imageViewList:[],
       isModify: false,
       modifyIndex: null,
       category_dialog: false,
@@ -275,6 +277,8 @@ export default {
       time:"",
       weather:"",
       
+      isImageView:false,
+
       overlay: false,
 
     };
@@ -283,6 +287,17 @@ export default {
     Loading,
   },
   methods: {
+    test(){
+      this.isImageView=!this.isImageView;
+      if(this.isImageView){
+        this.ImageFilter();
+      }
+    },
+    ImageFilter(){
+      this.imageViewList = this.noteViewList.filter(
+          (note) => note.imgsrc !== ''
+      );
+    },
     AddNote(note) {
       this.notes.push(note);
       if (this.categoryTitle !== "") {
@@ -292,6 +307,9 @@ export default {
       }
       else{
           this.noteViewList = this.notes;
+      }
+      if(this.isImageView){
+        this.ImageFilter();
       }
     },
     ModifyNote(selectNote, note) {
@@ -304,6 +322,9 @@ export default {
       }
       else{
           this.noteViewList = this.notes;
+      }
+      if(this.isImageView){
+        this.ImageFilter();
       }
     },
     deleteNote(note) {
@@ -318,37 +339,59 @@ export default {
       else{
           this.noteViewList = this.notes;
       }
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     modifyNote(note) {
       this.selectNote = note;
       this.modifyIndex = this.notes.indexOf(note);
       this.note = note;
       this.dialog2 = true;
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     sortLastest() {
       this.noteViewList.sort(function (a, b) {
         return a.sortDate > b.sortDate ? -1 : a.sortDate < b.sortDate ? 1 : 0;
       });
+      if(this.isImageView){
+        this.ImageFilter();
+      }
+      
     },
     sortOldest() {
       this.noteViewList.sort(function (a, b) {
         return a.sortDate < b.sortDate ? -1 : a.sortDate > b.sortDate ? 1 : 0;
       });
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     search(keyword) {
       this.noteViewList = this.notes.filter(
         (note) => note.text.includes(keyword) || note.title.includes(keyword) || note.predicted.includes(keyword)
       );
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     showCategoryNote(title) {
       this.categoryTitle = title;
       this.noteViewList = this.notes.filter(
         (note) => note.category.title === title
       );
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     reset() {
       this.categoryTitle = "";
       this.noteViewList = this.notes;
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     redraw() {
       if (this.categoryTitle !== "") {
@@ -359,17 +402,27 @@ export default {
       if (this.categoryTitle === "") {
         this.noteViewList = this.notes;
       }
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     showDateNote() {
       this.noteViewList = this.notes.filter(
         (note) => note.date.substr(0, 10) === this.selectDate
       );
+      if(this.isImageView){
+        this.ImageFilter();
+      }
+      
     },
     deleteCategoryNote(deleteCategory) {
       // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
       this.notes = this.notes.filter(
         (note) => note.category.title !== deleteCategory.title
       );
+      if(this.isImageView){
+        this.ImageFilter();
+      }
     },
     getTime(){
       var time = new Date().getHours();

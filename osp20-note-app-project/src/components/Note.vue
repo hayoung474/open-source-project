@@ -79,12 +79,6 @@
         },
         data() {
             return {
-                modifyNote(note){
-                    this.$emit('modifyNote',note);
-                },
-                deleteNote(note){
-                    this.$emit('deleteNote',note);
-                },
                 password_dialog: false,
                 password : "",
                 styleObject:{
@@ -103,6 +97,12 @@
             this.changeFontTheme()
         },
         methods: {
+            modifyNote(note){
+                    this.$emit('modifyNote',note);
+            },
+            deleteNote(note){
+                this.$emit('deleteNote',note);
+            },
             imageOpen(){
                 this.isOpen = !this.isOpen
                 if(this.isOpen === false){
