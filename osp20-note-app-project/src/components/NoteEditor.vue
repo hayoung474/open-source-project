@@ -50,6 +50,7 @@
                             <div style="text-align: -webkit-center;">
                                 <img :src="imgsrc" id="image" style="width:70%"/>
                                 <p>{{predicted}}</p>
+                                
                             </div>   
                             
                         </v-col>

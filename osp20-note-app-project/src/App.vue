@@ -12,7 +12,21 @@
               size="64"
             ></v-progress-circular>
           </v-overlay>
-        <v-btn @click="test()">전환</v-btn>
+        <v-switch
+                v-model="ex11"
+                label="ImageViewMode"
+                color="secondary"
+                value="secondary"
+                @click="changeMode()"
+                hide-details
+        ></v-switch>
+        <v-switch
+          v-model="isRecommendMode"
+          label="Recommend Mode"
+          color="secondary"
+          value="secondary"
+          hide-details
+        ></v-switch>
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
           <span
@@ -278,6 +292,7 @@ export default {
       weather:"",
       
       isImageView:false,
+      isRecommendMode:false,
 
       overlay: false,
 
@@ -287,7 +302,7 @@ export default {
     Loading,
   },
   methods: {
-    test(){
+    changeMode(){
       this.isImageView=!this.isImageView;
       if(this.isImageView){
         this.ImageFilter();
@@ -297,6 +312,53 @@ export default {
       this.imageViewList = this.noteViewList.filter(
           (note) => note.imgsrc !== ''
       );
+    },
+    AddRecommendCategory(note){
+      var recommendCategory=""
+      var person = ["person"];
+      var vehicle = ["bicycle","car","motorcycle","airplane"," bus","train","truck","boat"];
+      var outsideThing=["traffic light","fire hydrant","parking meter","bench"];
+      var animal = ["bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe"]
+      var clothes = ["backpack","handbag","tie","suitcase"];
+      var things = ["umbrella","bowl","spoon","knife","fork","wine","glass","cup","bottle","chair","couch","potted plant","bed","dining table","toilet","book","clock","vase","scissors","teddy bear","toothbrush"]
+      var electronic = ["tv","laptop","mouse","remote","keyboard","cell phone","microwave","oven","toaster","sink","refrigerator"]
+      var sport = ["snowboard","sportball","kite","baseball bat","baseball glove","skateboard","tennis racket"]
+      var fruit = ["banana","apple","orange"]
+      var food = ["carrot","sandwich","hot dog","pizza","donut","cake","broccoli"]
+
+      if(person.includes(note.predicted)){
+        recommendCategory="인물"
+      }
+      if(vehicle.includes(note.predicted)){
+        recommendCategory="이동수단"
+      }
+      if(outsideThing.includes(note.predicted)){
+        recommendCategory="바깥사물"
+      }
+      if(animal.includes(note.predicted)){
+        recommendCategory="동물"
+      }
+      if(clothes.includes(note.predicted)){
+        recommendCategory="의류"
+      }
+      if(things.includes(note.predicted)){
+        recommendCategory="사물"
+      }
+      if(electronic.includes(note.predicted)){
+        recommendCategory="전자제품"
+      }
+      if(sport.includes(note.predicted)){
+        recommendCategory="스포츠"
+      }
+      if(fruit.includes(note.predicted)){
+        recommendCategory="과일"
+      }
+      if(food.includes(note.predicted)){
+        recommendCategory="음식"
+      }
+
+      alert("추천 카테고리: "+recommendCategory);
+
     },
     AddNote(note) {
       this.notes.push(note);
@@ -310,6 +372,9 @@ export default {
       }
       if(this.isImageView){
         this.ImageFilter();
+      }
+      if(this.isRecommendMode && note.imgsrc!=""){
+        this.AddRecommendCategory(note);
       }
     },
     ModifyNote(selectNote, note) {
@@ -584,4 +649,32 @@ export default {
 @import "@/styles/global.scss";
 
 .fade-enter-active, .fade-leave-active { transition: opacity .5s } .fade-enter, .fade-leave-to { opacity: 0 }
+
+.v-input--switch .v-input--selection-controls__input{
+    width: 45px;
+    margin-right: 10px;
+}
+.v-input--switch__track{
+  width: 45px;
+  height: 26px;
+  top: calc(50% - 13px);
+  left: 0;
+  right: 0;
+  border-radius: 13px;
+
+}
+
+.v-input--switch__thumb{
+  box-shadow: none;
+  transform: translateX(4px);
+}
+
+.v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple, .v-input--switch.v-input--is-dirty .v-input--switch__thumb{
+    transform: translateX(22px);
+}
+
+.v-input--switch .v-input--selection-controls__ripple{
+    left: -12px;
+}
+
 </style>
