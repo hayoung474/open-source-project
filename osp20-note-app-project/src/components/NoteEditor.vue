@@ -50,8 +50,10 @@
                             <div style="text-align: -webkit-center;">
                                 <img :src="imgsrc" id="image" style="width:70%"/>
                                 <p>{{predicted}}</p>
-                                <span v-if="(imgsrc!='')" @click="imgsrc='';">
-                                    <v-icon style="cursor:pointer;">mdi-close</v-icon>
+                            </div>
+                            <div style="text-align: -webkit-right; margin-right: 50px;">
+                                <span v-if="(imgsrc!='')" @click="deleteImgfile">
+                                <v-icon style="cursor:pointer;">mdi-close</v-icon>
                                 </span>
                             </div>   
                             
@@ -198,6 +200,10 @@ let model;
                 else{
                     alert("이미지를 업로드해주세요!");
                 }
+            },
+            deleteImgfile(){
+                this.imgsrc='';
+                document.getElementById("imgfile").value="";
             },     
             createNew() {
                 if (this.title == "") {

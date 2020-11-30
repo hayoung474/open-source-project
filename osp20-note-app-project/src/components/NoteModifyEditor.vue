@@ -60,6 +60,11 @@
                 <div style="text-align: -webkit-center;">
                   <img :src="imgsrc" id="image" style="width:70%"/>
                   <p>{{predicted}}</p>
+                </div>
+                <div style="text-align: -webkit-right; margin-right: 50px;">
+                    <span v-if="(imgsrc!='')" @click="deleteImgfile">
+                    <v-icon style="cursor:pointer;">mdi-close</v-icon>
+                    </span>
                 </div>     
               </v-col>
             </v-row>
@@ -207,6 +212,7 @@ export default {
     this.selectCategoryName = this.category[this.select].title;
     this.imgsrc = this.selectNote.imgsrc;
     this.predicted = this.selectNote.predicted;
+    document.getElementById("imgfile").value="";
     console.log(this.selectNote);
     model = await cocoSSD.load();
     
@@ -297,7 +303,11 @@ export default {
       else{
           alert("이미지를 업로드해주세요!");
       }
-    },           
+    },
+    deleteImgfile(){
+      this.imgsrc='';
+      document.getElementById("imgfile").value="";
+    },                
     createNew() {
       if (this.title == "") {
         alert("제목을 입력해주세요!");
@@ -331,6 +341,7 @@ export default {
           password: this.password,
           imgsrc: this.imgsrc,
           predicted:this.predicted,
+          
         };
 
         // 노트 추가 
@@ -344,6 +355,7 @@ export default {
         this.password = "";
         this.imgsrc = "";
         this.predicted="";
+        document.getElementById("imgfile").value="";
 
         this.$emit("editorClose");
       }
@@ -351,6 +363,7 @@ export default {
     cancel() {
       this.imgsrc = this.selectNote.imgsrc;
       this.$emit("editorClose");
+      document.getElementById("imgfile").value="";
     },
     isEmpty(str){
          
