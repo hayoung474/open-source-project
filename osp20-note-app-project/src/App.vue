@@ -46,7 +46,7 @@
         </div>
         <div>
           <!-- 고정메모는 그리드로 보여주기 -->
-          <div class="mt-10">
+          <div class="mt-10" v-if="!isImageView" >
             <v-row>
               <v-col
                 v-for="(note, index) in notes"
