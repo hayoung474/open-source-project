@@ -20,13 +20,6 @@
                 @click="changeMode()"
                 hide-details
         ></v-switch>
-        <v-switch
-          v-model="isRecommendMode"
-          label="Recommend Mode"
-          color="secondary"
-          value="secondary"
-          hide-details
-        ></v-switch>
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
           <span
@@ -292,7 +285,6 @@ export default {
       weather:"",
       
       isImageView:false,
-      isRecommendMode:false,
 
       overlay: false,
 
@@ -312,53 +304,6 @@ export default {
       this.imageViewList = this.noteViewList.filter(
           (note) => note.imgsrc !== ''
       );
-    },
-    AddRecommendCategory(note){
-      var recommendCategory=""
-      var person = ["person"];
-      var vehicle = ["bicycle","car","motorcycle","airplane"," bus","train","truck","boat"];
-      var outsideThing=["traffic light","fire hydrant","parking meter","bench"];
-      var animal = ["bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe"]
-      var clothes = ["backpack","handbag","tie","suitcase"];
-      var things = ["umbrella","bowl","spoon","knife","fork","wine","glass","cup","bottle","chair","couch","potted plant","bed","dining table","toilet","book","clock","vase","scissors","teddy bear","toothbrush"]
-      var electronic = ["tv","laptop","mouse","remote","keyboard","cell phone","microwave","oven","toaster","sink","refrigerator"]
-      var sport = ["snowboard","sportball","kite","baseball bat","baseball glove","skateboard","tennis racket"]
-      var fruit = ["banana","apple","orange"]
-      var food = ["carrot","sandwich","hot dog","pizza","donut","cake","broccoli"]
-
-      if(person.includes(note.predicted)){
-        recommendCategory="인물"
-      }
-      if(vehicle.includes(note.predicted)){
-        recommendCategory="이동수단"
-      }
-      if(outsideThing.includes(note.predicted)){
-        recommendCategory="바깥사물"
-      }
-      if(animal.includes(note.predicted)){
-        recommendCategory="동물"
-      }
-      if(clothes.includes(note.predicted)){
-        recommendCategory="의류"
-      }
-      if(things.includes(note.predicted)){
-        recommendCategory="사물"
-      }
-      if(electronic.includes(note.predicted)){
-        recommendCategory="전자제품"
-      }
-      if(sport.includes(note.predicted)){
-        recommendCategory="스포츠"
-      }
-      if(fruit.includes(note.predicted)){
-        recommendCategory="과일"
-      }
-      if(food.includes(note.predicted)){
-        recommendCategory="음식"
-      }
-
-      alert("추천 카테고리: "+recommendCategory);
-
     },
     AddNote(note) {
       this.notes.push(note);
