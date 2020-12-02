@@ -76,7 +76,7 @@ export default {
     },
     getWeather(){
       var apiKey = "e23cd2868a5a387d7407f52b3e0536ea"
-      var url = "http://api.openweathermap.org/data/2.5/weather?lat="+this.latitude+"&lon="+this.longitude+"&appid="+apiKey;
+      var url = "https://api.openweathermap.org/data/2.5/weather?lat="+this.latitude+"&lon="+this.longitude+"&appid="+apiKey;
 
       axios
         .get(url)
@@ -90,7 +90,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log("errrrr",err);
         });
     },
     successPosition(position) {
