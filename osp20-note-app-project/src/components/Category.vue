@@ -11,13 +11,18 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-      <div class="ma-5">
-        <p style="font-size:12px;">이미지 메모를 기반으로 한 추천 카테고리를 생성할 수 있습니다!</p>
-        <v-btn @click="recommendCategoryCreate">추천 카테고리 생성</v-btn>
-        <div id="recommend-category-list"></div>
-      </div>
+        <div class="recommend">
+          <v-row>
+            <v-col cols="12">
+              <span @click="recommendCategoryCreate">
+                <v-icon color="#faff85" style="cursor:pointer;">mdi-star-four-points-outline</v-icon>
+                <p style="font-size:12px;">이미지 메모를 기반으로 한 추천 카테고리를 생성할 수 있습니다!<br>위의 아이콘을 클릭하면 자동 분류가 됩니다.</p>
+              </span>
+            </v-col>
+          </v-row>
+          <div id="recommend-category-list"></div>
+        </div>
         <v-divider></v-divider>
-
       </div>
       <div class="category-content">
         <v-row>
@@ -63,20 +68,90 @@ export default {
     return {
       name: "",
       category_dialog: true,
-      notes:[],
+      notes: [],
       category: [],
-      recommendCategoryList:[],
+      recommendCategoryList: [],
       isSame: false,
-      person : ["person"],
-      vehicle : ["bicycle","car","motorcycle","airplane"," bus","train","truck","boat"],
-      outsideThing:["traffic light","fire hydrant","parking meter","bench"],
-      animal :["bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe"],
-      clothes : ["backpack","handbag","tie","suitcase"],
-      things : ["umbrella","bowl","spoon","knife","fork","wine","glass","cup","bottle","chair","couch","potted plant","bed","dining table","toilet","book","clock","vase","scissors","teddy bear","toothbrush"],
-      electronic : ["tv","laptop","mouse","remote","keyboard","cell phone","microwave","oven","toaster","sink","refrigerator"],
-      sport : ["snowboard","sportball","kite","baseball bat","baseball glove","skateboard","tennis racket"],
-      fruit : ["banana","apple","orange"],
-      food : ["carrot","sandwich","hot dog","pizza","donut","cake","broccoli"],
+      person: ["person"],
+      vehicle: [
+        "bicycle",
+        "car",
+        "motorcycle",
+        "airplane",
+        " bus",
+        "train",
+        "truck",
+        "boat",
+      ],
+      outsideThing: ["traffic light", "fire hydrant", "parking meter", "bench"],
+      animal: [
+        "bird",
+        "cat",
+        "dog",
+        "horse",
+        "sheep",
+        "cow",
+        "elephant",
+        "bear",
+        "zebra",
+        "giraffe",
+      ],
+      clothes: ["backpack", "handbag", "tie", "suitcase"],
+      things: [
+        "umbrella",
+        "bowl",
+        "spoon",
+        "knife",
+        "fork",
+        "wine",
+        "glass",
+        "cup",
+        "bottle",
+        "chair",
+        "couch",
+        "potted plant",
+        "bed",
+        "dining table",
+        "toilet",
+        "book",
+        "clock",
+        "vase",
+        "scissors",
+        "teddy bear",
+        "toothbrush",
+      ],
+      electronic: [
+        "tv",
+        "laptop",
+        "mouse",
+        "remote",
+        "keyboard",
+        "cell phone",
+        "microwave",
+        "oven",
+        "toaster",
+        "sink",
+        "refrigerator",
+      ],
+      sport: [
+        "snowboard",
+        "sportball",
+        "kite",
+        "baseball bat",
+        "baseball glove",
+        "skateboard",
+        "tennis racket",
+      ],
+      fruit: ["banana", "apple", "orange"],
+      food: [
+        "carrot",
+        "sandwich",
+        "hot dog",
+        "pizza",
+        "donut",
+        "cake",
+        "broccoli",
+      ],
     };
   },
   methods: {
@@ -109,25 +184,24 @@ export default {
         this.name = "";
       }
     },
-   createRecommendCategory(name) {
-        var newCategory = {
-          title: name,
-          color: "#" + Math.round(Math.random() * 0xffffff).toString(16),
-        };
+    createRecommendCategory(name) {
+      var newCategory = {
+        title: name,
+        color: "#" + Math.round(Math.random() * 0xffffff).toString(16),
+      };
 
-        for (var i = 0; i < this.category.length; i++) {
-          if (this.category[i].title === newCategory.title) {
-            alert("동일한 카테고리 이름이 존재합니다!");
-            this.isSame = true;
-            break;
-          }
+      for (var i = 0; i < this.category.length; i++) {
+        if (this.category[i].title === newCategory.title) {
+          alert("동일한 카테고리 이름이 존재합니다!");
+          this.isSame = true;
+          break;
         }
-        if (!this.isSame) {
-          this.category.push(newCategory);
-        } else {
-          this.isSame = false;
-        }
-      
+      }
+      if (!this.isSame) {
+        this.category.push(newCategory);
+      } else {
+        this.isSame = false;
+      }
     },
 
     deleteCategory(index) {
@@ -148,79 +222,73 @@ export default {
       }
     },
 
-    recommendCategoryCreate(){
-
+    recommendCategoryCreate() {
       var element = document.getElementById("recommend-category-list");
 
-      // 먼저 로컬스토리지에 있는 노트를 순회할 것 
-      var tempNoteList=[];
+      // 먼저 로컬스토리지에 있는 노트를 순회할 것
+      var tempNoteList = [];
       if (localStorage.getItem("notes")) {
         this.notes = JSON.parse(localStorage.getItem("notes"));
-        this.tempNoteList = this.notes.filter(
-            (note) => note.imgsrc !== ""
-        );
+        this.tempNoteList = this.notes.filter((note) => note.imgsrc !== "");
       }
 
-      for(var i = 0 ; i<this.tempNoteList.length;i++){
-         if(this.person.includes(this.tempNoteList[i].predicted)){
-           if(!this.recommendCategoryList.includes("인물"))
-            this.recommendCategoryList.push("인물")
-          }
-          if(this.vehicle.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("이동수단"))
-              this.recommendCategoryList.push("이동수단")
-          }
-          if(this.outsideThing.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("바깥사물"))
-              this.recommendCategoryList.push("바깥사물")
-          }
-          if(this.animal.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("동물"))
-              this.recommendCategoryList.push("동물")
-          }
-          if(this.clothes.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("의류"))
-              this.recommendCategoryList.push("의류")
-          }
-          if(this.things.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("사물"))
-              this.recommendCategoryList.push("사물")
-          }
-          if(this.electronic.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("전자제품"))
-              this.recommendCategoryList.push("전자제품")
-          }
-          if(this.sport.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("스포츠"))
-              this.recommendCategoryList.push("스포츠")
-          }
-          if(this.fruit.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("과일"))
-              this.recommendCategoryList.push("과일")
-          }
-          if(this.food.includes(this.notes[i].predicted)){
-            if(!this.recommendCategoryList.includes("음식"))
-              this.recommendCategoryList.push("음식")
-          }
+      for (var i = 0; i < this.tempNoteList.length; i++) {
+        if (this.person.includes(this.tempNoteList[i].predicted)) {
+          if (!this.recommendCategoryList.includes("인물"))
+            this.recommendCategoryList.push("인물");
+        }
+        if (this.vehicle.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("이동수단"))
+            this.recommendCategoryList.push("이동수단");
+        }
+        if (this.outsideThing.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("바깥사물"))
+            this.recommendCategoryList.push("바깥사물");
+        }
+        if (this.animal.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("동물"))
+            this.recommendCategoryList.push("동물");
+        }
+        if (this.clothes.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("의류"))
+            this.recommendCategoryList.push("의류");
+        }
+        if (this.things.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("사물"))
+            this.recommendCategoryList.push("사물");
+        }
+        if (this.electronic.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("전자제품"))
+            this.recommendCategoryList.push("전자제품");
+        }
+        if (this.sport.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("스포츠"))
+            this.recommendCategoryList.push("스포츠");
+        }
+        if (this.fruit.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("과일"))
+            this.recommendCategoryList.push("과일");
+        }
+        if (this.food.includes(this.notes[i].predicted)) {
+          if (!this.recommendCategoryList.includes("음식"))
+            this.recommendCategoryList.push("음식");
+        }
       }
 
       console.log(this.recommendCategoryList);
 
-      for(var j=0;j<this.recommendCategoryList.length;j++){
-        var color = "#" + Math.round(Math.random() * 0xffffff).toString(16)
+      for (var j = 0; j < this.recommendCategoryList.length; j++) {
+        var color = "#" + Math.round(Math.random() * 0xffffff).toString(16);
         var btn = document.createElement("BUTTON");
         btn.innerHTML = this.recommendCategoryList[j];
-        btn.className="recommend-category-btn"
-        btn.style.background=color;
-        btn.addEventListener( 'click', (e) =>{ 
+        btn.className = "recommend-category-btn";
+        btn.style.background = color;
+        btn.addEventListener("click", (e) => {
           this.createRecommendCategory(e.target.innerHTML);
-
-      } );
+        });
         element.appendChild(btn);
       }
-
-    
-    }
+    },
   },
 
   mounted() {
@@ -239,14 +307,18 @@ export default {
 };
 </script>
 <style>
-.recommend-category-btn{
+.recommend{
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+.recommend-category-btn {
   background-color: black;
-  color:white;
-  margin:10px;
-  padding:5px;
-  border-radius:10px;
-  height:30px;
-  width:100px;
-  font-Size:12px;
+  color: white;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  height: 30px;
+  width: 100px;
+  font-size: 12px;
 }
 </style>
