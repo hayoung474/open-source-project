@@ -54,10 +54,20 @@
                   v-model="theme"
                   class="mt-5"
                 ></v-color-picker>
-                <p v-for="(color, index) in historyColor" :key="index">
-                  {{ color.rgb }}
-                </p>
               </div>
+                <div class="text-center" style="margin: -10px">
+                <span v-for="(color, index) in historyColor" :key="index">
+                    <v-btn
+                    class="colorbtn"
+                    x-small
+                    icon
+                    :color=color.rgb
+                    @click="(theme=color.rgb)"
+                    >
+                    <v-icon>mdi-circle</v-icon>
+                    </v-btn>
+                </span>
+                </div>
               <div>
                 <p>
                   <input
@@ -381,6 +391,10 @@ export default {
 };
 </script>
 <style>
+.colorbtn {
+    box-shadow: 0px 0px 2px #8c8c8c; 
+    margin: 15px 5px 35px 5px; 
+}
 .inputfile {
   width: 70%;
   margin-left: 35px;

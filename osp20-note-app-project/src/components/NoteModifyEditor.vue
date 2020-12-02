@@ -51,6 +51,19 @@
                     class="mt-5"
                   ></v-color-picker>
                 </div>
+                <div class="text-center" style="margin: -10px">
+                <span v-for="(color, index) in historyColor" :key="index">
+                    <v-btn
+                    class="colorbtn"
+                    x-small
+                    icon
+                    :color=color.rgb
+                    @click="(theme=color.rgb)"
+                    >
+                    <v-icon>mdi-circle</v-icon>
+                    </v-btn>
+                </span>
+                </div>
                 <div>
                   <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label>
                   <span @click.prevent="predict" style="cursor:pointer; margin-left:10px;"><v-icon color="#dfdfdf">fas fa-search</v-icon></span>
@@ -193,6 +206,8 @@ export default {
         color:'black'
       },
 
+      historyColor: [],
+
       // 다이얼로그 제어
       dialog: false,
 
@@ -213,6 +228,7 @@ export default {
     this.predicted = this.selectNote.predicted;
     document.getElementById("imgfile").value="";
     console.log(this.selectNote);
+    this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     model = await cocoSSD.load();
     
   },
@@ -262,6 +278,11 @@ export default {
         if (this.imgsrc == '') {
           this.predicted = "";
         }
+      },
+    },
+    historyColor: {
+      handler() {
+        localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
       },
     },
   },
@@ -376,6 +397,10 @@ export default {
 </script>
 
 <style>
+.colorbtn {
+    box-shadow: 0px 0px 2px #8c8c8c; 
+    margin: 15px 5px 35px 5px; 
+}
 .inputfile{
     width: 70%;
     margin-left: 35px;
