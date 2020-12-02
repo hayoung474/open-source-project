@@ -241,6 +241,7 @@ export default {
       notes: [],
       noteViewList: [],
       category: [],
+      historyColor: [],
       imageViewList:[],
       isModify: false,
       modifyIndex: null,
@@ -268,6 +269,7 @@ export default {
 
       overlay: false,
       sortopt: "oldest",
+      sameColor: false,
 
     };
   },
@@ -288,6 +290,25 @@ export default {
     },
     AddNote(note) {
       this.notes.push(note);
+      var coloritem = {
+        rgb: note.theme
+      };
+
+      this.sameColor = false;
+
+      for (var i=0; i<this.historyColor.length;i++){
+        if(this.historyColor[i].rgb === coloritem.rgb){
+          console.log("동일 색상");
+          this.sameColor = true;
+          break;
+        }
+      }
+
+      if (this.sameColor === false)
+        this.historyColor.push(coloritem);
+      
+      console.log(this.sameColor);
+
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
@@ -347,6 +368,7 @@ export default {
       this.noteViewList.sort(function (a, b) {
         return a.sortDate > b.sortDate ? -1 : a.sortDate < b.sortDate ? 1 : 0;
       });
+      console.log(this.noteViewList.length)
       if(this.isImageView){
         this.ImageFilter();
       }
@@ -526,6 +548,9 @@ export default {
       localStorage.setItem("category",
         JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
+    if (localStorage.getItem("historyColor")){
+      this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
+    }
     
     await this.trackPosition();
     model = await cocoSSD.load();
@@ -560,6 +585,11 @@ export default {
       handler() {
         localStorage.setItem("category", JSON.stringify(this.category));
       },
+    },
+    historyColor:{
+      handler() {
+          localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
+      }
     },
     overlay (val) {
         val && setTimeout(() => {
