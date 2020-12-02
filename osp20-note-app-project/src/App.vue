@@ -298,7 +298,7 @@ export default {
 
       for (var i=0; i<this.historyColor.length;i++){
         if(this.historyColor[i].rgb === coloritem.rgb){
-          console.log("동일 색상");
+          //console.log("동일 색상");
           this.sameColor = true;
           break;
         }
@@ -307,7 +307,7 @@ export default {
       if (this.sameColor === false)
         this.historyColor.push(coloritem);
       
-      console.log(this.sameColor);
+     // console.log(this.sameColor);
 
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
@@ -327,6 +327,25 @@ export default {
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
       localStorage.setItem("notes", JSON.stringify(this.notes));
+      var coloritem = {
+        rgb: note.theme
+      };
+
+      this.sameColor = false;
+
+      for (var i=0; i<this.historyColor.length;i++){
+        if(this.historyColor[i].rgb === coloritem.rgb){
+          //console.log("동일 색상");
+          this.sameColor = true;
+          break;
+        }
+      }
+
+      if (this.sameColor === false)
+        this.historyColor.push(coloritem);
+      
+      //console.log(this.sameColor);
+
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
@@ -368,7 +387,6 @@ export default {
       this.noteViewList.sort(function (a, b) {
         return a.sortDate > b.sortDate ? -1 : a.sortDate < b.sortDate ? 1 : 0;
       });
-      console.log(this.noteViewList.length)
       if(this.isImageView){
         this.ImageFilter();
       }
