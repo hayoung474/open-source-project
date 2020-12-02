@@ -22,24 +22,23 @@
                     placeholder="Take a note..."
                   ></textarea>
                   <v-btn-toggle>
-                      <v-btn @click="text=text+' *input* '">
-                          <v-icon>mdi-format-italic</v-icon>
-                      </v-btn>
-
                       <v-btn @click="text=text+' **input**'">
                           <v-icon>mdi-format-bold</v-icon>
+                      </v-btn>
+                      <v-btn @click="text=text+' *input* '">
+                          <v-icon>mdi-format-italic</v-icon>
                       </v-btn>
                       <v-btn @click="text=text+' <u> input </u> '">
                           <v-icon>mdi-format-underline</v-icon>
                       </v-btn>
-                      <v-btn @click="text=text+' - input'">
-                          <v-icon>mdi-format-list-bulleted</v-icon>
-                      </v-btn>
                       <v-btn @click="text=text+' ~~input~~'">
                           <v-icon>mdi-format-strikethrough</v-icon>
                       </v-btn>
-
+                      <v-btn @click="text=text+' - input'">
+                          <v-icon>mdi-format-list-bulleted</v-icon>
+                      </v-btn>
                   </v-btn-toggle>
+                  <p style="font-size:12px;" :style="styleObject">버튼을 누르고 input 위치에 원하는 메시지를 작성하세요.</p>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
