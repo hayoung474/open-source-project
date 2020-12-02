@@ -11,13 +11,18 @@
           </v-col>
         </v-row>
         <v-divider></v-divider>
-        <div class="ma-5">
-          <p style="font-size:12px;">
-            이미지 메모를 기반으로 한 추천 카테고리를 생성할 수 있습니다!
-          </p>
-          <v-btn @click="recommendCategoryCreate">추천 카테고리 생성</v-btn>
+        <div class="recommend">
+          <v-row>
+            <v-col cols="12">
+              <span @click="recommendCategoryCreate">
+                <v-icon color="#faff85" style="cursor:pointer;">mdi-star-four-points-outline</v-icon>
+                <p style="font-size:12px;">이미지 메모를 기반으로 한 추천 카테고리를 생성할 수 있습니다!<br>위의 아이콘을 클릭하면 자동 분류가 됩니다.</p>
+              </span>
+            </v-col>
+          </v-row>
           <div id="recommend-category-list"></div>
         </div>
+
         <v-divider></v-divider>
       </div>
       <div class="category-content">
@@ -390,4 +395,9 @@ export default {
   width: 100px;
   font-size: 12px;
 }
+.recommend{
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+
 </style>
