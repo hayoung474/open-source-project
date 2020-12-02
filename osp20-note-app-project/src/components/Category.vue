@@ -202,6 +202,72 @@ export default {
       } else {
         this.isSame = false;
       }
+
+      for (var j = 0; j < this.notes.length; j++) {
+        if (this.notes[j].category.title === "기본메모") {
+          if (
+            this.outsideThing.includes(this.notes[j].predicted) &&
+            newCategory.title === "바깥사물"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.person.includes(this.notes[j].predicted) &&
+            newCategory.title === "인물"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.animal.includes(this.notes[j].predicted) &&
+            newCategory.title === "동물"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.electronic.includes(this.notes[j].predicted) &&
+            newCategory.title === "전자제품"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.vehicle.includes(this.notes[j].predicted) &&
+            newCategory.title === "이동수단"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.clothes.includes(this.notes[j].predicted) &&
+            newCategory.title === "의류"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.things.includes(this.notes[j].predicted) &&
+            newCategory.title === "사물"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.sport.includes(this.notes[j].predicted) &&
+            newCategory.title === "스포츠"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.fruit.includes(this.notes[j].predicted) &&
+            newCategory.title === "과일"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+          if (
+            this.food.includes(this.notes[j].predicted) &&
+            newCategory.title === "음식"
+          ) {
+            this.notes[j].category = newCategory;
+          }
+        }
+      }
+      localStorage.setItem("notes", JSON.stringify(this.notes));
     },
 
     deleteCategory(index) {
@@ -237,39 +303,39 @@ export default {
           if (!this.recommendCategoryList.includes("인물"))
             this.recommendCategoryList.push("인물");
         }
-        if (this.vehicle.includes(this.notes[i].predicted)) {
+        if (this.vehicle.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("이동수단"))
             this.recommendCategoryList.push("이동수단");
         }
-        if (this.outsideThing.includes(this.notes[i].predicted)) {
+        if (this.outsideThing.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("바깥사물"))
             this.recommendCategoryList.push("바깥사물");
         }
-        if (this.animal.includes(this.notes[i].predicted)) {
+        if (this.animal.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("동물"))
             this.recommendCategoryList.push("동물");
         }
-        if (this.clothes.includes(this.notes[i].predicted)) {
+        if (this.clothes.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("의류"))
             this.recommendCategoryList.push("의류");
         }
-        if (this.things.includes(this.notes[i].predicted)) {
+        if (this.things.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("사물"))
             this.recommendCategoryList.push("사물");
         }
-        if (this.electronic.includes(this.notes[i].predicted)) {
+        if (this.electronic.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("전자제품"))
             this.recommendCategoryList.push("전자제품");
         }
-        if (this.sport.includes(this.notes[i].predicted)) {
+        if (this.sport.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("스포츠"))
             this.recommendCategoryList.push("스포츠");
         }
-        if (this.fruit.includes(this.notes[i].predicted)) {
+        if (this.fruit.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("과일"))
             this.recommendCategoryList.push("과일");
         }
-        if (this.food.includes(this.notes[i].predicted)) {
+        if (this.food.includes(this.tempNoteList[i].predicted)) {
           if (!this.recommendCategoryList.includes("음식"))
             this.recommendCategoryList.push("음식");
         }
