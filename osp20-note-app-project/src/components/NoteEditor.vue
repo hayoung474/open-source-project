@@ -194,7 +194,13 @@ let model;
                 if (this.imgsrc != ''){
                     const img = document.getElementById("image");       
                     let tmp = await model.detect(img);  
-                    this.predicted = tmp[0].class
+                    if(tmp.length!==0){
+                        this.predicted = tmp[0].class
+                    }
+                    else{
+                        this.predicted=""
+                    }
+                    
                 }
                 else{
                     alert("이미지를 업로드해주세요!");
