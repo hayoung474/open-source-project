@@ -33,12 +33,12 @@ body {
 
 .sort-lastest-button{
     right: 20px;
-    bottom: 200px;
+    bottom: 140px;
     position: fixed;
     z-index: 999;
 }
 
-.sort-oldest-button{
+.sort-button{
     right: 20px;
     bottom: 140px;
     position: fixed;
@@ -46,7 +46,7 @@ body {
 }
 .calendar-button{
     right: 20px;
-    bottom: 320px;
+    bottom: 200px;
     position: fixed;
     z-index: 999;
 }
@@ -60,12 +60,6 @@ body {
 .category-button{
     right: 20px;
     bottom: 80px;
-    position: fixed;
-    z-index: 999;
-}
-.refresh-button{
-    right: 20px;
-    bottom: 260px;
     position: fixed;
     z-index: 999;
 }

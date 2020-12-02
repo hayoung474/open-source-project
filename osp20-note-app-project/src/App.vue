@@ -110,8 +110,7 @@
                  ></ImageNote>
               </v-col>
             </v-row>
-          </div>
-         
+          </div>     
         </div>
 
         <v-btn
@@ -125,6 +124,17 @@
         </v-btn>
 
         <v-btn
+          class="mx-2 sort-button"
+          fab="fab"
+          :color="color1"
+          title="정렬"
+          @click="sort"
+        >
+          <v-icon style="color: white" v-if="sortopt=='lastest'">mdi-sort-clock-ascending-outline</v-icon>
+          <v-icon style="color: white" v-if="sortopt=='oldest'">mdi-sort-clock-descending-outline</v-icon>
+        </v-btn>        
+
+        <v-btn
           class="mx-2 category-button"
           fab="fab"
           :color="color2"
@@ -132,26 +142,6 @@
           @click="category_dialog = true"
         >
           <v-icon style="color: white"> mdi-format-list-bulleted </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 sort-lastest-button"
-          fab="fab"
-          :color="color2"
-          title="최신순 정렬"
-          @click="sortLastest"
-        >
-          <v-icon style="color: white"> mdi-chevron-up </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 sort-oldest-button"
-          fab="fab"
-          :color="color1"
-          title="오래된 순 정렬"
-          @click="sortOldest"
-        >
-          <v-icon style="color: white"> mdi-chevron-down </v-icon>
         </v-btn>
 
         <v-btn
@@ -163,16 +153,6 @@
             dialog = true;"
         >
           <v-icon style="color: white"> mdi-plus </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 refresh-button"
-          fab="fab"
-          :color="color1"
-          title="되돌리기"
-          @click="reset"
-        >
-          <v-icon style="color: white"> mdi-refresh </v-icon>
         </v-btn>
 
         <v-dialog
@@ -287,6 +267,7 @@ export default {
       isImageView:false,
 
       overlay: false,
+      sortopt: "oldest",
 
     };
   },
@@ -369,7 +350,6 @@ export default {
       if(this.isImageView){
         this.ImageFilter();
       }
-      
     },
     sortOldest() {
       this.noteViewList.sort(function (a, b) {
@@ -377,6 +357,16 @@ export default {
       });
       if(this.isImageView){
         this.ImageFilter();
+      }
+    },
+    sort(){
+      if(this.sortopt == "oldest"){
+        this.sortLastest();
+        this.sortopt = "lastest"
+      }
+      else{
+        this.sortOldest();
+        this.sortopt = "oldest";
       }
     },
     search(keyword) {
