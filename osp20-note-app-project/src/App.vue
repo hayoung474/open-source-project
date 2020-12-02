@@ -93,7 +93,7 @@
             </draggable>
           </div>
           <!-- 이미지뷰 -->
-          <div v-if="isImageView">
+          <div v-if="isImageView" class="mt-10">
             <v-row>
               <v-col
                 v-for="(note, index) in imageViewList"
