@@ -5,13 +5,21 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    category: [
-      {title:"기본메모", color:"blue"}, 
-    ],
+    // category: [
+    //   {title:"기본메모", color:"blue"}, 
+    // ],
     // notes:[],
+    email:"",
 
   },
   mutations: {
+    setLogin(state,email){
+      state.email=email;
+
+    },
+    setLogout(state){
+      state.email="";
+    }
     // addNote(state,note){
     //   state.notes.push(note);
     //   localStorage.setItem("notes", JSON.stringify(state.notes));
@@ -25,49 +33,49 @@ export const store = new Vuex.Store({
     // },
 
     // 카테고리가 변할때 마다 localStorage 에 변경해줄것
-    addCategory(state, category) {
+    // addCategory(state, category) {
       
-        if(localStorage.getItem('category')==="null"){
-          state.category=[];
-        }
-        console.log(category);
-        // 맨 뒤에 해당 카테고리를 추가한다.
-        state.category.push(category);
-        console.log(state.category);
+    //     if(localStorage.getItem('category')==="null"){
+    //       state.category=[];
+    //     }
+    //     console.log(category);
+    //     // 맨 뒤에 해당 카테고리를 추가한다.
+    //     state.category.push(category);
+    //     console.log(state.category);
 
 
-        // 로컬 스토리지에 변경사항을 저장한다.
-        localStorage.setItem("category", JSON.stringify(state.category));
+    //     // 로컬 스토리지에 변경사항을 저장한다.
+    //     localStorage.setItem("category", JSON.stringify(state.category));
    
-        console.log(state.category);
-    },
-    deleteCategory(state, index) {
-      // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
+    //     console.log(state.category);
+    // },
+    // deleteCategory(state, index) {
+    //   // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
 
-      let deleteCategoryTitle = state.category[index].title;
-      let deleteCategory = [];
+    //   let deleteCategoryTitle = state.category[index].title;
+    //   let deleteCategory = [];
 
-      for(let i =0 ; i<state.notes.length;i++){
-        console.log(state.notes[i].category.title,deleteCategoryTitle)
-        if(state.notes[i].category.title !== deleteCategoryTitle){
-          deleteCategory.push(state.notes[i]);
-        }
-      }
+    //   for(let i =0 ; i<state.notes.length;i++){
+    //     console.log(state.notes[i].category.title,deleteCategoryTitle)
+    //     if(state.notes[i].category.title !== deleteCategoryTitle){
+    //       deleteCategory.push(state.notes[i]);
+    //     }
+    //   }
 
-      state.notes = deleteCategory;
-      console.log(deleteCategory);
+    //   state.notes = deleteCategory;
+    //   console.log(deleteCategory);
       
-      state.category.splice(index, 1);
+    //   state.category.splice(index, 1);
 
       
-      if(state.category.length === 0){
-        state.category = [{}];
-        localStorage.setItem("category", JSON.stringify(state.category));
-      }
-      else{
-        localStorage.setItem("category", JSON.stringify(state.category));
-      }
-    }
+    //   if(state.category.length === 0){
+    //     state.category = [{}];
+    //     localStorage.setItem("category", JSON.stringify(state.category));
+    //   }
+    //   else{
+    //     localStorage.setItem("category", JSON.stringify(state.category));
+    //   }
+    // }
   },
 })
 

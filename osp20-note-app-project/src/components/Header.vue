@@ -14,7 +14,8 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <v-btn @click="google"></v-btn>
+        <v-btn @click="google">구글</v-btn>
+        <v-btn @click="logout">로그아웃</v-btn>
     </div>
 </template>
 
@@ -45,6 +46,17 @@ export default {
     
     await this.trackPosition();
     // await this.getWeather();
+
+    firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("로그인상태");
+      // User is signed in.
+    } else {
+      // No user is signed in.'
+      console.log("로그인 안되어있다..");
+    }
+  });
+
   },
   methods: {
     search(){
@@ -69,7 +81,8 @@ export default {
 
       // 로그인 아이디의 기본값을 지정합니다. 지정하지 않아도 됩니다.
       provider.setCustomParameters({
-        'login_hint': 'user@example.com'
+        'login_hint': 'user@example.com',
+        prompt: 'select_account'
       });
 
       // 로그인 팝업창을 띄웁니다.
@@ -90,6 +103,17 @@ export default {
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
+      });
+    },
+    // async logout(){
+    //   await firebase.auth().signOut();
+    // },
+    logout(){
+      firebase.auth().signOut().then(function() {
+          console.log("로그아웃!!");
+        }).catch(function(error) {
+  // An error happened.
+          console.log("err");
       });
     },
     reload(){
