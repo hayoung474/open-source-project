@@ -51,7 +51,7 @@
                     class="mt-5"
                   ></v-color-picker>
                 </div>
-                <div class="text-center" style="margin: -10px">
+                <div class="text-center" style="margin-top: -5px;">
                 <span v-for="(color, index) in historyColor" :key="index">
                     <v-btn
                     class="colorbtn"
@@ -64,7 +64,7 @@
                     </v-btn>
                 </span>
                 </div>
-                <div>
+                <div class="mt-5">
                   <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label>
                   <span @click.prevent="predict" style="cursor:pointer; margin-left:10px;"><v-icon color="#dfdfdf">fas fa-search</v-icon></span>
                   </p>
@@ -400,7 +400,7 @@ export default {
 <style>
 .colorbtn {
     box-shadow: 0px 0px 2px #8c8c8c; 
-    margin: 15px 5px 35px 5px; 
+    margin: 15px 5px 0px 5px; 
 }
 .inputfile{
     width: 70%;

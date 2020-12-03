@@ -308,11 +308,15 @@ export default {
         }
       }
 
-      if (this.sameColor === false)
+      if ((this.sameColor === false) && (coloritem.rgb!="#FFFFFF")){
+        if(this.historyColor.length == 8){
+          this.historyColor.shift();
+        }
         this.historyColor.push(coloritem);
-      
-     // console.log(this.sameColor);
-
+        //console.log(this.sameColor);
+        //console.log(this.historyColor.length);
+      }
+        
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
@@ -339,7 +343,7 @@ export default {
 
       for (var i=0; i<this.historyColor.length;i++){
         if(this.historyColor[i].rgb === coloritem.rgb){
-          //console.log("동일 색상");
+          console.log("동일 색상");
           this.sameColor = true;
           break;
         }
@@ -348,7 +352,7 @@ export default {
       if (this.sameColor === false)
         this.historyColor.push(coloritem);
       
-      //console.log(this.sameColor);
+      console.log(this.sameColor);
 
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
