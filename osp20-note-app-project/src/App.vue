@@ -404,6 +404,9 @@ export default {
       }
     },
     sort(){
+      if (localStorage.getItem("noteViewList")) {
+        this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
+      }
       if(this.sortopt == "oldest"){
         this.sortLastest();
         this.sortopt = "lastest"
