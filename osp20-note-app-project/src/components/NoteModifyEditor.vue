@@ -186,6 +186,7 @@ export default {
     modifyIndex: Number,
     selectNote:Object,
     category:Array,
+    historyColor:Array,
   },
   data() {
     return {
@@ -206,7 +207,7 @@ export default {
         color:'black'
       },
 
-      historyColor: [],
+      // historyColor: [],
 
       // 다이얼로그 제어
       dialog: false,

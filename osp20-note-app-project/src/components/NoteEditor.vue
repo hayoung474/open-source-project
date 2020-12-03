@@ -189,6 +189,9 @@ import * as cocoSSD from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 let model;
 export default {
+  props:{
+    historyColor:Array,
+  },
   data() {
     return {
       title: "",
@@ -201,7 +204,7 @@ export default {
 
       category: [],
       select: 0,
-      historyColor: [],
+      // historyColor: [],
 
       styleObject: {
         color: "black",
@@ -215,7 +218,7 @@ export default {
 
   async mounted() {
     this.category = JSON.parse(localStorage.getItem("category"));
-    this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
+    // this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     model = await cocoSSD.load();
   },
   methods: {

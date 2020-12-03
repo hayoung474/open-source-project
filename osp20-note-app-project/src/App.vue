@@ -166,6 +166,7 @@
             @editorClose="dialog = false"
             @redraw="redraw"
             @AddNote="AddNote"
+            :historyColor="historyColor"
           ></app-note-editor>
         </v-dialog>
 
@@ -189,7 +190,7 @@
           persistent="persistent"
         >
           <app-note-modify-editor
-          
+            :historyColor="historyColor"
             :modifyIndex="modifyIndex"
             :selectNote="selectNote"
             @editorClose="dialog2 = false"
