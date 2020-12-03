@@ -110,8 +110,7 @@
                  ></ImageNote>
               </v-col>
             </v-row>
-          </div>
-         
+          </div>     
         </div>
 
         <v-btn
@@ -125,6 +124,17 @@
         </v-btn>
 
         <v-btn
+          class="mx-2 sort-button"
+          fab="fab"
+          :color="color1"
+          title="정렬"
+          @click="sort"
+        >
+          <v-icon style="color: white" v-if="sortopt=='lastest'">mdi-sort-clock-ascending-outline</v-icon>
+          <v-icon style="color: white" v-if="sortopt=='oldest'">mdi-sort-clock-descending-outline</v-icon>
+        </v-btn>        
+
+        <v-btn
           class="mx-2 category-button"
           fab="fab"
           :color="color2"
@@ -132,26 +142,6 @@
           @click="category_dialog = true"
         >
           <v-icon style="color: white"> mdi-format-list-bulleted </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 sort-lastest-button"
-          fab="fab"
-          :color="color2"
-          title="최신순 정렬"
-          @click="sortLastest"
-        >
-          <v-icon style="color: white"> mdi-chevron-up </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 sort-oldest-button"
-          fab="fab"
-          :color="color1"
-          title="오래된 순 정렬"
-          @click="sortOldest"
-        >
-          <v-icon style="color: white"> mdi-chevron-down </v-icon>
         </v-btn>
 
         <v-btn
@@ -163,16 +153,6 @@
             dialog = true;"
         >
           <v-icon style="color: white"> mdi-plus </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 refresh-button"
-          fab="fab"
-          :color="color1"
-          title="되돌리기"
-          @click="reset"
-        >
-          <v-icon style="color: white"> mdi-refresh </v-icon>
         </v-btn>
 
         <v-dialog
@@ -261,6 +241,7 @@ export default {
       notes: [],
       noteViewList: [],
       category: [],
+      historyColor: [],
       imageViewList:[],
       isModify: false,
       modifyIndex: null,
@@ -287,6 +268,8 @@ export default {
       isImageView:false,
 
       overlay: false,
+      sortopt: "oldest",
+      sameColor: false,
 
     };
   },
@@ -307,6 +290,25 @@ export default {
     },
     AddNote(note) {
       this.notes.push(note);
+      var coloritem = {
+        rgb: note.theme
+      };
+
+      this.sameColor = false;
+
+      for (var i=0; i<this.historyColor.length;i++){
+        if(this.historyColor[i].rgb === coloritem.rgb){
+          //console.log("동일 색상");
+          this.sameColor = true;
+          break;
+        }
+      }
+
+      if (this.sameColor === false)
+        this.historyColor.push(coloritem);
+      
+     // console.log(this.sameColor);
+
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
@@ -325,6 +327,25 @@ export default {
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
       localStorage.setItem("notes", JSON.stringify(this.notes));
+      var coloritem = {
+        rgb: note.theme
+      };
+
+      this.sameColor = false;
+
+      for (var i=0; i<this.historyColor.length;i++){
+        if(this.historyColor[i].rgb === coloritem.rgb){
+          //console.log("동일 색상");
+          this.sameColor = true;
+          break;
+        }
+      }
+
+      if (this.sameColor === false)
+        this.historyColor.push(coloritem);
+      
+      //console.log(this.sameColor);
+
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
@@ -369,7 +390,6 @@ export default {
       if(this.isImageView){
         this.ImageFilter();
       }
-      
     },
     sortOldest() {
       this.noteViewList.sort(function (a, b) {
@@ -377,6 +397,16 @@ export default {
       });
       if(this.isImageView){
         this.ImageFilter();
+      }
+    },
+    sort(){
+      if(this.sortopt == "oldest"){
+        this.sortLastest();
+        this.sortopt = "lastest"
+      }
+      else{
+        this.sortOldest();
+        this.sortopt = "oldest";
       }
     },
     search(keyword) {
@@ -536,6 +566,9 @@ export default {
       localStorage.setItem("category",
         JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
     }
+    if (localStorage.getItem("historyColor")){
+      this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
+    }
     
     await this.trackPosition();
     model = await cocoSSD.load();
@@ -570,6 +603,11 @@ export default {
       handler() {
         localStorage.setItem("category", JSON.stringify(this.category));
       },
+    },
+    historyColor:{
+      handler() {
+          localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
+      }
     },
     overlay (val) {
         val && setTimeout(() => {

@@ -22,24 +22,23 @@
                     placeholder="Take a note..."
                   ></textarea>
                   <v-btn-toggle>
-                      <v-btn @click="text=text+' *input* '">
-                          <v-icon>mdi-format-italic</v-icon>
-                      </v-btn>
-
                       <v-btn @click="text=text+' **input**'">
                           <v-icon>mdi-format-bold</v-icon>
+                      </v-btn>
+                      <v-btn @click="text=text+' *input* '">
+                          <v-icon>mdi-format-italic</v-icon>
                       </v-btn>
                       <v-btn @click="text=text+' <u> input </u> '">
                           <v-icon>mdi-format-underline</v-icon>
                       </v-btn>
-                      <v-btn @click="text=text+' - input'">
-                          <v-icon>mdi-format-list-bulleted</v-icon>
-                      </v-btn>
                       <v-btn @click="text=text+' ~~input~~'">
                           <v-icon>mdi-format-strikethrough</v-icon>
                       </v-btn>
-
+                      <v-btn @click="text=text+' - input'">
+                          <v-icon>mdi-format-list-bulleted</v-icon>
+                      </v-btn>
                   </v-btn-toggle>
+                  <p style="font-size:12px;" :style="styleObject">버튼을 누르고 input 위치에 원하는 메시지를 작성하세요.</p>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -51,6 +50,19 @@
                     v-model="theme"
                     class="mt-5"
                   ></v-color-picker>
+                </div>
+                <div class="text-center" style="margin: -10px">
+                <span v-for="(color, index) in historyColor" :key="index">
+                    <v-btn
+                    class="colorbtn"
+                    x-small
+                    icon
+                    :color=color.rgb
+                    @click="(theme=color.rgb)"
+                    >
+                    <v-icon>mdi-circle</v-icon>
+                    </v-btn>
+                </span>
                 </div>
                 <div>
                   <p><input type="file" id="imgfile" class="inputfile" v-on:change="upload" accept="image/*"><label for="file" class="input-plus"></label>
@@ -194,6 +206,8 @@ export default {
         color:'black'
       },
 
+      historyColor: [],
+
       // 다이얼로그 제어
       dialog: false,
 
@@ -214,6 +228,7 @@ export default {
     this.predicted = this.selectNote.predicted;
     document.getElementById("imgfile").value="";
     console.log(this.selectNote);
+    this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     model = await cocoSSD.load();
     
   },
@@ -263,6 +278,11 @@ export default {
         if (this.imgsrc == '') {
           this.predicted = "";
         }
+      },
+    },
+    historyColor: {
+      handler() {
+        localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
       },
     },
   },
@@ -377,6 +397,10 @@ export default {
 </script>
 
 <style>
+.colorbtn {
+    box-shadow: 0px 0px 2px #8c8c8c; 
+    margin: 15px 5px 35px 5px; 
+}
 .inputfile{
     width: 70%;
     margin-left: 35px;
