@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
     //   {title:"기본메모", color:"blue"}, 
     // ],
     // notes:[],
-    email:"",
+    email:Object,
 
   },
   mutations: {
@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
 
     },
     setLogout(state){
-      state.email="";
+      state.email={};
     }
     // addNote(state,note){
     //   state.notes.push(note);

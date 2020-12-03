@@ -14,8 +14,8 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <v-btn @click="google">구글</v-btn>
-        <v-btn @click="logout">로그아웃</v-btn>
+        <v-btn @click="google" v-if="isLogin">구글</v-btn>
+        <v-btn @click="logout" v-if="!isLogin">로그아웃</v-btn>
     </div>
 </template>
 
@@ -40,6 +40,8 @@ export default {
       weather:"",
       time:"",
       temp:"",
+
+      isLogin:false,
     };
   },
   async mounted(){
@@ -50,10 +52,12 @@ export default {
     firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log("로그인상태");
+      this.isLogin=true;
       // User is signed in.
     } else {
       // No user is signed in.'
       console.log("로그인 안되어있다..");
+      this.isLogin=false;
     }
   });
 
@@ -93,6 +97,7 @@ export default {
         var user = result.user;
         // ...
         console.log(user);
+        this.isLogin=true;
           _this.$router.push("/profile");
       }).catch(function(error) {
         // Handle Errors here.
@@ -111,6 +116,7 @@ export default {
     logout(){
       firebase.auth().signOut().then(function() {
           console.log("로그아웃!!");
+          this.isLogin=false;
         }).catch(function(error) {
   // An error happened.
           console.log("err");
