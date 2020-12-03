@@ -14,12 +14,13 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <v-btn @click="google"></v-btn>
+        <button @click="google" class="google-btn">
+          <img style="width:35px; height:35px;" src="../assets/google-logo.png"/>
+        </button>
     </div>
 </template>
 
 <script>
-// import SearchBar from "./SearchBar.vue";
 import axios from 'axios';
 import firebase from 'firebase'
 
@@ -209,8 +210,8 @@ export default {
   @font-face{
     font-family:"SCDream3";
     src:url("../assets/font/SCDream3.otf");
-}
-p{
-    font-family: "SCDream3";
-}
+  }
+  p{
+      font-family: "SCDream3";
+  }
 </style>
