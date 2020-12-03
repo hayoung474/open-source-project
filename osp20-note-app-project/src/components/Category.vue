@@ -73,17 +73,6 @@ export default {
       category: [],
       recommendCategoryList: [],
       isSame: false,
-      test: [
-        { person: "인물" },
-        { vehicle: "이동수단" },
-        { outsideThing: "바깥사물" },
-        { animal: "동물" },
-        { things: "사물" },
-        { electronic: "전자제품" },
-        { sport: "스포츠" },
-        { fruit: "과일" },
-        { food: "음식" },
-      ],
       person: ["person"],
       vehicle: [
         "bicycle",
@@ -385,6 +374,10 @@ export default {
 };
 </script>
 <style>
+.recommend{
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
 .recommend-category-btn {
   background-color: black;
   color: white;
