@@ -1,0 +1,25 @@
+[debug] [2020-12-02T12:13:39.587Z] ----------------------------------------------------------------------
+[debug] [2020-12-02T12:13:39.589Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\hayoungzzzzz\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2020-12-02T12:13:39.589Z] CLI Version:   8.16.2
+[debug] [2020-12-02T12:13:39.589Z] Platform:      win32
+[debug] [2020-12-02T12:13:39.589Z] Node Version:  v12.18.3
+[debug] [2020-12-02T12:13:39.594Z] Time:          Wed Dec 02 2020 21:13:39 GMT+0900 (GMT+09:00)
+[debug] [2020-12-02T12:13:39.594Z] ----------------------------------------------------------------------
+[debug] [2020-12-02T12:13:39.594Z] 
+[debug] [2020-12-02T12:13:39.601Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-12-02T12:13:39.602Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\hayoungzzzzz\Dropbox\내 PC (DESKTOP-G22A87B)\Documents\osp20-20181061\osp20-note-app-project
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+

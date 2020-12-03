@@ -180,6 +180,7 @@
           max-width="800"
           color="white"
           persistent="persistent"
+          style="z-index:9999"
         >
           <app-note-editor
             @editorClose="dialog = false"
@@ -201,12 +202,14 @@
         </v-dialog>
 
         <v-dialog
+          style="z-index:9999"
           v-model="dialog2"
           max-width="800"
           color="white"
           persistent="persistent"
         >
           <app-note-modify-editor
+          
             :modifyIndex="modifyIndex"
             :selectNote="selectNote"
             @editorClose="dialog2 = false"
