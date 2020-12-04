@@ -21,7 +21,7 @@
                     v-model="text"
                     placeholder="Take a note..."
                   ></textarea>
-                  <v-btn-toggle>
+                  <v-btn-toggle v-model="toggle_none">
                       <v-btn @click="text=text+' **input**'">
                           <v-icon>mdi-format-bold</v-icon>
                       </v-btn>
@@ -208,7 +208,7 @@ export default {
       },
 
       // historyColor: [],
-
+      toggle_none: null,
       // 다이얼로그 제어
       dialog: false,
 
@@ -377,6 +377,7 @@ export default {
         this.imgsrc = "";
         this.predicted="";
         document.getElementById("imgfile").value="";
+        this.toggle_none = null;
 
         this.$emit("editorClose");
       }
@@ -385,6 +386,7 @@ export default {
       this.imgsrc = this.selectNote.imgsrc;
       this.$emit("editorClose");
       document.getElementById("imgfile").value="";
+      this.toggle_none = null;
     },
     isEmpty(str){
          

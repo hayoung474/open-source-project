@@ -23,7 +23,7 @@
                   placeholder="Take a note..."
                 ></textarea>
 
-                <v-btn-toggle>
+                <v-btn-toggle v-model="toggle_none">
                   <v-btn @click="text = text + ' **input**'">
                     <v-icon>mdi-format-bold</v-icon>
                   </v-btn>
@@ -213,6 +213,7 @@ export default {
 
       predicted: "",
       // dialog: false,
+      toggle_none: null,
     };
   },
 
@@ -318,6 +319,7 @@ export default {
         this.password = "";
         this.imgsrc = "";
         this.predicted = "";
+        this.toggle_none = null;
 
         this.$emit("editorClose");
         this.$emit("redraw");
@@ -335,6 +337,7 @@ export default {
       this.password = "";
       this.imgsrc = "";
       this.predicted = "";
+      this.toggle_none = null;
 
       this.$emit("editorClose");
       document.getElementById("imgfile").value = "";
