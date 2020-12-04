@@ -234,7 +234,9 @@ import ImageNote from "./components/ImageNote.vue";
 import draggable from "vuedraggable";
 import axios from 'axios';
 import Loading from 'vue-loading-overlay';
+import firebase from 'firebase'
 import 'vue-loading-overlay/dist/vue-loading.css';
+
 
 export default {
   name: "App",
@@ -327,6 +329,12 @@ export default {
       if(this.isRecommendMode && note.imgsrc!=""){
         this.AddRecommendCategory(note);
       }
+      var uid = JSON.parse(sessionStorage.getItem("user")).uid;
+
+      // firebase.database().ref('users/').child(uid).set(note);
+      firebase.database().ref("user/").child(uid).push().set(note);
+
+      
     },
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
@@ -555,28 +563,49 @@ export default {
     
   },
   async mounted() {
+    
 
     this.overlay=true;
-    if (localStorage.getItem("notes")) {
-      this.notes = JSON.parse(localStorage.getItem("notes"));
-    }
-    if (localStorage.getItem("noteViewList")) {
-        this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-    }
-    if (localStorage.getItem("category")) {
-      this.category = JSON.parse(localStorage.getItem("category"));
-    }
-    if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("category")).length===0)) {
-      localStorage.setItem("category",
-        JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
-    }
+
     if (localStorage.getItem("historyColor")){
       this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     }
     
     await this.trackPosition();
     model = await cocoSSD.load();
-    
+
+
+    if (sessionStorage.getItem("user")==="") {
+      if (localStorage.getItem("notes")) {
+        this.notes = JSON.parse(localStorage.getItem("notes"));
+      }
+      if (localStorage.getItem("noteViewList")) {
+          this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
+      }
+      if (localStorage.getItem("category")) {
+        this.category = JSON.parse(localStorage.getItem("category"));
+      }
+      if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("category")).length===0)) {
+        localStorage.setItem("category",
+          JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
+      }
+    }
+    else{
+      var newNotes=[]
+      var uid = JSON.parse(sessionStorage.getItem("user")).uid;
+      firebase.database().ref('user/').child(uid).on('value', function(e){
+        var noteData = e.val();
+        console.log(noteData);
+        for(var key in noteData){
+          var noteObj = noteData[key];
+          newNotes.push(noteObj);
+          console.log(noteObj);
+          sessionStorage.setItem("ut", JSON.stringify(newNotes));
+        }
+      });
+       
+      
+    } 
   },
   watch: {
     notes: {

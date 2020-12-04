@@ -9,16 +9,22 @@ export const store = new Vuex.Store({
     //   {title:"기본메모", color:"blue"}, 
     // ],
     // notes:[],
-    email:Object,
+    user:Object,
+    test:"hello"
+    
 
   },
   mutations: {
-    setLogin(state,email){
-      state.email=email;
+    setLogin(state,user){
+      state.user=user;
+      console.log(user);
+      localStorage.setItem("email",user.email);
 
     },
     setLogout(state){
       state.email={};
+      localStorage.setItem("email","");
+      // localStorage.setItem("email", JSON.stringify(this.notes));
     }
     // addNote(state,note){
     //   state.notes.push(note);
