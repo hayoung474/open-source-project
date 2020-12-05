@@ -17,6 +17,7 @@
         <button @click="google" class="google-btn">
           <img style="width:35px; height:35px;" src="../assets/google-logo.png"/>
         </button>
+
     </div>
 </template>
 
@@ -48,6 +49,9 @@ export default {
 
   },
   methods: {
+    google(){
+      this.$emit('google');
+    },
     search(){
       this.$emit('search',this.searchText);
       this.searchText="";

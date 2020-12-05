@@ -1,24 +1,35 @@
 <template>
-
   <div id="app">
     <v-app id="inspire">
-      <app-header @search="search" @goHome="reset" :weatherInfo="weatherInfo" :timeInfo="timeInfo"></app-header>
+      <app-header
+        @search="search"
+        @goHome="reset"
+        :weatherInfo="weatherInfo"
+        :timeInfo="timeInfo"
+        @google="google"
+      ></app-header>
 
       <v-container>
+        <v-btn @click="logout" style="height:50px;">
+          <img
+            :src="currentUser.photoURL"
+            style="margin-right:auto"
+            height="30px"
+          />
+          <p style="margin:0 !important">{{ currentUser.email }}</p>
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
 
-          <v-overlay :value="overlay" style="z-index:999999">
-            <v-progress-circular
-              indeterminate
-              size="64"
-            ></v-progress-circular>
-          </v-overlay>
+        <v-overlay :value="overlay" style="z-index:999999">
+          <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
         <v-switch
-                v-model="ex11"
-                label="ImageViewMode"
-                color="secondary"
-                value="secondary"
-                @click="changeMode()"
-                hide-details
+          v-model="ex11"
+          label="ImageViewMode"
+          color="secondary"
+          value="secondary"
+          @click="changeMode()"
+          hide-details
         ></v-switch>
         <!-- 카테고리 목록 출력 -->
         <div class="text-center" style="margin: -10px">
@@ -39,7 +50,7 @@
         </div>
         <div>
           <!-- 고정메모는 그리드로 보여주기 -->
-          <div class="mt-10" v-if="!isImageView" >
+          <div class="mt-10" v-if="!isImageView">
             <v-row>
               <v-col
                 v-for="(note, index) in notes"
@@ -76,18 +87,18 @@
                 v-show="note.important === false"
               >
                 <v-hover v-slot="{ hover }">
-                    <v-expand-transition name="note">
-                            <Note
-                            :note="note"
-                            :index="index"
-                            @modifyNote="modifyNote(note)"
-                            @deleteNote="deleteNote(note)"
-                            ></Note>
-                            <div
-                            v-if="hover"
-                            class="d-flex transition-fast-in-fast-out"
-                            ></div>
-                    </v-expand-transition>
+                  <v-expand-transition name="note">
+                    <Note
+                      :note="note"
+                      :index="index"
+                      @modifyNote="modifyNote(note)"
+                      @deleteNote="deleteNote(note)"
+                    ></Note>
+                    <div
+                      v-if="hover"
+                      class="d-flex transition-fast-in-fast-out"
+                    ></div>
+                  </v-expand-transition>
                 </v-hover>
               </v-col>
             </draggable>
@@ -102,15 +113,15 @@
                 sm="4"
                 md="3"
               >
-                 <ImageNote 
+                <ImageNote
                   :note="note"
                   :index="index"
                   @modifyNote="modifyNote(note)"
                   @deleteNote="deleteNote(note)"
-                 ></ImageNote>
+                ></ImageNote>
               </v-col>
             </v-row>
-          </div>     
+          </div>
         </div>
 
         <v-btn
@@ -130,9 +141,13 @@
           title="정렬"
           @click="sort"
         >
-          <v-icon style="color: white" v-if="sortopt=='lastest'">mdi-sort-clock-ascending-outline</v-icon>
-          <v-icon style="color: white" v-if="sortopt=='oldest'">mdi-sort-clock-descending-outline</v-icon>
-        </v-btn>        
+          <v-icon style="color: white" v-if="sortopt == 'lastest'"
+            >mdi-sort-clock-ascending-outline</v-icon
+          >
+          <v-icon style="color: white" v-if="sortopt == 'oldest'"
+            >mdi-sort-clock-descending-outline</v-icon
+          >
+        </v-btn>
 
         <v-btn
           class="mx-2 category-button"
@@ -149,8 +164,7 @@
           fab="fab"
           :color="color1"
           title="메모 추가"
-          @click="
-            dialog = true;"
+          @click="dialog = true"
         >
           <v-icon style="color: white"> mdi-plus </v-icon>
         </v-btn>
@@ -215,7 +229,11 @@
             <v-btn
               text
               color="primary"
-              @click="calendar_dialog = false;showDateNote();">OK
+              @click="
+                calendar_dialog = false;
+                showDateNote();
+              "
+              >OK
             </v-btn>
           </v-date-picker>
         </v-dialog>
@@ -232,15 +250,15 @@ import Header from "./components/Header.vue";
 import Note from "./components/Note.vue";
 import ImageNote from "./components/ImageNote.vue";
 import draggable from "vuedraggable";
-import axios from 'axios';
-import Loading from 'vue-loading-overlay';
-import firebase from 'firebase'
-import 'vue-loading-overlay/dist/vue-loading.css';
+import axios from "axios";
+import Loading from "vue-loading-overlay";
+import firebase from "firebase";
+import "vue-loading-overlay/dist/vue-loading.css";
 
-
+let model;
 export default {
   name: "App",
-  data: function () {
+  data: function() {
     return {
       dialog: false,
       dialog2: false,
@@ -248,7 +266,7 @@ export default {
       noteViewList: [],
       category: [],
       historyColor: [],
-      imageViewList:[],
+      imageViewList: [],
       isModify: false,
       modifyIndex: null,
       category_dialog: false,
@@ -260,119 +278,118 @@ export default {
       selectDate: "",
       selectNote: "",
 
-      weatherInfo:"",
-      timeInfo:"",
-      color1:"#bc6d89",
-      color2:"#191e69",
-      
-      latitude:37.5665,
-      longitude:126.9780,
+      weatherInfo: "",
+      timeInfo: "",
+      color1: "#bc6d89",
+      color2: "#191e69",
 
-      time:"",
-      weather:"",
-      
-      isImageView:false,
+      latitude: 37.5665,
+      longitude: 126.978,
+
+      time: "",
+      weather: "",
+
+      isImageView: false,
 
       overlay: false,
       sortopt: "oldest",
       sameColor: false,
 
+      currentUser: Object,
+      userEmail: "",
+      userPhoto: "",
     };
   },
-  components:{
+  components: {
     Loading,
   },
   methods: {
-    changeMode(){
-      this.isImageView=!this.isImageView;
-      if(this.isImageView){
+    changeMode() {
+      this.isImageView = !this.isImageView;
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
-    ImageFilter(){
+    ImageFilter() {
       this.imageViewList = this.noteViewList.filter(
-          (note) => note.imgsrc !== ''
+        (note) => note.imgsrc !== ""
       );
     },
     AddNote(note) {
       this.notes.push(note);
       var coloritem = {
-        rgb: note.theme
+        rgb: note.theme,
       };
 
       this.sameColor = false;
 
-      for (var i=0; i<this.historyColor.length;i++){
-        if(this.historyColor[i].rgb === coloritem.rgb){
-          //console.log("동일 색상");
+      for (var i = 0; i < this.historyColor.length; i++) {
+        if (this.historyColor[i].rgb === coloritem.rgb) {
           this.sameColor = true;
           break;
         }
       }
 
-      if ((this.sameColor === false) && (coloritem.rgb!="#FFFFFF")){
-        if(this.historyColor.length == 8){
+      if (this.sameColor === false && coloritem.rgb != "#FFFFFF") {
+        if (this.historyColor.length == 8) {
           this.historyColor.shift();
         }
         this.historyColor.push(coloritem);
-        //console.log(this.sameColor);
-        //console.log(this.historyColor.length);
       }
-        
+
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
         );
+      } else {
+        this.noteViewList = this.notes;
       }
-      else{
-          this.noteViewList = this.notes;
-      }
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
-      if(this.isRecommendMode && note.imgsrc!=""){
+      if (this.isRecommendMode && note.imgsrc != "") {
         this.AddRecommendCategory(note);
       }
-      var uid = JSON.parse(sessionStorage.getItem("user")).uid;
+      //var uid = JSON.parse(sessionStorage.getItem("user")).uid;
 
       // firebase.database().ref('users/').child(uid).set(note);
-      firebase.database().ref("user/").child(uid).push().set(note);
-
-      
+      firebase
+        .database()
+        .ref("user/")
+        .child(this.currentUser.uid)
+        .push()
+        .set(note);
     },
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
+
       localStorage.setItem("notes", JSON.stringify(this.notes));
       var coloritem = {
-        rgb: note.theme
+        rgb: note.theme,
       };
 
       this.sameColor = false;
 
-      for (var i=0; i<this.historyColor.length;i++){
-        if(this.historyColor[i].rgb === coloritem.rgb){
-          //console.log("동일 색상");
+      for (var i = 0; i < this.historyColor.length; i++) {
+        if (this.historyColor[i].rgb === coloritem.rgb) {
           this.sameColor = true;
           break;
         }
       }
 
-      if ((this.sameColor === false) && (coloritem.rgb!="#FFFFFF")){
-          if(this.historyColor.length == 8)
-            this.historyColor.shift();
-          this.historyColor.push(coloritem);
+      if (this.sameColor === false && coloritem.rgb != "#FFFFFF") {
+        if (this.historyColor.length == 8) this.historyColor.shift();
+        this.historyColor.push(coloritem);
       }
-      //console.log(this.sameColor);
 
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
         );
+      } else {
+        this.noteViewList = this.notes;
       }
-      else{
-          this.noteViewList = this.notes;
-      }
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
@@ -384,11 +401,10 @@ export default {
         this.noteViewList = this.notes.filter(
           (note) => note.category.title === this.categoryTitle
         );
+      } else {
+        this.noteViewList = this.notes;
       }
-      else{
-          this.noteViewList = this.notes;
-      }
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
@@ -397,44 +413,46 @@ export default {
       this.modifyIndex = this.notes.indexOf(note);
       this.note = note;
       this.dialog2 = true;
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
     sortLastest() {
-      this.noteViewList.sort(function (a, b) {
+      this.noteViewList.sort(function(a, b) {
         return a.sortDate > b.sortDate ? -1 : a.sortDate < b.sortDate ? 1 : 0;
       });
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
     sortOldest() {
-      this.noteViewList.sort(function (a, b) {
+      this.noteViewList.sort(function(a, b) {
         return a.sortDate < b.sortDate ? -1 : a.sortDate > b.sortDate ? 1 : 0;
       });
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
-    sort(){
+    sort() {
       if (localStorage.getItem("noteViewList")) {
         this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
       }
-      if(this.sortopt == "oldest"){
+      if (this.sortopt == "oldest") {
         this.sortLastest();
-        this.sortopt = "lastest"
-      }
-      else{
+        this.sortopt = "lastest";
+      } else {
         this.sortOldest();
         this.sortopt = "oldest";
       }
     },
     search(keyword) {
       this.noteViewList = this.notes.filter(
-        (note) => note.text.includes(keyword) || note.title.includes(keyword) || note.predicted.includes(keyword)
+        (note) =>
+          note.text.includes(keyword) ||
+          note.title.includes(keyword) ||
+          note.predicted.includes(keyword)
       );
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
@@ -443,14 +461,14 @@ export default {
       this.noteViewList = this.notes.filter(
         (note) => note.category.title === title
       );
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
     reset() {
       this.categoryTitle = "";
       this.noteViewList = this.notes;
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
@@ -463,7 +481,7 @@ export default {
       if (this.categoryTitle === "") {
         this.noteViewList = this.notes;
       }
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
@@ -471,165 +489,240 @@ export default {
       this.noteViewList = this.notes.filter(
         (note) => note.date.substr(0, 10) === this.selectDate
       );
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
-      
     },
     deleteCategoryNote(deleteCategory) {
       // 이곳에서는 해당 카테고리에 해당되는 메모를 모두 삭제
       this.notes = this.notes.filter(
         (note) => note.category.title !== deleteCategory.title
       );
-      if(this.isImageView){
+      if (this.isImageView) {
         this.ImageFilter();
       }
     },
-    getTime(){
+    getTime() {
       var time = new Date().getHours();
-      if(time>6 && time<18){
-        return "day"
-      }
-      else if(time>=18 || time<=6){
-        return "night"
+      if (time > 6 && time < 18) {
+        return "day";
+      } else if (time >= 18 || time <= 6) {
+        return "night";
       }
     },
     async trackPosition() {
       if (navigator.geolocation) {
-        await navigator.geolocation.getCurrentPosition(await this.successPosition, this.failurePosition, {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 0,
-        })
+        await navigator.geolocation.getCurrentPosition(
+          await this.successPosition,
+          this.failurePosition,
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0,
+          }
+        );
       } else {
-        alert(`Browser doesn't support Geolocation`)
+        alert(`Browser doesn't support Geolocation`);
       }
     },
-    getWeather(){
-      var apiKey = "e23cd2868a5a387d7407f52b3e0536ea"
-      var url = "https://api.openweathermap.org/data/2.5/weather?lat="+this.latitude+"&lon="+this.longitude+"&appid="+apiKey;
+    getWeather() {
+      var apiKey = "e23cd2868a5a387d7407f52b3e0536ea";
+      var url =
+        "https://api.openweathermap.org/data/2.5/weather?lat=" +
+        this.latitude +
+        "&lon=" +
+        this.longitude +
+        "&appid=" +
+        apiKey;
 
-      axios
-        .get(url)
-        .then((res) => {
-          if(res.status ===200){
-            this.weather = res.data.weather[0].description;
-            this.time=this.getTime();
-            this.themeSet();
-          }
-        })
+      axios.get(url).then((res) => {
+        if (res.status === 200) {
+          this.weather = res.data.weather[0].description;
+          this.time = this.getTime();
+          this.themeSet();
+        }
+      });
     },
     successPosition(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
 
       this.getWeather();
-
     },
-    
+
     failurePosition(err) {
-      console.log(err)
+      console.log(err);
       // alert('Error Code: ' + err.code + ' Error Message: ' + err.message)
       return;
     },
-    themeSet(){
-      if(this.time =="day"){
-        if(this.weather==="clear sky"){
-          this.color1='rgb(250,217,119)';
-          this.color2='rgb(129,210,241)';
+    themeSet() {
+      if (this.time == "day") {
+        if (this.weather === "clear sky") {
+          this.color1 = "rgb(250,217,119)";
+          this.color2 = "rgb(129,210,241)";
         }
-        if(this.weather==="few clouds"){
-          this.color1='rgb(237,237,237)';
-          this.color2='rgb(149,161,166)';
+        if (this.weather === "few clouds") {
+          this.color1 = "rgb(237,237,237)";
+          this.color2 = "rgb(149,161,166)";
         }
-        if(this.weather==="rain" || this.weather==="light rain"){
-          this.color1='rgb(228,228,228)';
-          this.color2='rgb(101,122,130)';
+        if (this.weather === "rain" || this.weather === "light rain") {
+          this.color1 = "rgb(228,228,228)";
+          this.color2 = "rgb(101,122,130)";
         }
       }
-      if(this.weather==="fog"){
-        this.color1='rgb(231,231,231)';
-        this.color2='rgb(168,168,168)';
+      if (this.weather === "fog") {
+        this.color1 = "rgb(231,231,231)";
+        this.color2 = "rgb(168,168,168)";
       }
-      if(this.weather==="snow"){
-        this.color1='rgb(222,223,228)';
-        this.color2='rgb(173,203,227)';
+      if (this.weather === "snow") {
+        this.color1 = "rgb(222,223,228)";
+        this.color2 = "rgb(173,203,227)";
       }
-      if(this.weather==="scattered clouds" || this.weather ==="broken clouds" || this.weather==="overcast clouds"){
-        this.color1='rgb(237,237,237)';
-        this.color2='rgb(149,161,166)';
+      if (
+        this.weather === "scattered clouds" ||
+        this.weather === "broken clouds" ||
+        this.weather === "overcast clouds"
+      ) {
+        this.color1 = "rgb(237,237,237)";
+        this.color2 = "rgb(149,161,166)";
       }
-      if(this.weather==="shower rain"){
-        this.color1='rgb(228,228,228)';
-        this.color2='rgb(101,122,130)';
+      if (this.weather === "shower rain") {
+        this.color1 = "rgb(228,228,228)";
+        this.color2 = "rgb(101,122,130)";
       }
 
-      if(this.time == "night"){
-        this.color1='rgb(0,6,83)';
-        this.color2='rgb(5,23,36)';
+      if (this.time == "night") {
+        this.color1 = "rgb(0,6,83)";
+        this.color2 = "rgb(5,23,36)";
       }
-    }
-    
+    },
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(function() {
+          //sessionStorage.setItem("user", "");
+        })
+        .catch(function(error) {
+          console.log("err");
+        });
+    },
+    google() {
+      const _this = this;
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({
+        login_hint: "user@example.com",
+        prompt: "select_account",
+      });
+
+      // 로그인 팝업창을 띄웁니다.
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          var token = result.credential.accessToken;
+          var user = result.user;
+          console.log(user);
+          _this.$router.push("/profile");
+          window.location.reload();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+        });
+    },
   },
   async mounted() {
-    
+    console.log("mounted!");
 
-    this.overlay=true;
+    this.overlay = true;
 
-    if (localStorage.getItem("historyColor")){
+    if (localStorage.getItem("historyColor")) {
       this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     }
-    
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("로그인됨");
+        //sessionStorage.setItem("user", JSON.stringify(user));
+        // this.currentUser = JSON.parse(sessionStorage.getItem("user"));
+        this.currentUser = user;
+        var newNotes = [];
+        firebase
+          .database()
+          .ref("user/")
+          .child(user.uid)
+          .on("value", (e) => {
+            var noteData = e.val();
+            console.log(noteData);
+            for (var key in noteData) {
+              var noteObj = noteData[key];
+              newNotes.push(noteObj);
+            }
+            this.notes = newNotes;
+            this.noteViewList = this.notes;
+            console.log(this.noteViewList);
+          });
+      } else {
+        console.log("로그인안됨");
+        //sessionStorage.setItem("user", "");
+        this.currentUser = {};
+      }
+    });
+    console.log("testtesttest");
+
+    if (localStorage.getItem("notes")) {
+      this.notes = JSON.parse(localStorage.getItem("notes"));
+    }
+    if (localStorage.getItem("noteViewList")) {
+      this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
+    }
+    if (localStorage.getItem("category")) {
+      this.category = JSON.parse(localStorage.getItem("category"));
+    }
+    if (
+      !localStorage.getItem("category") ||
+      JSON.parse(localStorage.getItem("category")).length === 0
+    ) {
+      localStorage.setItem(
+        "category",
+        JSON.stringify([{ title: "기본메모", color: "#CE93D8" }])
+      );
+    }
+    console.log("testtesttest");
+    // var uid = JSON.parse(sessionStorage.getItem("user")).uid;
+    // var newNotes=[]
+    // firebase.database().ref('user/').child(uid).on('value', (e) => {
+    //     var noteData = e.val();
+    //     console.log(noteData);
+    //     for(var key in noteData){
+    //       var noteObj = noteData[key];
+    //       newNotes.push(noteObj);
+    //     }
+    //     this.notes = newNotes;
+    //     this.noteViewList = this.notes;
+    //   });
+    // console.log(this.noteViewList);
+    console.log("testtesttest");
+
     await this.trackPosition();
     model = await cocoSSD.load();
-
-
-    if (sessionStorage.getItem("user")==="") {
-      if (localStorage.getItem("notes")) {
-        this.notes = JSON.parse(localStorage.getItem("notes"));
-      }
-      if (localStorage.getItem("noteViewList")) {
-          this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-      }
-      if (localStorage.getItem("category")) {
-        this.category = JSON.parse(localStorage.getItem("category"));
-      }
-      if ((!localStorage.getItem("category") || JSON.parse(localStorage.getItem("category")).length===0)) {
-        localStorage.setItem("category",
-          JSON.stringify([{ title: "기본메모", color: "#CE93D8" }]));
-      }
-    }
-    else{
-      var newNotes=[]
-      var uid = JSON.parse(sessionStorage.getItem("user")).uid;
-      firebase.database().ref('user/').child(uid).on('value', function(e){
-        var noteData = e.val();
-        console.log(noteData);
-        for(var key in noteData){
-          var noteObj = noteData[key];
-          newNotes.push(noteObj);
-          console.log(noteObj);
-          sessionStorage.setItem("ut", JSON.stringify(newNotes));
-        }
-      });
-       
-      
-    } 
   },
   watch: {
     notes: {
       handler() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
         console.log(this.notes);
-        console.log(JSON.parse(localStorage.getItem("notes")))
-        
+        console.log(JSON.parse(localStorage.getItem("notes")));
+
         // 카테고리가 선택이 되어 있는 경우에 재 배치
         if (this.categoryTitle !== "") {
           this.noteViewList = this.notes.filter(
             (note) => note.category.title === this.categoryTitle
           );
-        }
-        else{
+        } else {
           this.noteViewList = this.notes;
         }
         localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
@@ -646,15 +739,22 @@ export default {
         localStorage.setItem("category", JSON.stringify(this.category));
       },
     },
-    historyColor:{
+    historyColor: {
       handler() {
-          localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
-      }
+        localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
+      },
     },
-    overlay (val) {
-        val && setTimeout(() => {
-          this.overlay = false
-        }, 1000)
+    currentUser: {
+      handler() {
+        this.userEmail = this.currentUser.email;
+        this.userPhoto = this.currentUser.photoURL;
+      },
+    },
+    overlay(val) {
+      val &&
+        setTimeout(() => {
+          this.overlay = false;
+        }, 1000);
     },
   },
   components: {
@@ -673,33 +773,39 @@ export default {
 <style lang="scss">
 @import "@/styles/global.scss";
 
-.fade-enter-active, .fade-leave-active { transition: opacity .5s } .fade-enter, .fade-leave-to { opacity: 0 }
-
-.v-input--switch .v-input--selection-controls__input{
-    width: 45px;
-    margin-right: 10px;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.v-input--switch__track{
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.v-input--switch .v-input--selection-controls__input {
+  width: 45px;
+  margin-right: 10px;
+}
+.v-input--switch__track {
   width: 45px;
   height: 26px;
   top: calc(50% - 13px);
   left: 0;
   right: 0;
   border-radius: 13px;
-
 }
 
-.v-input--switch__thumb{
+.v-input--switch__thumb {
   box-shadow: none;
   transform: translateX(4px);
 }
 
-.v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple, .v-input--switch.v-input--is-dirty .v-input--switch__thumb{
-    transform: translateX(22px);
+.v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,
+.v-input--switch.v-input--is-dirty .v-input--switch__thumb {
+  transform: translateX(22px);
 }
 
-.v-input--switch .v-input--selection-controls__ripple{
-    left: -12px;
+.v-input--switch .v-input--selection-controls__ripple {
+  left: -12px;
 }
-
 </style>
