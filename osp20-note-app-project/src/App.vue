@@ -24,10 +24,8 @@
           <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
         <v-switch
-          v-model="ex11"
           label="ImageViewMode"
           color="secondary"
-          value="secondary"
           @click="changeMode()"
           hide-details
         ></v-switch>

@@ -119,13 +119,13 @@
               <v-col cols="4">
                 <v-row>
                   <v-col cols="12">
-                    <v-checkbox
+                    <v-switch
                       label="Secret Memo"
-                      color="black"
-                      v-model="secret"
-                      hide-details="hide-details"
-                    >
-                    </v-checkbox>
+                      color="secondary"
+                      v-model="mSecret"
+                      hide-details
+                      @click="secret=(!secret)"
+                    ></v-switch>
                     <input
                       v-if="secret"
                       class="password-input"
@@ -135,13 +135,13 @@
                     />
                   </v-col>
                   <v-col cols="12">
-                    <v-checkbox
-                      label="Important Memo"
-                      color="black"
-                      v-model="important"
-                      hide-details="hide-details"
-                    >
-                    </v-checkbox>
+                  <v-switch
+                    label="Important Memo"
+                    color="secondary"
+                    v-model="mImportant"
+                    hide-details
+                    @click="important=(!important)"
+                  ></v-switch>
                   </v-col>
                 </v-row>
               </v-col>
@@ -209,6 +209,8 @@ export default {
 
       // historyColor: [],
       toggle_none: null,
+      mSecret: null,
+      mImportant: false,
       // 다이얼로그 제어
       dialog: false,
 
@@ -227,6 +229,7 @@ export default {
     this.selectCategoryName = this.category[this.select].title;
     this.imgsrc = this.selectNote.imgsrc;
     this.predicted = this.selectNote.predicted;
+    this.mImportant = this.important;
     document.getElementById("imgfile").value="";
     console.log(this.selectNote);
     this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
@@ -245,7 +248,8 @@ export default {
         this.beforeCategoryName = this.selectNote.category.title;
         this.selectCategoryName = this.category[this.select].title;
         this.imgsrc = this.selectNote.imgsrc;
-        this.predicted = this.selectNote.predicted;
+        this.predicted = this.selectNote.predicted;     
+        this.mImportant = this.important;
       },
     },
     theme:{
@@ -271,6 +275,7 @@ export default {
       handler() {
         if (this.secret == false) {
           this.password = "";
+          this.mSecret = null;
         }
       },
     },
@@ -387,6 +392,7 @@ export default {
       this.$emit("editorClose");
       document.getElementById("imgfile").value="";
       this.toggle_none = null;
+      this.mImportant = this.important;
     },
     isEmpty(str){
          

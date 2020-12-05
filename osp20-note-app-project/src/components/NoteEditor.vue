@@ -128,12 +128,13 @@
               </div>
             </v-col>
             <v-col cols="4">
-              <v-checkbox
+              <v-switch
                 label="Secret Memo"
-                color="black"
-                v-model="secret"
-                hide-details="hide-details"
-              ></v-checkbox>
+                color="secondary"
+                v-model="mSecret"
+                hide-details
+                @click="secret=(!secret)"
+              ></v-switch>
               <input
                 v-if="secret"
                 class="password-input"
@@ -143,12 +144,13 @@
               />
             </v-col>
             <v-col cols="4">
-              <v-checkbox
+              <v-switch
                 label="Important Memo"
-                color="black"
-                v-model="important"
-                hide-details="hide-details"
-              ></v-checkbox>
+                color="secondary"
+                v-model="mImportant"
+                hide-details
+                @click="important=(!important)"
+              ></v-switch>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -214,6 +216,8 @@ export default {
       predicted: "",
       // dialog: false,
       toggle_none: null,
+      mSecret: false,
+      mImportant: false,
     };
   },
 
@@ -320,6 +324,8 @@ export default {
         this.imgsrc = "";
         this.predicted = "";
         this.toggle_none = null;
+        this.mImportant = false;
+        this.mSecret = false;
 
         this.$emit("editorClose");
         this.$emit("redraw");
@@ -338,6 +344,9 @@ export default {
       this.imgsrc = "";
       this.predicted = "";
       this.toggle_none = null;
+      this.mImportant = false;
+      this.mSecret = false;
+
 
       this.$emit("editorClose");
       document.getElementById("imgfile").value = "";
