@@ -10,7 +10,7 @@
       ></app-header>
 
       <v-container>
-        <v-btn @click="logout" style="height:50px;">
+        <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
           <img
             :src="currentUser.photoURL"
             style="margin-right:auto"
@@ -296,6 +296,7 @@ export default {
       currentUser: Object,
       userEmail: "",
       userPhoto: "",
+      login: false,
     };
   },
   components: {
@@ -604,6 +605,7 @@ export default {
         .catch(function(error) {
           console.log("err");
         });
+      this.login = false;
     },
     google() {
       const _this = this;
@@ -646,6 +648,7 @@ export default {
         console.log("로그인됨");
         //sessionStorage.setItem("user", JSON.stringify(user));
         // this.currentUser = JSON.parse(sessionStorage.getItem("user"));
+        this.login = true;
         this.currentUser = user;
         var newNotes = [];
         firebase
@@ -665,6 +668,7 @@ export default {
           });
       } else {
         console.log("로그인안됨");
+        this.login = false;
         //sessionStorage.setItem("user", "");
         this.currentUser = {};
       }
