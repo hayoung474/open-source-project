@@ -1,7 +1,6 @@
 <template>
 <div>
     <v-card class="pa-5" elevation="3" :color="note.theme" style="width:100%;" :style="styleObject" @click="password_dialog = note.secret">
-
                 <v-row>
                     <v-col cols="10">
                         <strong class="title" v-if="note.secret===false">{{ note.title }}</strong>
@@ -56,15 +55,16 @@
                         <v-btn v-if="note.imgsrc!='' && (!note.secret)" fab x-small @click="imageOpen()" ><v-icon large>{{openIcon}}</v-icon></v-btn>
                     </v-col>
                 </v-row>
-                <v-row v-if="isOpen && (note.imgsrc!='') && (!note.secret)" >
-                    <img style="width:100%" :src="note.imgsrc"/>
+                <v-row v-if="isOpen && (note.imgsrc!='') && (!note.secret)" @click="image_dialog=true">
+                    <img style="width:100%" :src="note.imgsrc" />
                 </v-row>
-                
-        
     </v-card>
 
     <v-dialog v-model="password_dialog" max-width="500" color="white" persistent="persistent">
         <Password @password="checkPassword" @dialogClosed="password_dialog = false"></Password>
+    </v-dialog>
+    <v-dialog v-model="image_dialog" max-width="700" color="white">
+        <v-img :src="note.imgsrc" max-width="700" max-height="800" class="grey darken-4" contain></v-img>
     </v-dialog>
     </div>
 </template>
@@ -80,6 +80,7 @@
         data() {
             return {
                 password_dialog: false,
+                image_dialog:false,
                 password : "",
                 styleObject:{
                     color:'black'
