@@ -608,6 +608,9 @@ export default {
           console.log("err");
         });
       this.login = false;
+      this.notes=[]
+      this.noteViewList=[]
+
     },
     google() {
       const _this = this;
@@ -658,13 +661,7 @@ export default {
         this.currentUser = user;
         var newNotes = [];
 
-      } else {
-        console.log("로그인안됨");
-        this.login = false;
-        //sessionStorage.setItem("user", "");
-        this.currentUser = {};
-
-        firebase .database() .ref("users/").child('test') .child(user.uid) .on("value", (e) => {
+        firebase .database().ref("users/").child('test') .child(user.uid) .on("value", (e) => {
           var noteData = e.val();
           for (var key in noteData) {
             var noteObj = noteData[key];
@@ -675,8 +672,18 @@ export default {
           console.log(this.noteViewList);
         });
 
+      } else {
+        console.log("로그인안됨");
+        this.login = false;
+        //sessionStorage.setItem("user", "");
+        this.currentUser = {};
+
+
+
       }
     });
+
+    
 
 
     if (localStorage.getItem("notes")) {
@@ -696,6 +703,8 @@ export default {
         JSON.stringify([{ color: "#CE93D8",title: "기본메모" }])
       );
     }
+
+
     await this.trackPosition();
     model = await cocoSSD.load();
   },
