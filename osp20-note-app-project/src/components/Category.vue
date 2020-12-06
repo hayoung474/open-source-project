@@ -64,10 +64,14 @@
 </template>
 
 <script>
+import firebase from "firebase";
 export default {
   data() {
     return {
+
+      currentUser:{},
       name: "",
+      
       category_dialog: true,
       notes: [],
       category: [],
@@ -179,6 +183,7 @@ export default {
         }
         if (!this.isSame) {
           this.category.push(newCategory);
+          firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(this.category);
         } else {
           this.isSame = false;
         }
@@ -200,6 +205,7 @@ export default {
       }
       if (!this.isSame) {
         this.category.push(newCategory);
+        firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(this.category);
       } else {
         this.isSame = false;
       }
@@ -284,6 +290,7 @@ export default {
           this.$emit("deleteCategoryNote", deleteCategory);
 
           this.category.splice(index, 1);
+          firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(this.category);
           alert("삭제되었습니다.");
         }
       }
@@ -362,6 +369,13 @@ export default {
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
     }
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.currentUser = user;
+      } else {
+        this.currentUser = {};
+      }
+    });
   },
 
   watch: {

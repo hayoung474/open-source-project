@@ -655,54 +655,60 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log("로그인됨");
-        //sessionStorage.setItem("user", JSON.stringify(user));
-        // this.currentUser = JSON.parse(sessionStorage.getItem("user"));
         this.login = true;
         this.currentUser = user;
-        var newNotes = [];
 
-        firebase .database().ref("users/").child('test') .child(user.uid) .on("value", (e) => {
+        
+        firebase .database().ref("users/").child('test') .child(this.currentUser.uid) .on("value", (e) => {
+          var newNotes=[]
+          console.log("야 너 두번 호출되냐 ??");
           var noteData = e.val();
           for (var key in noteData) {
             var noteObj = noteData[key];
             newNotes.push(noteObj);
           }
           this.notes = newNotes;
-          this.noteViewList = this.notes;
           console.log(this.noteViewList);
+        });
+
+        firebase .database().ref("users/").child('category') .child(this.currentUser.uid) .on("value", (e) => {
+          var newCategory=[]
+          var categorySnapshot = e.val();
+          for (var key in categorySnapshot) {
+            var categoryObj = categorySnapshot[key];
+            newCategory.push(categoryObj);
+          }
+          this.category = newCategory;
+          
         });
 
       } else {
         console.log("로그인안됨");
         this.login = false;
-        //sessionStorage.setItem("user", "");
         this.currentUser = {};
-
-
-
+        this.category=[]
       }
     });
 
-    
+    // if (localStorage.getItem("notes")) {
+    //   this.notes = JSON.parse(localStorage.getItem("notes"));
+    // }
+    // if (localStorage.getItem("noteViewList")) {
+    //   this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
+    // }
+    // if (localStorage.getItem("category")) {
+    //   this.category = JSON.parse(localStorage.getItem("category"));
+    // } if (
+    //   localStorage.getItem("category")==="null" ||
+    //   JSON.parse(localStorage.getItem("category")).length === 0
+    // ) {
+    //   localStorage.setItem(
+    //     "category",
+    //     JSON.stringify([{ color: "#CE93D8",title: "기본메모" }])
+    //   );
+    // }
 
 
-    if (localStorage.getItem("notes")) {
-      this.notes = JSON.parse(localStorage.getItem("notes"));
-    }
-    if (localStorage.getItem("noteViewList")) {
-      this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-    }
-    if (localStorage.getItem("category")) {
-      this.category = JSON.parse(localStorage.getItem("category"));
-    } if (
-      localStorage.getItem("category")==="null" ||
-      JSON.parse(localStorage.getItem("category")).length === 0
-    ) {
-      localStorage.setItem(
-        "category",
-        JSON.stringify([{ color: "#CE93D8",title: "기본메모" }])
-      );
-    }
 
 
     await this.trackPosition();
@@ -711,6 +717,7 @@ export default {
   watch: {
     notes: {
       handler() {
+        console.log("watch notes!!");
         localStorage.setItem("notes", JSON.stringify(this.notes));
         // console.log(this.notes);
         // console.log(JSON.parse(localStorage.getItem("notes")));
@@ -734,6 +741,7 @@ export default {
     },
     category: {
       handler() {
+        console.log("watch category!!");
         localStorage.setItem("category", JSON.stringify(this.category));
       },
     },
