@@ -316,6 +316,10 @@ export default {
     },
     AddNote(note) {
       this.notes.push(note);
+
+      firebase .database() .ref('user/').child(this.currentUser.uid) .push() .set(note)
+      firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
+
       var coloritem = {
         rgb: note.theme,
       };
@@ -352,15 +356,11 @@ export default {
       //var uid = JSON.parse(sessionStorage.getItem("user")).uid;
 
       // firebase.database().ref('users/').child(uid).set(note);
-      firebase
-        .database()
-        .ref("user/")
-        .child(this.currentUser.uid)
-        .push()
-        .set(note);
+
     },
     ModifyNote(selectNote, note) {
       this.notes[this.notes.indexOf(selectNote)] = note;
+      firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
 
       localStorage.setItem("notes", JSON.stringify(this.notes));
       var coloritem = {
@@ -395,6 +395,7 @@ export default {
     deleteNote(note) {
       if (confirm("정말로 삭제하시겠습니까?")) {
         this.notes.splice(this.notes.indexOf(note), 1);
+        firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
       }
       if (this.categoryTitle !== "") {
         this.noteViewList = this.notes.filter(
@@ -497,6 +498,7 @@ export default {
       this.notes = this.notes.filter(
         (note) => note.category.title !== deleteCategory.title
       );
+      firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
       if (this.isImageView) {
         this.ImageFilter();
       }
@@ -633,7 +635,9 @@ export default {
           var credential = error.credential;
         });
     },
+    
   },
+  
   async mounted() {
     console.log("mounted!");
 
@@ -643,6 +647,8 @@ export default {
       this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     }
 
+    
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log("로그인됨");
@@ -651,29 +657,27 @@ export default {
         this.login = true;
         this.currentUser = user;
         var newNotes = [];
-        firebase
-          .database()
-          .ref("user/")
-          .child(user.uid)
-          .on("value", (e) => {
-            var noteData = e.val();
-            console.log(noteData);
-            for (var key in noteData) {
-              var noteObj = noteData[key];
-              newNotes.push(noteObj);
-            }
-            this.notes = newNotes;
-            this.noteViewList = this.notes;
-            console.log(this.noteViewList);
-          });
+
       } else {
         console.log("로그인안됨");
         this.login = false;
         //sessionStorage.setItem("user", "");
         this.currentUser = {};
+
+        firebase .database() .ref("users/").child('test') .child(user.uid) .on("value", (e) => {
+          var noteData = e.val();
+          for (var key in noteData) {
+            var noteObj = noteData[key];
+            newNotes.push(noteObj);
+          }
+          this.notes = newNotes;
+          this.noteViewList = this.notes;
+          console.log(this.noteViewList);
+        });
+
       }
     });
-    console.log("testtesttest");
+
 
     if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
@@ -683,32 +687,15 @@ export default {
     }
     if (localStorage.getItem("category")) {
       this.category = JSON.parse(localStorage.getItem("category"));
-    }
-    if (
-      !localStorage.getItem("category") ||
+    } if (
+      localStorage.getItem("category")==="null" ||
       JSON.parse(localStorage.getItem("category")).length === 0
     ) {
       localStorage.setItem(
         "category",
-        JSON.stringify([{ title: "기본메모", color: "#CE93D8" }])
+        JSON.stringify([{ color: "#CE93D8",title: "기본메모" }])
       );
     }
-    console.log("testtesttest");
-    // var uid = JSON.parse(sessionStorage.getItem("user")).uid;
-    // var newNotes=[]
-    // firebase.database().ref('user/').child(uid).on('value', (e) => {
-    //     var noteData = e.val();
-    //     console.log(noteData);
-    //     for(var key in noteData){
-    //       var noteObj = noteData[key];
-    //       newNotes.push(noteObj);
-    //     }
-    //     this.notes = newNotes;
-    //     this.noteViewList = this.notes;
-    //   });
-    // console.log(this.noteViewList);
-    console.log("testtesttest");
-
     await this.trackPosition();
     model = await cocoSSD.load();
   },
@@ -716,8 +703,8 @@ export default {
     notes: {
       handler() {
         localStorage.setItem("notes", JSON.stringify(this.notes));
-        console.log(this.notes);
-        console.log(JSON.parse(localStorage.getItem("notes")));
+        // console.log(this.notes);
+        // console.log(JSON.parse(localStorage.getItem("notes")));
 
         // 카테고리가 선택이 되어 있는 경우에 재 배치
         if (this.categoryTitle !== "") {

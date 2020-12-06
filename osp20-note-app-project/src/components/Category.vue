@@ -166,8 +166,8 @@ export default {
       if (this.name == "") alert("카테고리 이름을 적어주세요!");
       else {
         var newCategory = {
-          title: this.name,
           color: "#" + Math.round(Math.random() * 0xffffff).toString(16),
+          title: this.name,
         };
 
         for (var i = 0; i < this.category.length; i++) {

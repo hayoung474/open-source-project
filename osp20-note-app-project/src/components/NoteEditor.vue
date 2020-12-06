@@ -302,7 +302,7 @@ export default {
             timezoneDate.toISOString().substr(0, 10) +
             " " +
             new Date().toTimeString().substr(0, 8),
-          sortDate: new Date(),
+          sortDate: new Date().toString(),
           category: this.category[this.select],
           secret: this.secret,
           important: this.important,
