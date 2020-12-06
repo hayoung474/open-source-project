@@ -687,6 +687,8 @@ export default {
         this.login = false;
         this.currentUser = {};
         this.category=[]
+        this.category.push({color: "#CE93D8",title: "기본메모"})
+        
       }
     });
 
@@ -698,15 +700,12 @@ export default {
     // }
     // if (localStorage.getItem("category")) {
     //   this.category = JSON.parse(localStorage.getItem("category"));
-    // } if (
-    //   localStorage.getItem("category")==="null" ||
-    //   JSON.parse(localStorage.getItem("category")).length === 0
-    // ) {
-    //   localStorage.setItem(
-    //     "category",
-    //     JSON.stringify([{ color: "#CE93D8",title: "기본메모" }])
-    //   );
     // }
+    // if (localStorage.getItem("category") === "null" || JSON.parse(localStorage.getItem("category")).length === 0) {
+    //   localStorage.setItem("category", JSON.stringify([{color: "#CE93D8",title: "기본메모"}]));
+    //   this.category.push({color: "#CE93D8",title: "기본메모"})
+    // }
+    // console.log(this.category)
 
 
 
