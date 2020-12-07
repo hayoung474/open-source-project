@@ -9,7 +9,9 @@
         @google="google"
       ></app-header>
 
-      <v-container>
+      
+      <LoginInfo v-if="!login"></LoginInfo>
+      <v-container v-if="login">
         <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
           <img
             :src="currentUser.photoURL"
@@ -23,6 +25,8 @@
         <v-overlay :value="overlay" style="z-index:999999">
           <v-progress-circular indeterminate size="64"></v-progress-circular>
         </v-overlay>
+
+
         <v-switch
           label="ImageViewMode"
           color="secondary"
@@ -121,52 +125,52 @@
             </v-row>
           </div>
         </div>
-
-        <v-btn
-          class="mx-2 calendar-button"
-          fab="fab"
-          :color="color2"
-          title="날짜별 메모 조회"
-          @click="calendar_dialog = true"
-        >
-          <v-icon style="color: white"> mdi-calendar </v-icon>
-        </v-btn>
-
-        <v-btn
-          class="mx-2 sort-button"
-          fab="fab"
-          :color="color1"
-          title="정렬"
-          @click="sort"
-        >
-          <v-icon style="color: white" v-if="sortopt == 'lastest'"
-            >mdi-sort-clock-ascending-outline</v-icon
+        <div v-if="login">
+          <v-btn
+            class="mx-2 calendar-button"
+            fab="fab"
+            :color="color2"
+            title="날짜별 메모 조회"
+            @click="calendar_dialog = true"
           >
-          <v-icon style="color: white" v-if="sortopt == 'oldest'"
-            >mdi-sort-clock-descending-outline</v-icon
+            <v-icon style="color: white"> mdi-calendar </v-icon>
+          </v-btn>
+
+          <v-btn
+            class="mx-2 sort-button"
+            fab="fab"
+            :color="color1"
+            title="정렬"
+            @click="sort"
           >
-        </v-btn>
+            <v-icon style="color: white" v-if="sortopt == 'lastest'"
+              >mdi-sort-clock-ascending-outline</v-icon
+            >
+            <v-icon style="color: white" v-if="sortopt == 'oldest'"
+              >mdi-sort-clock-descending-outline</v-icon
+            >
+          </v-btn>
 
-        <v-btn
-          class="mx-2 category-button"
-          fab="fab"
-          :color="color2"
-          title="카테고리 편집"
-          @click="category_dialog = true"
-        >
-          <v-icon style="color: white"> mdi-format-list-bulleted </v-icon>
-        </v-btn>
+          <v-btn
+            class="mx-2 category-button"
+            fab="fab"
+            :color="color2"
+            title="카테고리 편집"
+            @click="category_dialog = true"
+          >
+            <v-icon style="color: white"> mdi-format-list-bulleted </v-icon>
+          </v-btn>
 
-        <v-btn
-          class="mx-2 add-button"
-          fab="fab"
-          :color="color1"
-          title="메모 추가"
-          @click="dialog = true"
-        >
-          <v-icon style="color: white"> mdi-plus </v-icon>
-        </v-btn>
-
+          <v-btn
+            class="mx-2 add-button"
+            fab="fab"
+            :color="color1"
+            title="메모 추가"
+            @click="dialog = true"
+          >
+            <v-icon style="color: white"> mdi-plus </v-icon>
+          </v-btn>
+        </div>
         <v-dialog
           v-model="dialog"
           max-width="800"
@@ -247,6 +251,7 @@ import Category from "./components/Category.vue";
 import Header from "./components/Header.vue";
 import Note from "./components/Note.vue";
 import ImageNote from "./components/ImageNote.vue";
+import LoginInfo from "./components/LoginInfo.vue";
 import draggable from "vuedraggable";
 import axios from "axios";
 import Loading from "vue-loading-overlay";
@@ -644,7 +649,8 @@ export default {
   async mounted() {
     console.log("mounted!");
 
-    this.overlay = true;
+    
+    
 
     if (localStorage.getItem("historyColor")) {
       this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
@@ -668,6 +674,7 @@ export default {
           }
           this.notes = newNotes;
           console.log(this.notes);
+          this.isCircular=true;
         });
 
         firebase .database().ref("users/").child('category') .child(this.currentUser.uid) .on("value", (e) => {
@@ -695,6 +702,9 @@ export default {
         this.category=[]
         this.category.push({color: "#CE93D8",title: "기본메모"})
         
+      }
+      if(this.login){
+        this.overlay = true;
       }
     });
 
@@ -776,6 +786,7 @@ export default {
     Note,
     draggable,
     ImageNote,
+    LoginInfo,
     // Password,
   },
 };
