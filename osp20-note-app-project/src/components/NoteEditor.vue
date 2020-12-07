@@ -98,7 +98,7 @@
           <v-card-title>Options</v-card-title>
           <v-divider></v-divider>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <div class="text-center">
                 <v-menu offset-y="offset-y">
                   <template v-slot:activator="{ on, attrs }">
@@ -127,7 +127,7 @@
                 <p>{{ category[select].title }}</p>
               </div>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-switch
                 label="Secret Memo"
                 color="secondary"
@@ -143,7 +143,7 @@
                 placeholder="password"
               />
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-switch
                 label="Important Memo"
                 color="secondary"
