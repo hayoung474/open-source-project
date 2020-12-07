@@ -191,7 +191,8 @@ import * as cocoSSD from "@tensorflow-models/coco-ssd";
 import * as tf from "@tensorflow/tfjs";
 let model;
 export default {
-  props:{
+    props: {
+    category:Array,
     historyColor:Array,
   },
   data() {
@@ -204,13 +205,13 @@ export default {
       password: "",
       imgsrc: "",
 
-      category: [],
       select: 0,
       // historyColor: [],
 
       styleObject: {
         color: "black",
       },
+
       isDarkNote: false,
 
       predicted: "",
@@ -222,8 +223,6 @@ export default {
   },
 
   async mounted() {
-    this.category = JSON.parse(localStorage.getItem("category"));
-    // this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     model = await cocoSSD.load();
   },
   methods: {
@@ -243,21 +242,22 @@ export default {
 
       return rgbType;
     },
-    upload(e) {
+    async upload(e) {
       let file = e.target.files;
       let reader = new FileReader();
 
       reader.readAsDataURL(file[0]);
       reader.onload = (e) => {
+        
         this.imgsrc = e.target.result;
-        this.predict();
+        console.log("업로드 됨 ? ",this.imgsrc)
       };
     },
     async predict() {
       if (this.imgsrc != "") {
         const img = document.getElementById("image");
         console.log(img)
-        let tmp = await model.detect(img);
+        let tmp = await model.detect(img) 
         if (tmp.length !== 0) {
           this.predicted = tmp[0].class;
         } else {
@@ -357,6 +357,9 @@ export default {
       if (typeof str == "undefined" || str == null || str == "") return true;
       else return false;
     },
+  },
+  updated(){
+    console.log("업뎃");
   },
 
   watch: {

@@ -235,6 +235,7 @@ export default {
     console.log(this.selectNote);
     this.historyColor = JSON.parse(localStorage.getItem("historyColor"));
     model = await cocoSSD.load();
+
     
   },
   watch: {

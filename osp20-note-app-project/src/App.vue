@@ -186,6 +186,7 @@
             @redraw="redraw"
             @AddNote="AddNote"
             :historyColor="historyColor"
+            :category="category"
           ></app-note-editor>
         </v-dialog>
 
@@ -686,6 +687,8 @@ export default {
           var categorySnapshot = e.val();
           if(categorySnapshot===null){
             newCategory.push({color: "#CE93D8",title: "기본메모"})
+            firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(newCategory);
+            
           }
           else{
             for (var key in categorySnapshot) {
@@ -703,7 +706,7 @@ export default {
         this.login = false;
         this.currentUser = {};
         this.category=[]
-        this.category.push({color: "#CE93D8",title: "기본메모"})
+        
         
       }
       if(this.login){
