@@ -7,18 +7,11 @@
         :weatherInfo="weatherInfo"
         :timeInfo="timeInfo"
         @google="google"
+        :currentUser="currentUser"
+        :login="login"
+        @logout="logout"
       ></app-header>
-
       <v-container>
-        <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
-          <img
-            :src="currentUser.photoURL"
-            style="margin-right:auto"
-            height="30px"
-          />
-          <p style="margin:0 !important">{{ currentUser.email }}</p>
-          <v-icon>mdi-logout</v-icon>
-        </v-btn>
 
         <v-overlay :value="overlay" style="z-index:999999">
           <v-progress-circular indeterminate size="64"></v-progress-circular>

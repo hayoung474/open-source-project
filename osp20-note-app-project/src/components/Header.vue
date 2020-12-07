@@ -14,9 +14,20 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <button @click="google" class="google-btn">
+        <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
+          <img
+            :src="currentUser.photoURL"
+            style="margin-right:auto"
+            height="20px"
+          />
+          <p style="margin:0 !important">{{currentUser.email}}</p>
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+
+        <button v-if="(login==false)" @click="google" class="google-btn">
           <img style="width:35px; height:35px;" src="../assets/google-logo.png"/>
         </button>
+
 
     </div>
 </template>
@@ -25,6 +36,10 @@
 import axios from 'axios';
 import firebase from 'firebase'
 export default {
+    props:{
+    login: Boolean,
+    currentUser: Object,
+  },
   data() {
     return {
       searchText: "",
@@ -59,7 +74,9 @@ export default {
     reset(){
       this.$emit('reset');
     },
-
+    logout(){
+      this.$emit('logout');
+    },
     reload(){
       window.location.reload();
     },
