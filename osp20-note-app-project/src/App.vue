@@ -15,7 +15,7 @@
       
       <LoginInfo v-if="!login"></LoginInfo>
       <v-container v-if="login">
-        <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
+        <v-btn v-if="(login==true)" @click="logout" style="height:50px;margin:0 auto;" class="hidden-md-and-up" >
           <img
             :src="currentUser.photoURL"
             style="margin-right:auto"

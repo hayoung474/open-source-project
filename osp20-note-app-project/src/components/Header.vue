@@ -14,7 +14,7 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <v-btn depressed v-if="(login==true)" @click="logout" class="user-info">
+        <v-btn depressed v-if="(login==true)" @click="logout" class="user-info hidden-sm-and-down"  > 
           <img
             :src="currentUser.photoURL"
             style="width:30px; height:30px; margin-right:auto; margin-left:0px;"
