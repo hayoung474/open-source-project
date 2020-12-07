@@ -228,6 +228,7 @@ export default {
     this.beforeCategoryName = this.selectNote.category.title;
     this.selectCategoryName = this.category[this.select].title;
     this.imgsrc = this.selectNote.imgsrc;
+    console.log(this.imgsrc)
     this.predicted = this.selectNote.predicted;
     this.mImportant = this.important;
     document.getElementById("imgfile").value="";
@@ -317,12 +318,13 @@ export default {
         reader.readAsDataURL(file[0]);
         reader.onload = e => {
             this.imgsrc = e.target.result;
-            this.predict();
+            console.log(this.imgsrc)
         }
     },
     async predict(){
       if (this.imgsrc != ''){
-          const img = document.getElementById("image");       
+          const img = document.getElementById("image");      
+          console.log(img) 
           let tmp = await model.detect(img);  
           this.predicted = tmp[0].class
       }

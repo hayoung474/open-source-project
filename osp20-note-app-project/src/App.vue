@@ -736,7 +736,7 @@ export default {
     notes: {
       handler() {
         console.log("watch notes!!");
-        //localStorage.setItem("notes", JSON.stringify(this.notes));
+        localStorage.setItem("notes", JSON.stringify(this.notes));
         // console.log(this.notes);
         // console.log(JSON.parse(localStorage.getItem("notes")));
 
@@ -748,22 +748,22 @@ export default {
         } else {
           this.noteViewList = this.notes;
         }
-        //localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+        localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
       },
       deep: true,
     },
-    // noteViewList: {
-    //   handler() {
+    noteViewList: {
+      handler() {
 
-    //     localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
-    //   },
-    // },
-    // category: {
-    //   handler() {
-    //     console.log("watch category!!");
-    //     localStorage.setItem("category", JSON.stringify(this.category));
-    //   },
-    // },
+        localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+      },
+    },
+    category: {
+      handler() {
+        console.log("watch category!!");
+        localStorage.setItem("category", JSON.stringify(this.category));
+      },
+    },
     historyColor: {
       handler() {
         localStorage.setItem("historyColor", JSON.stringify(this.historyColor));

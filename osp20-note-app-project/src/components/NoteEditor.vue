@@ -256,6 +256,7 @@ export default {
     async predict() {
       if (this.imgsrc != "") {
         const img = document.getElementById("image");
+        console.log(img)
         let tmp = await model.detect(img);
         if (tmp.length !== 0) {
           this.predicted = tmp[0].class;

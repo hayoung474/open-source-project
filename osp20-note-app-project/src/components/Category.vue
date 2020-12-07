@@ -20,7 +20,16 @@
               </span>
             </v-col>
           </v-row>
-          <div id="recommend-category-list"></div>
+          <div id="recommend-category-list">
+              <span v-for="(category, index) in recommendCategoryList" :key="index">
+                  <v-btn class="recommend-category-btn"
+                  :color="'#' + Math.round(Math.random() * 0xffffff).toString(16)"
+                  @click="createRecommendCategory(category.name)"
+                  >
+                  {{category}}
+                  </v-btn>
+              </span>
+          </div>
         </div>
 
         <v-divider></v-divider>
@@ -294,6 +303,10 @@ export default {
           this.category.splice(index, 1);
           firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(this.category);
           alert("삭제되었습니다.");
+          for(var i=0;i<this.category.length;i++){
+            var header = document.querySelector("h1");	//제거하고자 하는 엘리먼트
+            header.parentNode.removeChild(header);
+          }
         }
       }
     },
@@ -352,18 +365,19 @@ export default {
       }
 
       console.log(this.recommendCategoryList);
+      
 
-      for (var j = 0; j < this.recommendCategoryList.length; j++) {
-        var color = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-        var btn = document.createElement("BUTTON");
-        btn.innerHTML = this.recommendCategoryList[j];
-        btn.className = "recommend-category-btn";
-        btn.style.background = color;
-        btn.addEventListener("click", (e) => {
-          this.createRecommendCategory(e.target.innerHTML);
-        });
-        element.appendChild(btn);
-      }
+      // for (var j = 0; j < this.recommendCategoryList.length; j++) {
+      //   var color = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+      //   var btn = document.createElement("BUTTON");
+      //   btn.innerHTML = this.recommendCategoryList[j];
+      //   btn.className = "recommend-category-btn";
+      //   btn.style.background = color;
+      //   btn.addEventListener("click", (e) => {
+      //     this.createRecommendCategory(e.target.innerHTML);
+      //   });
+      //   element.appendChild(btn);
+      // }
     },
   },
 
