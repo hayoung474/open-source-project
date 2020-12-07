@@ -657,27 +657,33 @@ export default {
         console.log("로그인됨");
         this.login = true;
         this.currentUser = user;
-
-        
         firebase .database().ref("users/").child('test') .child(this.currentUser.uid) .on("value", (e) => {
           var newNotes=[]
           console.log("야 너 두번 호출되냐 ??");
+          console.log(e.val())
           var noteData = e.val();
           for (var key in noteData) {
             var noteObj = noteData[key];
             newNotes.push(noteObj);
           }
           this.notes = newNotes;
-          console.log(this.noteViewList);
+          console.log(this.notes);
         });
 
         firebase .database().ref("users/").child('category') .child(this.currentUser.uid) .on("value", (e) => {
           var newCategory=[]
+        
           var categorySnapshot = e.val();
-          for (var key in categorySnapshot) {
-            var categoryObj = categorySnapshot[key];
-            newCategory.push(categoryObj);
+          if(categorySnapshot===null){
+            newCategory.push({color: "#CE93D8",title: "기본메모"})
           }
+          else{
+            for (var key in categorySnapshot) {
+              var categoryObj = categorySnapshot[key];
+              newCategory.push(categoryObj);
+            }
+          }
+
           this.category = newCategory;
           
         });
