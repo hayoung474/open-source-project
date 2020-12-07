@@ -367,7 +367,7 @@ export default {
       this.notes[this.notes.indexOf(selectNote)] = note;
       firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
 
-      localStorage.setItem("notes", JSON.stringify(this.notes));
+      //localStorage.setItem("notes", JSON.stringify(this.notes));
       var coloritem = {
         rgb: note.theme,
       };
@@ -439,9 +439,9 @@ export default {
       }
     },
     sort() {
-      if (localStorage.getItem("noteViewList")) {
-        this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
-      }
+      // if (localStorage.getItem("noteViewList")) {
+      //   this.noteViewList = JSON.parse(localStorage.getItem("noteViewList"));
+      // }
       if (this.sortopt == "oldest") {
         this.sortLastest();
         this.sortopt = "lastest";
@@ -733,7 +733,7 @@ export default {
     notes: {
       handler() {
         console.log("watch notes!!");
-        localStorage.setItem("notes", JSON.stringify(this.notes));
+        //localStorage.setItem("notes", JSON.stringify(this.notes));
         // console.log(this.notes);
         // console.log(JSON.parse(localStorage.getItem("notes")));
 
@@ -745,21 +745,22 @@ export default {
         } else {
           this.noteViewList = this.notes;
         }
-        localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+        //localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
       },
       deep: true,
     },
-    noteViewList: {
-      handler() {
-        localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
-      },
-    },
-    category: {
-      handler() {
-        console.log("watch category!!");
-        localStorage.setItem("category", JSON.stringify(this.category));
-      },
-    },
+    // noteViewList: {
+    //   handler() {
+
+    //     localStorage.setItem("noteViewList", JSON.stringify(this.noteViewList));
+    //   },
+    // },
+    // category: {
+    //   handler() {
+    //     console.log("watch category!!");
+    //     localStorage.setItem("category", JSON.stringify(this.category));
+    //   },
+    // },
     historyColor: {
       handler() {
         localStorage.setItem("historyColor", JSON.stringify(this.historyColor));
