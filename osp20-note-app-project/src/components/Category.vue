@@ -163,7 +163,7 @@ export default {
     closeDialog() {
       this.category_dialog = false;
       this.$emit("dialogClosed", this.category_dialog);
-      window.location.reload();
+      //window.location.reload();
     },
 
     createCategory() {
@@ -206,6 +206,7 @@ export default {
       if (!this.isSame) {
         this.category.push(newCategory);
         firebase.database().ref('users/').child("category").child(this.currentUser.uid).set(this.category);
+        
       } else {
         this.isSame = false;
       }
@@ -274,6 +275,7 @@ export default {
           }
         }
       }
+      firebase.database().ref('users/').child("test").child(this.currentUser.uid).set(this.notes);
       localStorage.setItem("notes", JSON.stringify(this.notes));
     },
 
@@ -298,7 +300,7 @@ export default {
 
     recommendCategoryCreate() {
       var element = document.getElementById("recommend-category-list");
-
+      this.recommendCategoryList=[]
       // 먼저 로컬스토리지에 있는 노트를 순회할 것
       var tempNoteList = [];
       if (localStorage.getItem("notes")) {
