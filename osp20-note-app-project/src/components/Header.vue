@@ -14,14 +14,14 @@
                 <i class="fas fa-search"></i>
             </a>
         </div>
-        <v-btn v-if="(login==true)" @click="logout" style="height:50px;">
+        <v-btn depressed v-if="(login==true)" @click="logout" class="user-info">
           <img
             :src="currentUser.photoURL"
-            style="margin-right:auto"
-            height="20px"
+            style="width:30px; height:30px; margin-right:auto; margin-left:0px;"
+
           />
-          <p style="margin:0 !important">{{currentUser.email}}</p>
-          <v-icon>mdi-logout</v-icon>
+          <p style="font-size:15px; margin-left:10px; margin-right:10px;">{{currentUser.email}}</p>
+          <v-icon>mdi-logout-variant</v-icon>
         </v-btn>
 
         <button v-if="(login==false)" @click="google" class="google-btn">
@@ -55,6 +55,7 @@ export default {
       weather:"",
       time:"",
       temp:"",
+
     };
   },
   async mounted(){
